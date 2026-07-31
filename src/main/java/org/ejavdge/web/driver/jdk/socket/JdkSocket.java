@@ -9,7 +9,6 @@ import org.ejavdge.web.spec.Request;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 public final class JdkSocket implements WebDriver {
     private final Positive bufSize;
@@ -29,20 +28,18 @@ public final class JdkSocket implements WebDriver {
     @Override
     public byte[] resourceOf(final Location loc, final Request req) {
         try {
-            try (final var socket = new Inet(loc).socket()) {
-                final OutputStream out = socket.getOutputStream();
+            try (var socket = new Inet(loc).socket()) {
+                var out = socket.getOutputStream();
                 out.write(req.bytes());
                 out.flush();
-                try (final var in = socket.getInputStream()) {
-                    final var responseBuffer = new ByteArrayOutputStream();
+                try (var in = socket.getInputStream()) {
+                    final var response = new ByteArrayOutputStream();
                     final byte[] buffer = new byte[this.bufSize.value()];
-
                     int bytesRead;
                     while ((bytesRead = in.read(buffer)) != -1) {
-                        responseBuffer.write(buffer, 0, bytesRead);
+                        response.write(buffer, 0, bytesRead);
                     }
-
-                    return responseBuffer.toByteArray();
+                    return response.toByteArray();
                 }
             }
         } catch (final IOException e) {

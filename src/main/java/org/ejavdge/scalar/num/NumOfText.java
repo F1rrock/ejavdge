@@ -6,6 +6,10 @@ import org.ejavdge.scalar.text.Text;
 public final class NumOfText implements Num {
     private final Text src;
 
+    public NumOfText(final String s) {
+        this(new Text.Of(s));
+    }
+
     public NumOfText(final Text t) {
         this.src = t;
     }

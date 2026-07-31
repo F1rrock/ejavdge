@@ -48,4 +48,16 @@ public final class MemoTest extends TestCase {
         memo.content();
         assertEquals(1, calls.get());
     }
+
+    public void testEmptyIsEvaluatedOnce() {
+        final var calls = new AtomicInteger();
+        final Bytes origin = () -> {
+            calls.incrementAndGet();
+            return new byte[0];
+        };
+        final var memo = new Memo(origin);
+        memo.content();
+        memo.content();
+        assertEquals(1, calls.get());
+    }
 }

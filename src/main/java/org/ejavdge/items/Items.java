@@ -16,12 +16,12 @@ public interface Items<T> {
         }
 
         public Of(final List<T> xs) {
-            this.xs = xs;
+            this.xs = List.copyOf(xs);
         }
 
         @Override
         public List<T> contents() {
-            return this.xs;
+            return List.copyOf(this.xs);
         }
     }
 }

@@ -14,8 +14,14 @@ public final class Ascii implements Bytes {
 
     @Override
     public byte[] content() throws InvariantViolation {
+        final var s = this.src.content();
+        if (!s.chars().allMatch(el -> el <= 127)) {
+            throw new InvariantViolation(
+                "Text does not consist only of ASCII characters"
+            );
+        }
         return this.src
-                .content()
-                .getBytes(StandardCharsets.US_ASCII);
+            .content()
+            .getBytes(StandardCharsets.US_ASCII);
     }
 }

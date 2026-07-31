@@ -19,8 +19,8 @@ public final class Joint<T> implements Items<T> {
     @Override
     public List<T> contents() throws InvariantViolation {
         return this.xss.contents()
-                .stream()
-                .flatMap(xs -> xs.contents().stream())
-                .toList();
+            .stream()
+            .flatMap(xs -> xs.contents().stream())
+            .toList();
     }
 }

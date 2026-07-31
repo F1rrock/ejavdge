@@ -9,7 +9,10 @@ public final class Map<D, R> implements Items<R> {
     private final Function<D, R> mapping;
     private final Items<D> prototype;
 
-    public Map(final Function<D, R> f, final Items<D> xs) {
+    public Map(
+        final Function<D, R> f,
+        final Items<D> xs
+    ) {
         this.mapping = f;
         this.prototype = xs;
     }
@@ -17,8 +20,8 @@ public final class Map<D, R> implements Items<R> {
     @Override
     public List<R> contents() throws InvariantViolation {
         return this.prototype.contents()
-                .stream()
-                .map(this.mapping)
-                .toList();
+            .stream()
+            .map(this.mapping)
+            .toList();
     }
 }

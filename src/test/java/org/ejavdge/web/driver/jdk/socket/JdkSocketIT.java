@@ -52,6 +52,6 @@ public final class JdkSocketIT extends TestCase {
             new HttpSpec.Of("GET / HTTP/1.1\r\nHost: localhost\r\n".getBytes())
         );
         final byte[] response = driver.resourceOf(loc, req);
-        return new String(response, java.nio.charset.StandardCharsets.US_ASCII);
+        return new String(response, java.nio.charset.StandardCharsets.UTF_8);
     }
 }

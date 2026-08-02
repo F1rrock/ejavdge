@@ -13,7 +13,7 @@ public final class FormTest extends TestCase {
                 new Form.ImprintOf(
                     new FakeContext()
                 ).content(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             )
         );
     }

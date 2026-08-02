@@ -10,10 +10,10 @@ public final class RequestTest extends TestCase {
             new String(
                 new Request(
                     new HttpSpec.Of(
-                        "Hello, World!".getBytes(StandardCharsets.US_ASCII)
+                        "Hello, World!".getBytes(StandardCharsets.UTF_8)
                     )
                 ).bytes(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             ).endsWith("\r\n")
         );
     }

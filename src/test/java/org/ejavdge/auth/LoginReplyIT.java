@@ -27,7 +27,7 @@ public final class LoginReplyIT extends TestCase {
                         new Num.Of(1)
                     )
                 ).content(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             );
             assertTrue(actual.startsWith("HTTP/1.1 200"));
             assertTrue(
@@ -55,7 +55,7 @@ public final class LoginReplyIT extends TestCase {
                         new Num.Of(1)
                     )
                 ).content(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             );
             assertTrue(actual.startsWith("HTTP/1.1 403"));
             assertTrue(

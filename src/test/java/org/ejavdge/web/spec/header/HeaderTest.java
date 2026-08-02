@@ -14,7 +14,7 @@ public final class HeaderTest extends TestCase {
                     new Text.Of("Content-Type"),
                     new Text.Of("text/html")
                 ).content(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             )
         );
     }

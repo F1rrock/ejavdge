@@ -18,11 +18,11 @@ public final class WebResourceTest extends TestCase {
                     new Location("u", "h", 80),
                     new Request(
                         new Bytes.Of(
-                            "request".getBytes(StandardCharsets.US_ASCII)
+                            "request".getBytes(StandardCharsets.UTF_8)
                         )
                     )
                 ).content(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             )
         );
     }

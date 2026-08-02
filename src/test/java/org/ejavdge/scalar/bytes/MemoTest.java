@@ -12,10 +12,10 @@ public final class MemoTest extends TestCase {
             new String(
                 new Memo(
                     new Bytes.Of(
-                        "hello".getBytes(StandardCharsets.US_ASCII)
+                        "hello".getBytes(StandardCharsets.UTF_8)
                     )
                 ).content(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             )
         );
     }
@@ -23,7 +23,7 @@ public final class MemoTest extends TestCase {
     public void testContentIsCopied() {
         final var memo = new Memo(
             new Bytes.Of(
-                "hello".getBytes(StandardCharsets.US_ASCII)
+                "hello".getBytes(StandardCharsets.UTF_8)
             )
         );
         final byte[] first = memo.content();
@@ -32,7 +32,7 @@ public final class MemoTest extends TestCase {
             "hello",
             new String(
                 memo.content(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             )
         );
     }
@@ -41,7 +41,7 @@ public final class MemoTest extends TestCase {
         final var calls = new AtomicInteger();
         final Bytes origin = () -> {
             calls.incrementAndGet();
-            return "hello".getBytes(StandardCharsets.US_ASCII);
+            return "hello".getBytes(StandardCharsets.UTF_8);
         };
         final var memo = new Memo(origin);
         memo.content();

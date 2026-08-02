@@ -32,7 +32,7 @@ public final class InetIT extends TestCase {
                     final OutputStream out = client.getOutputStream();
                     out.write(
                         "HTTP/1.1 200 OK\r\n\r\nHello from Inet"
-                            .getBytes(StandardCharsets.US_ASCII)
+                            .getBytes(StandardCharsets.UTF_8)
                     );
                     out.flush();
                 } catch (final IOException e) {
@@ -50,7 +50,7 @@ public final class InetIT extends TestCase {
                 final OutputStream out = socket.getOutputStream();
                 out.write(
                     "GET / HTTP/1.1\r\nHost: localhost\r\n\r\n"
-                        .getBytes(StandardCharsets.US_ASCII)
+                        .getBytes(StandardCharsets.UTF_8)
                 );
                 out.flush();
                 final var in = socket.getInputStream();
@@ -60,7 +60,7 @@ public final class InetIT extends TestCase {
                 while ((bytesRead = in.read(buffer)) != -1) {
                     response.write(buffer, 0, bytesRead);
                 }
-                final var r = response.toString(StandardCharsets.US_ASCII);
+                final var r = response.toString(StandardCharsets.UTF_8);
                 assertTrue(r.contains("200 OK"));
                 assertTrue(r.contains("Hello from Inet"));
             }

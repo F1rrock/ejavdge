@@ -11,10 +11,10 @@ public final class ConcatTest extends TestCase {
             new String(
                 new Concat(
                     new Bytes.Of(
-                        "HelloWorld".getBytes(StandardCharsets.US_ASCII)
+                        "HelloWorld".getBytes(StandardCharsets.UTF_8)
                     )
                 ).content(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             )
         );
     }
@@ -25,13 +25,13 @@ public final class ConcatTest extends TestCase {
             new String(
                 new Concat(
                     new Bytes.Of(
-                        "Hello".getBytes(StandardCharsets.US_ASCII)
+                        "Hello".getBytes(StandardCharsets.UTF_8)
                     ),
                     new Bytes.Of(
-                        "World".getBytes(StandardCharsets.US_ASCII)
+                        "World".getBytes(StandardCharsets.UTF_8)
                     )
                 ).content(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             )
         );
     }

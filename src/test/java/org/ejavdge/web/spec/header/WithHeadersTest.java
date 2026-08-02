@@ -22,22 +22,22 @@ public final class WithHeadersTest extends TestCase {
                         new Header(
                             new Bytes.Of(
                                 "Content-Type: application/x-www-form-urlencoded\r\n"
-                                    .getBytes(StandardCharsets.US_ASCII)
+                                    .getBytes(StandardCharsets.UTF_8)
                             )
                         ),
                         new Header(
                             new Bytes.Of(
                                 "Content-Length: 10\r\n"
-                                    .getBytes(StandardCharsets.US_ASCII)
+                                    .getBytes(StandardCharsets.UTF_8)
                             )
                         )
                     ),
                     new HttpSpec.Of(
                         "beginning of the request...\r\n"
-                            .getBytes(StandardCharsets.US_ASCII)
+                            .getBytes(StandardCharsets.UTF_8)
                     )
                 ).bytes(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             )
         );
     }
@@ -47,7 +47,7 @@ public final class WithHeadersTest extends TestCase {
             new WithHeaders(
                 new Header(
                     new Bytes.Of(
-                        "name: val\r\n".getBytes(StandardCharsets.US_ASCII)
+                        "name: val\r\n".getBytes(StandardCharsets.UTF_8)
                     )
                 ),
                 new HttpSpec.Of(
@@ -68,11 +68,11 @@ public final class WithHeadersTest extends TestCase {
                     new Items.Of<>(),
                     new HttpSpec.Of(
                         new Bytes.Of(
-                            "origin".getBytes(StandardCharsets.US_ASCII)
+                            "origin".getBytes(StandardCharsets.UTF_8)
                         )
                     )
                 ).bytes(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             )
         );
     }

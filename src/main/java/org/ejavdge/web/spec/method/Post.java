@@ -2,8 +2,8 @@ package org.ejavdge.web.spec.method;
 
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.items.Map;
-import org.ejavdge.scalar.bytes.Ascii;
 import org.ejavdge.scalar.bytes.Bytes;
+import org.ejavdge.scalar.bytes.Utf8;
 import org.ejavdge.scalar.num.Num;
 import org.ejavdge.scalar.text.NonEmpty;
 import org.ejavdge.scalar.text.Stencil;
@@ -20,7 +20,7 @@ public final class Post implements HttpSpec {
     }
 
     public Post(final Location loc) {
-        this.src = new Ascii(
+        this.src = new Utf8(
             new Stencil(
                 new Text.Of(
                     """

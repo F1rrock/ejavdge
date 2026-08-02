@@ -12,10 +12,10 @@ public final class NonEmptyTest extends TestCase {
             new String(
                 new NonEmpty(
                     new Bytes.Of(
-                        "Hello".getBytes(StandardCharsets.US_ASCII)
+                        "Hello".getBytes(StandardCharsets.UTF_8)
                     )
                 ).content(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             )
         );
     }

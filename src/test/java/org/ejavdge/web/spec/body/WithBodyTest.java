@@ -13,28 +13,28 @@ public final class WithBodyTest extends TestCase {
             new String(
                 new WithBody(
                     new Bytes.Of(
-                        "Body".getBytes(StandardCharsets.US_ASCII)
+                        "Body".getBytes(StandardCharsets.UTF_8)
                     ),
                     new HttpSpec.Of(
-                        "Spec".getBytes(StandardCharsets.US_ASCII)
+                        "Spec".getBytes(StandardCharsets.UTF_8)
                     )
                 ).bytes(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             ).contains("Content-Length: 4")
         );
     }
 
     public void testContentLengthCorrectness() {
-        final var b = "Body".getBytes(StandardCharsets.US_ASCII);
+        final var b = "Body".getBytes(StandardCharsets.UTF_8);
         assertTrue(
             new String(
                 new WithBody(
                     new Bytes.Of(b),
                     new HttpSpec.Of(
-                        "Spec".getBytes(StandardCharsets.US_ASCII)
+                        "Spec".getBytes(StandardCharsets.UTF_8)
                     )
                 ).bytes(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             ).contains(String.format("Content-Length: %d", b.length))
         );
     }
@@ -44,13 +44,13 @@ public final class WithBodyTest extends TestCase {
             new String(
                 new WithBody(
                     new Bytes.Of(
-                        "Body".getBytes(StandardCharsets.US_ASCII)
+                        "Body".getBytes(StandardCharsets.UTF_8)
                     ),
                     new HttpSpec.Of(
-                        "Spec".getBytes(StandardCharsets.US_ASCII)
+                        "Spec".getBytes(StandardCharsets.UTF_8)
                     )
                 ).bytes(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             ).contains("\r\nBody")
         );
     }
@@ -61,13 +61,13 @@ public final class WithBodyTest extends TestCase {
             new String(
                 new WithBody(
                     new Bytes.Of(
-                        "Body".getBytes(StandardCharsets.US_ASCII)
+                        "Body".getBytes(StandardCharsets.UTF_8)
                     ),
                     new HttpSpec.Of(
-                        "Spec\r\n".getBytes(StandardCharsets.US_ASCII)
+                        "Spec\r\n".getBytes(StandardCharsets.UTF_8)
                     )
                 ).bytes(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             )
         );
     }
@@ -76,7 +76,7 @@ public final class WithBodyTest extends TestCase {
         try {
             new WithBody(
                 new Bytes.Of(
-                    "Body".getBytes(StandardCharsets.US_ASCII)
+                    "Body".getBytes(StandardCharsets.UTF_8)
                 ),
                 new HttpSpec.Of(
                     new byte[0]
@@ -95,10 +95,10 @@ public final class WithBodyTest extends TestCase {
                 new WithBody(
                     new Bytes.Of(new byte[0]),
                     new HttpSpec.Of(
-                        "Spec\r\n".getBytes(StandardCharsets.US_ASCII)
+                        "Spec\r\n".getBytes(StandardCharsets.UTF_8)
                     )
                 ).bytes(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             )
         );
     }

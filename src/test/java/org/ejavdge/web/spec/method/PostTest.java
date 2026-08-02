@@ -21,7 +21,7 @@ public final class PostTest extends TestCase {
                     new Text.Of("example.com"),
                     new Num.Of(80)
                 ).bytes(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             )
         );
     }

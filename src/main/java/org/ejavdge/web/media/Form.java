@@ -3,8 +3,8 @@ package org.ejavdge.web.media;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.items.Items;
 import org.ejavdge.items.Joint;
-import org.ejavdge.scalar.bytes.Ascii;
 import org.ejavdge.scalar.bytes.Bytes;
+import org.ejavdge.scalar.bytes.Utf8;
 import org.ejavdge.scalar.text.Concat;
 import org.ejavdge.scalar.text.Stencil;
 import org.ejavdge.scalar.text.Text;
@@ -40,7 +40,7 @@ public final class Form implements Media<byte[]> {
 
     @Override
     public byte[] content() throws InvariantViolation {
-        return new Ascii(
+        return new Utf8(
             new Concat(
                 new Text.Of("&"),
                 this.src

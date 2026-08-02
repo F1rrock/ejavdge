@@ -11,7 +11,7 @@ public final class FakeDriver implements WebDriver {
     public byte[] resourceOf(final Location loc, final Request req) {
         return (
             loc.imprint(new FakeMedia()) + " "
-            + new String(req.bytes(), StandardCharsets.US_ASCII)
-        ).getBytes(StandardCharsets.US_ASCII);
+            + new String(req.bytes(), StandardCharsets.UTF_8)
+        ).getBytes(StandardCharsets.UTF_8);
     }
 }

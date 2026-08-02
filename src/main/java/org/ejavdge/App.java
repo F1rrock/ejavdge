@@ -29,7 +29,7 @@ public final class App
                         new NumOfText(args[5])
                     )
                 ).content(),
-                StandardCharsets.US_ASCII
+                StandardCharsets.UTF_8
             )
         );
     }

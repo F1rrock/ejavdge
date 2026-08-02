@@ -44,12 +44,12 @@ public final class JdkSocketIT extends TestCase {
     private static String response(int port) {
         final JdkSocket driver = new JdkSocket();
         final Location loc = new Location(
-                new Text.Of("/"),
-                new Text.Of("localhost"),
-                new Num.Of(port)
+            new Text.Of("/"),
+            new Text.Of("localhost"),
+            new Num.Of(port)
         );
         final Request req = new Request(
-                new HttpSpec.Of("GET / HTTP/1.1\r\nHost: localhost\r\n".getBytes())
+            new HttpSpec.Of("GET / HTTP/1.1\r\nHost: localhost\r\n".getBytes())
         );
         final byte[] response = driver.resourceOf(loc, req);
         return new String(response, java.nio.charset.StandardCharsets.US_ASCII);

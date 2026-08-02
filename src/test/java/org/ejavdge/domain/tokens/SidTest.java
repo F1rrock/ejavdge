@@ -1,0 +1,50 @@
+package org.ejavdge.domain.tokens;
+
+import junit.framework.TestCase;
+import org.ejavdge.error.InvariantViolation;
+import org.ejavdge.scalar.num.Num;
+import org.ejavdge.scalar.text.Text;
+import org.ejavdge.web.context.Credentials;
+import org.ejavdge.web.context.Location;
+
+public final class SidTest extends TestCase {
+    public void testCorrectEjsid() {
+        assertEquals(
+            "83fc1f5383917944",
+            new Sid(
+                new FakeDriver(),
+                new Location(
+                    new Text.Of("/ejudge"),
+                    new Text.Of("0.0.0.0"),
+                    new Num.Of(90)
+                ),
+                new Credentials(
+                    new Text.Of("login"),
+                    new Text.Of("pass"),
+                    new Num.Of(1)
+                )
+            ).content()
+        );
+    }
+
+    public void testIncorrectEjsid() {
+        try {
+            new Sid(
+                new FakeDriver(),
+                new Location(
+                    new Text.Of("/wrong"),
+                    new Text.Of("0.0.0.0"),
+                    new Num.Of(90)
+                ),
+                new Credentials(
+                    new Text.Of("login"),
+                    new Text.Of("pass"),
+                    new Num.Of(1)
+                )
+            ).content();
+        } catch (final InvariantViolation e) {
+            return;
+        }
+        fail("InvariantViolation");
+    }
+}

@@ -28,21 +28,4 @@ public final class LocationTest extends TestCase {
         }
         fail("InvariantViolation");
     }
-
-    public void testNonPositivePortWithContext() {
-        try {
-            new Location(
-                "/ejudge",
-                "0.0.0.0",
-                -1
-            ).imprint(new FakeMedia());
-        } catch (final InvariantViolation err) {
-            assertEquals(
-                "Illegal port: Value is not positive.",
-                err.getMessage()
-            );
-            return;
-        }
-        fail("InvariantViolation");
-    }
 }

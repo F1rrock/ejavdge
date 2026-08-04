@@ -3,7 +3,6 @@ package org.ejavdge.web.context;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.num.Num;
 import org.ejavdge.scalar.num.Positive;
-import org.ejavdge.scalar.text.Contextual;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.scalar.text.TextOfNum;
 import org.ejavdge.web.media.Media;
@@ -29,13 +28,7 @@ public final class Location implements Context {
         return m
             .with(new Text.Of("url"), this.url)
             .with(new Text.Of("host"), this.host)
-            .with(
-                new Text.Of("port"),
-                new Contextual(
-                    "Illegal port",
-                    new TextOfNum(this.port)
-                )
-            )
+            .with(new Text.Of("port"), new TextOfNum(this.port))
             .content();
     }
 

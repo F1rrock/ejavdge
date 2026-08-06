@@ -1,6 +1,7 @@
 package org.ejavdge.web.driver.jdk.socket;
 
 import junit.framework.TestCase;
+import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.num.Num;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.web.context.Location;
@@ -9,11 +10,14 @@ import org.ejavdge.web.spec.Request;
 
 import java.io.*;
 import java.net.ServerSocket;
+import java.nio.charset.StandardCharsets;
 
 public final class JdkSocketIT extends TestCase {
     public void testConnection() {
         try (final var server = new ServerSocket(0)) {
             final int port = server.getLocalPort();
+            final var responseBody = "Hello";
+            final var contentLength = responseBody.getBytes(StandardCharsets.UTF_8).length;
             new Thread(() -> {
                 try (final var client = server.accept()) {
                     final InputStream in = client.getInputStream();
@@ -27,17 +31,78 @@ public final class JdkSocketIT extends TestCase {
                         }
                     }
                     final OutputStream out = client.getOutputStream();
-                    out.write("HTTP/1.1 200 OK\r\n\r\nHello".getBytes());
+                    out.write(
+                        String.format(
+                            "HTTP/1.1 200 OK\r%nContent-Length: %d\r%n\r%n%s",
+                            contentLength,
+                            responseBody
+                        ).getBytes(StandardCharsets.UTF_8)
+                    );
                     out.flush();
                 } catch (final IOException e) {
                     fail(e.getMessage());
                 }
             }).start();
-            final var r = response(port);
-            assertTrue(r.contains("200 OK"));
-            assertTrue(r.contains("Hello"));
+            assertTrue(response(port).contains("Hello"));
         } catch (final IOException e) {
             fail(e.getMessage());
+        }
+    }
+
+    public void testConnectionRefused() {
+        final var driver = new JdkSocket();
+        final var loc = new Location(
+            new Text.Of("/"),
+            new Text.Of("localhost"),
+            new Num.Of(9999)
+        );
+        final var req = new Request(
+            new HttpSpec.Of("GET / HTTP/1.1\r\nHost: localhost\r\n".getBytes())
+        );
+        try {
+            driver.resourceOf(loc, req);
+        } catch (final InvariantViolation e) {
+            return;
+        }
+        fail("InvariantViolation");
+    }
+
+    public void testResponseWithoutContentLength() {
+        try (final var server = new ServerSocket(0)) {
+            final int port = server.getLocalPort();
+            new Thread(() -> {
+                try (final var client = server.accept()) {
+                    final InputStream in = client.getInputStream();
+                    final var buffer = new byte[1024];
+                    while (in.read(buffer) != -1) {
+                        if (new String(buffer).contains("\r\n\r\n")) {
+                            break;
+                        }
+                    }
+                    final OutputStream out = client.getOutputStream();
+                    out.write("HTTP/1.1 200 OK\r\n\r\nHello".getBytes());
+                    out.flush();
+                } catch (final IOException e) {
+                    fail("Server error: " + e.getMessage());
+                }
+            }).start();
+            final var driver = new JdkSocket();
+            final var loc = new Location(
+                new Text.Of("/"),
+                new Text.Of("localhost"),
+                new Num.Of(port)
+            );
+            final var req = new Request(
+                new HttpSpec.Of("GET / HTTP/1.1\r\nHost: localhost\r\n".getBytes())
+            );
+            try {
+                driver.resourceOf(loc, req);
+            } catch (final InvariantViolation e) {
+                return;
+            }
+            fail("InvariantViolation");
+        } catch (final IOException e) {
+            fail("Test error: " + e.getMessage());
         }
     }
 
@@ -52,6 +117,6 @@ public final class JdkSocketIT extends TestCase {
             new HttpSpec.Of("GET / HTTP/1.1\r\nHost: localhost\r\n".getBytes())
         );
         final byte[] response = driver.resourceOf(loc, req);
-        return new String(response, java.nio.charset.StandardCharsets.UTF_8);
+        return new String(response, StandardCharsets.UTF_8);
     }
 }

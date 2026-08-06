@@ -9,11 +9,14 @@ import org.ejavdge.web.spec.Request;
 
 import java.io.*;
 import java.net.ServerSocket;
+import java.nio.charset.StandardCharsets;
 
 public final class JdkSocketIT extends TestCase {
     public void testConnection() {
         try (final var server = new ServerSocket(0)) {
             final int port = server.getLocalPort();
+            final var responseBody = "Hello";
+            final var contentLength = responseBody.getBytes(StandardCharsets.UTF_8).length;
             new Thread(() -> {
                 try (final var client = server.accept()) {
                     final InputStream in = client.getInputStream();
@@ -27,7 +30,13 @@ public final class JdkSocketIT extends TestCase {
                         }
                     }
                     final OutputStream out = client.getOutputStream();
-                    out.write("HTTP/1.1 200 OK\r\n\r\nHello".getBytes());
+                    out.write(
+                        String.format(
+                            "HTTP/1.1 200 OK\r%nContent-Length: %d\r%n\r%n%s",
+                            contentLength,
+                            responseBody
+                        ).getBytes(StandardCharsets.UTF_8)
+                    );
                     out.flush();
                 } catch (final IOException e) {
                     fail(e.getMessage());
@@ -52,6 +61,6 @@ public final class JdkSocketIT extends TestCase {
             new HttpSpec.Of("GET / HTTP/1.1\r\nHost: localhost\r\n".getBytes())
         );
         final byte[] response = driver.resourceOf(loc, req);
-        return new String(response, java.nio.charset.StandardCharsets.UTF_8);
+        return new String(response, StandardCharsets.UTF_8);
     }
 }

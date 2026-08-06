@@ -45,7 +45,7 @@ public final class HttpResponseTest extends TestCase {
         );
     }
 
-    public void testKeepsAllHeaders() {
+    public void testAllHeaders() {
         final var response = new HttpResponse(
             new ByteStream.Of(
                 """
@@ -69,7 +69,7 @@ public final class HttpResponseTest extends TestCase {
         );
     }
 
-    public void testCanReadBodyBeforeHeaders() {
+    public void testBodyBeforeHeaders() {
         final var response = new HttpResponse(
             new ByteStream.Of(
                 """
@@ -80,17 +80,54 @@ public final class HttpResponseTest extends TestCase {
                 """.chars()
             )
         );
-
         response.body()
             .limit(5)
             .forEach(ignored -> {});
-
         assertEquals(
             """
             HTTP/1.1 200 OK\r
             Content-Length: 5\r
             """,
             utf8(response.headers())
+        );
+    }
+
+    public void testEmptyBody() {
+        final var response = new HttpResponse(
+            new ByteStream.Of("".chars())
+        );
+        assertEquals("", utf8(response.body().limit(0)));
+    }
+
+    public void testEmptyHeaders() {
+        final var response = new HttpResponse(
+            new ByteStream.Of("\r\n".chars())
+        );
+        assertEquals("", utf8(response.headers()));
+    }
+
+    public void testMultipleHeaders() {
+        final var response = new HttpResponse(
+            new ByteStream.Of(
+                """
+                HTTP/1.1 200 OK\r
+                Header-A: value1\r
+                Header-B: value2\r
+                Header-C: value3\r
+                \r
+                Body\
+                """.chars()
+            )
+        );
+        final var headers = utf8(response.headers());
+        assertEquals(
+        """
+            HTTP/1.1 200 OK\r
+            Header-A: value1\r
+            Header-B: value2\r
+            Header-C: value3\r
+            """,
+            headers
         );
     }
 

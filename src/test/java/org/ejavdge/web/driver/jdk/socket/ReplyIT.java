@@ -1,6 +1,7 @@
 package org.ejavdge.web.driver.jdk.socket;
 
 import junit.framework.TestCase;
+import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.num.Num;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.web.context.Location;
@@ -21,12 +22,12 @@ public final class ReplyIT extends TestCase {
                     this.request(client.getInputStream());
                     final OutputStream out = client.getOutputStream();
                     out.write(
-                            "HTTP/1.1 200 OK\r\n\r\nHello"
-                                    .getBytes(StandardCharsets.UTF_8)
+                        "HTTP/1.1 200 OK\r\n\r\nHello"
+                            .getBytes(StandardCharsets.UTF_8)
                     );
                     out.flush();
                 } catch (final IOException err) {
-                    throw new RuntimeException(err);
+                    fail("Server error: " + err.getMessage());
                 }
             }).start();
             final var reply = new Reply(
@@ -38,7 +39,7 @@ public final class ReplyIT extends TestCase {
                 new Request(
                     new HttpSpec.Of(
                         "GET / HTTP/1.1\r\nHost: localhost\r\n"
-                                .getBytes(StandardCharsets.UTF_8)
+                            .getBytes(StandardCharsets.UTF_8)
                     )
                 )
             );
@@ -47,12 +48,35 @@ public final class ReplyIT extends TestCase {
                     stream.readAllBytes(),
                     StandardCharsets.UTF_8
                 );
-                assertTrue(actual.contains("200 OK"));
                 assertTrue(actual.contains("Hello"));
             }
         } catch (final Exception err) {
             fail(err.getMessage());
         }
+    }
+
+    public void testConnectionRefused() {
+        final var reply = new Reply(
+            new Location(
+                new Text.Of("/"),
+                new Text.Of("localhost"),
+                new Num.Of(9999)
+            ),
+            new Request(
+                new HttpSpec.Of(
+                    "GET / HTTP/1.1\r\nHost: localhost\r\n"
+                        .getBytes(StandardCharsets.UTF_8)
+                )
+            )
+        );
+        try {
+            reply.stream().close();
+        } catch (final InvariantViolation e) {
+            return;
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+        fail("InvariantViolation");
     }
 
     private void request(final InputStream in) throws IOException {

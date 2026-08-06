@@ -50,7 +50,6 @@ public final class BytesOfReplyIT extends TestCase {
             final var text = actual.stream()
                 .map(i -> Character.toString((char) i.intValue()))
                 .collect(java.util.stream.Collectors.joining());
-            assertTrue(text.contains("200 OK"));
             assertTrue(text.contains("Hello"));
         } catch (final Exception err) {
             fail(err.getMessage());

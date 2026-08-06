@@ -6,7 +6,6 @@ import org.ejavdge.web.driver.jdk.stream.ByteStream;
 import java.nio.charset.StandardCharsets;
 
 public final class HeadersOfTest extends TestCase {
-
     public void testStatusLine() {
         assertEquals(
             "HTTP/1.1 200 OK\r\n",
@@ -84,6 +83,36 @@ public final class HeadersOfTest extends TestCase {
                 StandardCharsets.UTF_8
             ).endsWith("\r\n")
         );
+    }
+
+    public void testHeadersWithMultipleEmptyLines() {
+        final var headers = new HeadersOf(
+            response(
+                """
+                HTTP/1.1 200 OK\r
+                \r
+                \r
+                Hello\
+                """
+            )
+        );
+        final var result = new String(headers.content(), StandardCharsets.UTF_8);
+        assertEquals("HTTP/1.1 200 OK\r\n", result);
+    }
+
+    public void testHeadersWithExtraSpaces() {
+        final var headers = new HeadersOf(
+            response(
+                """
+                HTTP/1.1 200 OK\r
+                Content-Length:   5   \r
+                \r
+                Hello\
+                """
+            )
+        );
+        final var result = new String(headers.content(), StandardCharsets.UTF_8);
+        assertTrue(result.contains("Content-Length:   5   ")); // Сохраняем пробелы
     }
 
     private static HttpResponse response(final String raw) {

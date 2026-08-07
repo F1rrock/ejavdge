@@ -2,13 +2,13 @@ package org.ejavdge.scalar.text;
 
 import org.ejavdge.error.InvariantViolation;
 
-public final class Contextual implements Text {
-    private final String context;
+public final class TextAbout implements Text {
+    private final String subject;
     private final Text origin;
 
-    public Contextual(final String context, final Text origin) {
-        this.context = context;
-        this.origin = origin;
+    public TextAbout(final String s, final Text t) {
+        this.subject = s;
+        this.origin = t;
     }
 
     @Override
@@ -17,9 +17,8 @@ public final class Contextual implements Text {
             return this.origin.content();
         } catch (final InvariantViolation err) {
             throw new InvariantViolation(
-                String.format(
-                    "%s: %s",
-                    this.context,
+                "Problem with %s: %s".formatted(
+                    this.subject,
                     err.getMessage()
                 )
             );

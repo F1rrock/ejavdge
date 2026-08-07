@@ -1,23 +1,29 @@
-package org.ejavdge.scalar.text;
+package org.ejavdge.scalar.bytes;
 
 import junit.framework.TestCase;
 
 import org.ejavdge.error.InvariantViolation;
 
-public final class TextAboutTest extends TestCase {
+import java.nio.charset.StandardCharsets;
+
+import static org.junit.Assert.assertArrayEquals;
+
+public final class BytesAboutTest extends TestCase {
     public void testContent() {
-        assertEquals(
-            "hello",
-            new TextAbout(
+        assertArrayEquals(
+            "hello".getBytes(StandardCharsets.UTF_8),
+            new BytesAbout(
                 "greetings",
-                new Text.Of("hello")
+                new Bytes.Of(
+                    "hello".getBytes(StandardCharsets.UTF_8)
+                )
             ).content()
         );
     }
 
     public void testContextInViolation() {
         try {
-            new TextAbout(
+            new BytesAbout(
                 "illegal",
                 () -> {
                     throw new InvariantViolation("wrong value");
@@ -35,9 +41,9 @@ public final class TextAboutTest extends TestCase {
 
     public void testContextComposition() {
         try {
-            new TextAbout(
+            new BytesAbout(
                 "unknown",
-                new TextAbout(
+                new BytesAbout(
                     "illegal",
                     () -> {
                         throw new InvariantViolation("wrong value");

@@ -1,28 +1,30 @@
-package org.ejavdge.scalar.text;
+package org.ejavdge.items;
 
 import junit.framework.TestCase;
 
 import org.ejavdge.error.InvariantViolation;
 
-public final class TextAboutTest extends TestCase {
-    public void testContent() {
+import java.util.List;
+
+public final class ItemsAboutTest extends TestCase {
+    public void testContents() {
         assertEquals(
-            "hello",
-            new TextAbout(
+            List.of(1, 2, 3),
+            new ItemsAbout<>(
                 "greetings",
-                new Text.Of("hello")
-            ).content()
+                new Items.Of<>(1, 2, 3)
+            ).contents()
         );
     }
 
     public void testContextInViolation() {
         try {
-            new TextAbout(
+            new ItemsAbout<>(
                 "illegal",
                 () -> {
                     throw new InvariantViolation("wrong value");
                 }
-            ).content();
+            ).contents();
         } catch (final InvariantViolation err) {
             assertEquals(
                 "problem with illegal: wrong value",
@@ -35,15 +37,15 @@ public final class TextAboutTest extends TestCase {
 
     public void testContextComposition() {
         try {
-            new TextAbout(
+            new ItemsAbout<>(
                 "unknown",
-                new TextAbout(
+                new ItemsAbout<>(
                     "illegal",
                     () -> {
                         throw new InvariantViolation("wrong value");
                     }
                 )
-            ).content();
+            ).contents();
         } catch (final InvariantViolation err) {
             assertEquals(
                 "problem with unknown: problem with illegal: wrong value",

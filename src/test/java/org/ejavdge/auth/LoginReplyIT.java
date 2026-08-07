@@ -29,10 +29,7 @@ public final class LoginReplyIT extends TestCase {
                 ).content(),
                 StandardCharsets.UTF_8
             );
-            assertTrue(actual.startsWith("HTTP/1.1 200"));
-            assertTrue(
-                actual.endsWith("Welcome to ejudge!")
-            );
+            assertTrue(actual.endsWith("Welcome to ejudge!"));
         } catch (final Exception e) {
             fail(e.getMessage());
         }

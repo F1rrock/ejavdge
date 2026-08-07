@@ -2,9 +2,11 @@ package org.ejavdge.web.driver.jdk.socket;
 
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.num.Num;
+import org.ejavdge.scalar.num.NumAbout;
 import org.ejavdge.scalar.num.NumOfText;
 import org.ejavdge.scalar.text.Concat;
 import org.ejavdge.scalar.text.Text;
+import org.ejavdge.scalar.text.TextAbout;
 import org.ejavdge.web.context.Location;
 import org.ejavdge.web.media.Gist;
 
@@ -17,15 +19,21 @@ public final class Inet {
 
     public Inet(final Location loc) {
         this(
-            new Concat(
-                new Gist.ImprintOf(
-                    new Location.Host(loc)
-                )
-            ),
-            new NumOfText(
+            new TextAbout(
+                "host",
                 new Concat(
                     new Gist.ImprintOf(
-                        new Location.Port(loc)
+                        new Location.Host(loc)
+                    )
+                )
+            ),
+            new NumAbout(
+                "port",
+                new NumOfText(
+                    new Concat(
+                        new Gist.ImprintOf(
+                            new Location.Port(loc)
+                        )
                     )
                 )
             )

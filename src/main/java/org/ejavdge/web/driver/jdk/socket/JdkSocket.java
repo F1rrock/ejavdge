@@ -1,5 +1,6 @@
 package org.ejavdge.web.driver.jdk.socket;
 
+import org.ejavdge.scalar.bytes.BytesAbout;
 import org.ejavdge.scalar.bytes.Concat;
 import org.ejavdge.scalar.bytes.Memo;
 import org.ejavdge.web.context.Location;
@@ -16,15 +17,21 @@ public final class JdkSocket implements WebDriver {
                 new Reply(loc, req)
             )
         );
-        final var headers = new Memo(
-            new HeadersOf(response)
+        final var headers = new BytesAbout(
+            "headers",
+            new Memo(
+                new HeadersOf(response)
+            )
         );
         return new Concat(
             headers,
             new Terminator(),
-            new BodyOf(
-                response,
-                new ContentLength(headers)
+            new BytesAbout(
+                "body",
+                new BodyOf(
+                    response,
+                    new ContentLength(headers)
+                )
             )
         ).content();
     }

@@ -2,24 +2,26 @@ package org.ejavdge.web.context;
 
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.num.Num;
+import org.ejavdge.scalar.num.NumAbout;
 import org.ejavdge.scalar.num.Positive;
 import org.ejavdge.scalar.text.Text;
+import org.ejavdge.scalar.text.TextAbout;
 import org.ejavdge.scalar.text.TextOfNum;
 import org.ejavdge.web.media.Media;
 
 public final class Credentials implements Context {
     private final Text login;
     private final Text pass;
-    private final Positive contest;
+    private final Num contest;
 
     public Credentials(final String l, final String p, final int c) {
         this(new Text.Of(l), new Text.Of(p), new Num.Of(c));
     }
 
     public Credentials(final Text l, final Text p, final Num c) {
-        this.login = l;
-        this.pass = p;
-        this.contest = new Positive(c);
+        this.login = new TextAbout("login", l);
+        this.pass = new TextAbout("password", p);
+        this.contest = new NumAbout("contest id", new Positive(c));
     }
 
     @Override

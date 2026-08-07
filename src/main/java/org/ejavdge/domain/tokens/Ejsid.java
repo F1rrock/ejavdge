@@ -4,6 +4,7 @@ import org.ejavdge.auth.LoginReply;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.text.Match;
 import org.ejavdge.scalar.text.Text;
+import org.ejavdge.scalar.text.TextAbout;
 import org.ejavdge.scalar.text.Utf8Text;
 import org.ejavdge.web.context.Credentials;
 import org.ejavdge.web.context.Location;
@@ -14,11 +15,14 @@ public final class Ejsid implements Text {
 
     public Ejsid(final WebDriver d, final Location l, final Credentials c) {
         this(
-            new Match(
-                new Utf8Text(
-                    new LoginReply(d, l, c)
-                ),
-                new Text.Of("(?<=EJSID=)[^;]+")
+            new TextAbout(
+                "ejsid",
+                new Match(
+                    new Utf8Text(
+                        new LoginReply(d, l, c)
+                    ),
+                    new Text.Of("(?<=EJSID=)[^;]+")
+                )
             )
         );
     }

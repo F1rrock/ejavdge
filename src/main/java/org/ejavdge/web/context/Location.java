@@ -2,8 +2,10 @@ package org.ejavdge.web.context;
 
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.num.Num;
+import org.ejavdge.scalar.num.NumAbout;
 import org.ejavdge.scalar.num.Positive;
 import org.ejavdge.scalar.text.Text;
+import org.ejavdge.scalar.text.TextAbout;
 import org.ejavdge.scalar.text.TextOfNum;
 import org.ejavdge.web.media.Media;
 import org.ejavdge.web.media.WhiteList;
@@ -11,16 +13,16 @@ import org.ejavdge.web.media.WhiteList;
 public final class Location implements Context {
     private final Text url;
     private final Text host;
-    private final Positive port;
+    private final Num port;
 
     public Location(final String u, final String h, final int p) {
         this(new Text.Of(u), new Text.Of(h), new Num.Of(p));
     }
 
     public Location(final Text u, final Text h, final Num p) {
-        this.url = u;
-        this.host = h;
-        this.port = new Positive(p);
+        this.url = new TextAbout("url", u);
+        this.host = new TextAbout("host", h);
+        this.port = new NumAbout("port", new Positive(p));
     }
 
     @Override

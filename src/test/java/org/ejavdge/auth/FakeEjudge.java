@@ -72,7 +72,7 @@ public final class FakeEjudge implements AutoCloseable {
                 && String.valueOf(contest.value()).equals(userContest);
             if (valid) {
                 String response = "Welcome to ejudge!";
-                sendResponse(exchange, 200, response);
+                sendResponse(exchange, 302, response);
             } else {
                 sendResponse(exchange, 403, "Invalid credentials");
             }

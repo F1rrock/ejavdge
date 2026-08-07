@@ -1,26 +1,21 @@
 package org.ejavdge.domain.tokens;
 
-import org.ejavdge.auth.LoginReply;
+import org.ejavdge.auth.Session;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.text.Match;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.scalar.text.TextAbout;
 import org.ejavdge.scalar.text.Utf8Text;
-import org.ejavdge.web.context.Credentials;
-import org.ejavdge.web.context.Location;
-import org.ejavdge.web.driver.WebDriver;
 
 public final class Ejsid implements Text {
     private final Text origin;
 
-    public Ejsid(final WebDriver d, final Location l, final Credentials c) {
+    public Ejsid(final Session s) {
         this(
             new TextAbout(
                 "ejsid",
                 new Match(
-                    new Utf8Text(
-                        new LoginReply(d, l, c)
-                    ),
+                    new Utf8Text(s),
                     new Text.Of("(?<=EJSID=)[^;]+")
                 )
             )

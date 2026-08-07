@@ -4,9 +4,8 @@ import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.num.Num;
 import org.ejavdge.scalar.num.NumAbout;
 import org.ejavdge.scalar.num.Positive;
-import org.ejavdge.scalar.text.Text;
-import org.ejavdge.scalar.text.TextAbout;
-import org.ejavdge.scalar.text.TextOfNum;
+import org.ejavdge.scalar.text.*;
+import org.ejavdge.web.media.Form;
 import org.ejavdge.web.media.Media;
 import org.ejavdge.web.media.WhiteList;
 
@@ -15,8 +14,18 @@ public final class Location implements Context {
     private final Text host;
     private final Num port;
 
-    public Location(final String u, final String h, final int p) {
-        this(new Text.Of(u), new Text.Of(h), new Num.Of(p));
+    public Location(final Context query, final Location origin) {
+        this(
+            new Stencil(
+                new Text.Of("%s?%s"),
+                origin.url,
+                new Utf8Text(
+                    new Form.ImprintOf(query)
+                )
+            ),
+            origin.host,
+            origin.port
+        );
     }
 
     public Location(final Text u, final Text h, final Num p) {

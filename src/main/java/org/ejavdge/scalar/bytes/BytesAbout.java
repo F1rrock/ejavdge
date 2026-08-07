@@ -17,7 +17,7 @@ public final class BytesAbout implements Bytes {
             return this.origin.content();
         } catch (final InvariantViolation err) {
             throw new InvariantViolation(
-                "Problem with %s: %s".formatted(
+                "problem with %s: %s".formatted(
                     this.subject,
                     err.getMessage()
                 )

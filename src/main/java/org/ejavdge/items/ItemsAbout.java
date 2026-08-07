@@ -19,7 +19,7 @@ public final class ItemsAbout<T> implements Items<T> {
             return this.origin.contents();
         } catch (final InvariantViolation err) {
             throw new InvariantViolation(
-                "Problem with %s: %s".formatted(
+                "problem with %s: %s".formatted(
                     this.subject,
                     err.getMessage()
                 )

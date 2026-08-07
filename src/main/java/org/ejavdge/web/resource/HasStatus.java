@@ -23,7 +23,7 @@ public final class HasStatus implements Bytes {
             return this.origin.content();
         }
         throw new InvariantViolation(
-            "Expected status" + e + " but got " + a
+            "Expected status " + e + " but got " + a
         );
     }
 }

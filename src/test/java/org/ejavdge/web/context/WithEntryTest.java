@@ -15,4 +15,14 @@ public final class WithEntryTest extends TestCase {
             ).imprint(new FakeMedia())
         );
     }
+
+    public void testSingleEntry() {
+        assertEquals(
+            "name 0:value 0:",
+            new WithEntry(
+                new Text.Of("name 0"),
+                new Text.Of("value 0")
+            ).imprint(new FakeMedia())
+        );
+    }
 }

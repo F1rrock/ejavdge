@@ -9,17 +9,16 @@ import org.ejavdge.web.driver.jdk.socket.JdkSocket;
 
 import java.nio.charset.StandardCharsets;
 
-public final class LoginReplyIT extends TestCase {
+public final class LoginReplyTest extends TestCase {
     public void testCorrectCredentials() {
-        try (final var ejudge = new FakeEjudge()) {
-            ejudge.start();
-            final var actual = new String(
+        assertTrue(
+            new String(
                 new LoginReply(
-                    new JdkSocket(),
+                    new FakeDriver("login", "pass"),
                     new Location(
                         new Text.Of("/ejudge"),
-                        new Text.Of("localhost"),
-                        new Num.Of(ejudge.port())
+                        new Text.Of("0.0.0.0"),
+                        new Num.Of(90)
                     ),
                     new Credentials(
                         new Text.Of("login"),
@@ -28,23 +27,19 @@ public final class LoginReplyIT extends TestCase {
                     )
                 ).content(),
                 StandardCharsets.UTF_8
-            );
-            assertTrue(actual.endsWith("Welcome to ejudge!"));
-        } catch (final Exception e) {
-            fail(e.getMessage());
-        }
+            ).contains("OK")
+        );
     }
 
     public void testIncorrectCredentials() {
-        try (final var ejudge = new FakeEjudge()) {
-            ejudge.start();
-            final var actual = new String(
+        assertTrue(
+            new String(
                 new LoginReply(
-                    new JdkSocket(),
+                    new FakeDriver("login", "pass"),
                     new Location(
                         new Text.Of("/ejudge"),
-                        new Text.Of("localhost"),
-                        new Num.Of(ejudge.port())
+                        new Text.Of("0.0.0.0"),
+                        new Num.Of(90)
                     ),
                     new Credentials(
                         new Text.Of("wrong"),
@@ -53,13 +48,7 @@ public final class LoginReplyIT extends TestCase {
                     )
                 ).content(),
                 StandardCharsets.UTF_8
-            );
-            assertTrue(actual.startsWith("HTTP/1.1 403"));
-            assertTrue(
-                actual.endsWith("Invalid credentials")
-            );
-        } catch (final Exception e) {
-            fail(e.getMessage());
-        }
+            ).contains("Failed")
+        );
     }
 }

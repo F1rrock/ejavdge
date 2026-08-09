@@ -1,6 +1,6 @@
 package org.ejavdge;
 
-import org.ejavdge.auth.LoginReply;
+import org.ejavdge.auth.Session;
 import org.ejavdge.scalar.num.NumOfText;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.web.context.Credentials;
@@ -16,7 +16,7 @@ public final class App
     {
         System.out.println(
             new String(
-                new LoginReply(
+                new Session(
                     new JdkSocket(),
                     new Location(
                         new Text.Of(args[0]),

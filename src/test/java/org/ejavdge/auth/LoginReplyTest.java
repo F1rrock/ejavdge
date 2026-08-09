@@ -5,7 +5,6 @@ import org.ejavdge.scalar.num.Num;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.web.context.Credentials;
 import org.ejavdge.web.context.Location;
-import org.ejavdge.web.driver.jdk.socket.JdkSocket;
 
 import java.nio.charset.StandardCharsets;
 

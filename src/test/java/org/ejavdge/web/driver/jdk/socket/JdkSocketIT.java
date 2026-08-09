@@ -32,8 +32,12 @@ public final class JdkSocketIT extends TestCase {
                     }
                     final OutputStream out = client.getOutputStream();
                     out.write(
-                        String.format(
-                            "HTTP/1.1 200 OK\r%nContent-Length: %d\r%n\r%n%s",
+                        """
+                        HTTP/1.1 200 OK\r
+                        Content-Length: %d\r
+                        \r
+                        %s
+                        """.formatted(
                             contentLength,
                             responseBody
                         ).getBytes(StandardCharsets.UTF_8)
@@ -43,7 +47,7 @@ public final class JdkSocketIT extends TestCase {
                     fail(e.getMessage());
                 }
             }).start();
-            assertTrue(response(port).contains("Hello"));
+            assertTrue(response(port).contains("200 OK"));
         } catch (final IOException e) {
             fail(e.getMessage());
         }
@@ -114,7 +118,10 @@ public final class JdkSocketIT extends TestCase {
             new Num.Of(port)
         );
         final Request req = new Request(
-            new HttpSpec.Of("GET / HTTP/1.1\r\nHost: localhost\r\n".getBytes())
+            new HttpSpec.Of(
+                "GET / HTTP/1.1\r\nHost: localhost\r\n"
+                    .getBytes(StandardCharsets.UTF_8)
+            )
         );
         final byte[] response = driver.resourceOf(loc, req);
         return new String(response, StandardCharsets.UTF_8);

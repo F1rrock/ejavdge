@@ -20,15 +20,15 @@ public final class BytesOfReply implements ByteStream {
                 return stream.read();
             } catch (final IOException e) {
                 throw new InvariantViolation(
-                        "There is no bytes to read.\n" + e.getMessage()
+                    "There is no bytes to read.\n" + e.getMessage()
                 );
             }
-        }).takeWhile(bs -> bs != -1).onClose(() -> {
+        }).onClose(() -> {
             try {
                 stream.close();
             } catch (final IOException e) {
                 throw new InvariantViolation(
-                        "There is no socket to close.\n" + e.getMessage()
+                    "There is no socket to close.\n" + e.getMessage()
                 );
             }
         });

@@ -29,7 +29,7 @@ public final class Reply {
             } catch (final IOException ex) {
                 e.addSuppressed(ex);
                 throw new InvariantViolation(
-                    "There is no socket.\n" + e.getMessage()
+                    "There is no socket to close.\n" + e.getMessage()
                 );
             }
             throw new InvariantViolation(

@@ -45,6 +45,7 @@ public final class BytesOfReplyIT extends TestCase {
                 )
             );
             final var actual = bytes.content()
+                .takeWhile(bs -> bs != -1)
                 .boxed()
                 .toList();
             final var text = actual.stream()

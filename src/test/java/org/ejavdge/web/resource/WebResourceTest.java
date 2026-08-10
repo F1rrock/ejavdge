@@ -2,6 +2,8 @@ package org.ejavdge.web.resource;
 
 import junit.framework.TestCase;
 import org.ejavdge.scalar.bytes.Bytes;
+import org.ejavdge.scalar.num.Num;
+import org.ejavdge.scalar.text.Text;
 import org.ejavdge.web.context.Location;
 import org.ejavdge.web.driver.FakeDriver;
 import org.ejavdge.web.spec.Request;
@@ -15,7 +17,11 @@ public final class WebResourceTest extends TestCase {
             new String(
                 new WebResource(
                     new FakeDriver(),
-                    new Location("u", "h", 80),
+                    new Location(
+                        new Text.Of("u"),
+                        new Text.Of("h"),
+                        new Num.Of(80)
+                    ),
                     new Request(
                         new Bytes.Of(
                             "request".getBytes(StandardCharsets.UTF_8)

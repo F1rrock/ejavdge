@@ -9,6 +9,10 @@ public final class WithEntry implements Context {
     private final Text value;
     private final Context origin;
 
+    public WithEntry(final Text n, final Text v) {
+        this(n, v, new Empty());
+    }
+
     public WithEntry(final Text n, final Text v, final Context c) {
         this.name = n;
         this.value = v;

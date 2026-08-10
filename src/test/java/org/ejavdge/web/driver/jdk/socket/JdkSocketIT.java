@@ -13,7 +13,7 @@ import java.net.ServerSocket;
 import java.nio.charset.StandardCharsets;
 
 public final class JdkSocketIT extends TestCase {
-    public void testConnection() {
+    public void testResponseWithContentLength() {
         try (final var server = new ServerSocket(0)) {
             final int port = server.getLocalPort();
             final var responseBody = "Hello";
@@ -71,7 +71,7 @@ public final class JdkSocketIT extends TestCase {
         fail("InvariantViolation");
     }
 
-    public void testResponseWithoutContentLength() {
+    public void testChunkedResponse() {
         try (final var server = new ServerSocket(0)) {
             final int port = server.getLocalPort();
             new Thread(() -> {
@@ -84,7 +84,62 @@ public final class JdkSocketIT extends TestCase {
                         }
                     }
                     final OutputStream out = client.getOutputStream();
-                    out.write("HTTP/1.1 200 OK\r\n\r\nHello".getBytes());
+                    out.write("""
+                        HTTP/1.1 200 OK\r
+                        Transfer-Encoding: chunked\r
+                        \r
+                        5\r
+                        Hello\r
+                        0\r
+                        """.getBytes(StandardCharsets.UTF_8));
+                    out.flush();
+                } catch (final IOException e) {
+                    fail("Server error: " + e.getMessage());
+                }
+            }).start();
+            final var driver = new JdkSocket();
+            final var loc = new Location(
+                new Text.Of("/"),
+                new Text.Of("localhost"),
+                new Num.Of(port)
+            );
+            final var req = new Request(
+                new HttpSpec.Of("GET / HTTP/1.1\r\nHost: localhost\r\n".getBytes())
+            );
+            assertEquals(
+                """
+                HTTP/1.1 200 OK\r
+                Transfer-Encoding: chunked\r
+                \r
+                Hello""",
+                new String(
+                    driver.resourceOf(loc, req),
+                    StandardCharsets.UTF_8
+                )
+            );
+        } catch (final IOException e) {
+            fail("Test error: " + e.getMessage());
+        }
+    }
+
+    public void testUnsupportedResponse() {
+        try (final var server = new ServerSocket(0)) {
+            final int port = server.getLocalPort();
+            new Thread(() -> {
+                try (final var client = server.accept()) {
+                    final InputStream in = client.getInputStream();
+                    final var buffer = new byte[1024];
+                    while (in.read(buffer) != -1) {
+                        if (new String(buffer).contains("\r\n\r\n")) {
+                            break;
+                        }
+                    }
+                    final OutputStream out = client.getOutputStream();
+                    out.write("""
+                        HTTP/1.1 200 OK\r
+                        \r
+                        Hello""".getBytes(StandardCharsets.UTF_8)
+                    );
                     out.flush();
                 } catch (final IOException e) {
                     fail("Server error: " + e.getMessage());

@@ -112,7 +112,7 @@ public final class HeadersOfTest extends TestCase {
             )
         );
         final var result = new String(headers.content(), StandardCharsets.UTF_8);
-        assertTrue(result.contains("Content-Length:   5   ")); // Сохраняем пробелы
+        assertTrue(result.contains("Content-Length:   5   "));
     }
 
     private static HttpResponse response(final String raw) {

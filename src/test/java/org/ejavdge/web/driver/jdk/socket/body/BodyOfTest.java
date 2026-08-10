@@ -1,7 +1,7 @@
-package org.ejavdge.web.driver.jdk.socket;
+package org.ejavdge.web.driver.jdk.socket.body;
 
 import junit.framework.TestCase;
-import org.ejavdge.scalar.num.Num;
+import org.ejavdge.web.driver.jdk.socket.HttpResponse;
 import org.ejavdge.web.driver.jdk.stream.ByteStream;
 
 import java.nio.charset.StandardCharsets;
@@ -21,7 +21,7 @@ public final class BodyOfTest extends TestCase {
                         Hello\
                         """
                     ),
-                    new Num.Of(5)
+                    bs -> bs.limit(5)
                 ).content(),
                 StandardCharsets.UTF_8
             )
@@ -41,7 +41,7 @@ public final class BodyOfTest extends TestCase {
                         Hello\
                         """
                     ),
-                    new Num.Of(3)
+                    bs -> bs.limit(3)
                 ).content(),
                 StandardCharsets.UTF_8
             )
@@ -59,7 +59,7 @@ public final class BodyOfTest extends TestCase {
                         \r\
                         """
                     ),
-                    new Num.Of(0)
+                    bs -> bs.limit(0)
                 ).content(),
                 StandardCharsets.UTF_8
             )
@@ -80,7 +80,7 @@ public final class BodyOfTest extends TestCase {
                         World\
                         """
                     ),
-                    new Num.Of(11)
+                    bs -> bs.limit(11)
                 ).content(),
                 StandardCharsets.UTF_8
             )
@@ -96,7 +96,7 @@ public final class BodyOfTest extends TestCase {
                 \r\
                 """
             ),
-            new Num.Of(0)
+            bs -> bs.limit(0)
         );
         assertEquals(0, body.content().length);
     }
@@ -113,7 +113,7 @@ public final class BodyOfTest extends TestCase {
                     bodyText
                 )
             ),
-            new Num.Of(contentLength)
+            bs -> bs.limit(contentLength)
         );
         assertEquals(
             bodyText,

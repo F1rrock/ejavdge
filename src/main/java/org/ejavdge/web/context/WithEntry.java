@@ -10,7 +10,7 @@ public final class WithEntry implements Context {
     private final Context origin;
 
     public WithEntry(final Text n, final Text v) {
-        this(n, v, new Empty());
+        this(n, v, new NoContext());
     }
 
     public WithEntry(final Text n, final Text v, final Context c) {

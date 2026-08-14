@@ -1,8 +1,6 @@
 package org.ejavdge.web.resource;
 
 import junit.framework.TestCase;
-import org.ejavdge.error.InvariantViolation;
-import org.ejavdge.scalar.text.Empty;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.web.context.FakeContext;
 import org.ejavdge.web.context.NoContext;

@@ -2,7 +2,7 @@ package org.ejavdge.scalar.text;
 
 import junit.framework.TestCase;
 
-public final class UrlTextTest extends TestCase {
+public final class PartOfUrlTest extends TestCase {
     public void testSpace() {
         assertEquals(
             "Log%20in",

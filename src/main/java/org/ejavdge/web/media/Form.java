@@ -8,7 +8,7 @@ import org.ejavdge.scalar.bytes.Utf8;
 import org.ejavdge.scalar.text.Concat;
 import org.ejavdge.scalar.text.Stencil;
 import org.ejavdge.scalar.text.Text;
-import org.ejavdge.scalar.text.UrlText;
+import org.ejavdge.scalar.text.PartOfUrl;
 import org.ejavdge.web.context.Context;
 
 public final class Form implements Media<byte[]> {
@@ -30,8 +30,8 @@ public final class Form implements Media<byte[]> {
                 new Items.Of<>(
                     new Stencil(
                         new Text.Of("%s=%s"),
-                        new UrlText(n),
-                        new UrlText(v)
+                        new PartOfUrl(n),
+                        new PartOfUrl(v)
                     )
                 )
             )

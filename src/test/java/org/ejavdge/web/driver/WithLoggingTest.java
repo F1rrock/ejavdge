@@ -10,49 +10,81 @@ import org.ejavdge.web.context.Location;
 import org.ejavdge.web.spec.HttpSpec;
 import org.ejavdge.web.spec.Request;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 public final class WithLoggingTest extends TestCase {
-    public void testLog() {
-        final var capture = new ByteArrayOutputStream();
-        final var out = System.out;
-        System.setOut(new PrintStream(capture));
-        try {
-            new WithLogging(
-                (loc, req) -> (
-                    "Response to: " + new Utf8Text(
-                        new Bytes.Of(req.bytes())
-                    ).content()
-                ).getBytes()
-            ).resourceOf(
-                new Location(
-                    new Text.Of("/test"),
-                    new Text.Of("localhost"),
-                    new Num.Of(8080)
-                ),
-                new Request(
-                    new HttpSpec.Of(
-                        """
-                        GET /test HTTP/1.1\r
-                        Host: localhost\r
-                        """.getBytes()
-                    )
+    public void testWithLog() {
+        final var log = new FakeLogger();
+        log.setEnabled(true);
+        new WithLogging(
+            (loc, req) -> (
+                "Response to: " + new Utf8Text(
+                    new Bytes.Of(req.bytes())
+                ).content()
+            ).getBytes(),
+            log
+        ).resourceOf(
+            new Location(
+                new Text.Of("/test"),
+                new Text.Of("localhost"),
+                new Num.Of(8080)
+            ),
+            new Request(
+                new HttpSpec.Of(
+                    """
+                    GET /test HTTP/1.1\r
+                    Host: localhost\r
+                    """
+                        .getBytes()
                 )
-            );
-            final String logs = capture.toString();
-            assertFalse(logs.isEmpty());
-            assertTrue(logs.contains("GET /test"));
-        } finally {
-            System.setOut(out);
-        }
+            )
+        );
+        assertEquals(
+            """
+            GET /test HTTP/1.1\r
+            Host: localhost\r
+            \r
+            """,
+            log.cache()
+        );
+    }
+
+    public void testWithoutLog() {
+        final var log = new FakeLogger();
+        log.setEnabled(false);
+        new WithLogging(
+            (loc, req) -> (
+                "Response to: " + new Utf8Text(
+                    new Bytes.Of(req.bytes())
+                ).content()
+            ).getBytes(),
+            log
+        ).resourceOf(
+            new Location(
+                new Text.Of("/test"),
+                new Text.Of("localhost"),
+                new Num.Of(8080)
+            ),
+            new Request(
+                new HttpSpec.Of(
+                    """
+                    GET /test HTTP/1.1\r
+                    Host: localhost\r
+                    """.getBytes()
+                )
+            )
+        );
+        assertFalse(log.written());
     }
 
     public void testErrorPropagation() {
         try {
-            new WithLogging((loc, req) -> {
-                throw new InvariantViolation("origin failed intentionally");
-            }).resourceOf(
+            final var log = new FakeLogger();
+            log.setEnabled(false);
+            new WithLogging(
+                (loc, req) -> {
+                    throw new InvariantViolation("origin failed intentionally");
+                },
+                log
+            ).resourceOf(
                 new Location(
                     new Text.Of("/"),
                     new Text.Of("example.com"),

@@ -4,6 +4,7 @@ import org.ejavdge.error.InvariantViolation;
 
 import java.util.List;
 
+@FunctionalInterface
 public interface Items<T> {
     List<T> contents() throws InvariantViolation;
 

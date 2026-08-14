@@ -19,10 +19,8 @@ public final class ItemsAbout<T> implements Items<T> {
             return this.origin.contents();
         } catch (final InvariantViolation err) {
             throw new InvariantViolation(
-                "problem with %s: %s".formatted(
-                    this.subject,
-                    err.getMessage()
-                )
+                "problem with %s\n".formatted(this.subject),
+                err
             );
         }
     }

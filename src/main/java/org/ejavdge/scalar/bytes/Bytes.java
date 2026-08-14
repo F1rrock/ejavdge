@@ -2,6 +2,7 @@ package org.ejavdge.scalar.bytes;
 
 import org.ejavdge.error.InvariantViolation;
 
+@FunctionalInterface
 public interface Bytes {
     byte[] content() throws InvariantViolation;
 

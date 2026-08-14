@@ -17,10 +17,8 @@ public final class NumAbout implements Num {
             return this.origin.value();
         } catch (final InvariantViolation err) {
             throw new InvariantViolation(
-                "problem with %s: %s".formatted(
-                    this.subject,
-                    err.getMessage()
-                )
+                "problem with %s\n".formatted(this.subject),
+                err
             );
         }
     }

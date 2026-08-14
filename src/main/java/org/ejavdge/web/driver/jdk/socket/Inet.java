@@ -53,7 +53,8 @@ public final class Inet {
             );
         } catch (final IOException e) {
             throw new InvariantViolation(
-                "There is no socket.\n" + e.getMessage()
+                "There is no socket.\n",
+                e
             );
         }
     }

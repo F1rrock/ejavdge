@@ -29,11 +29,13 @@ public final class Reply {
             } catch (final IOException ex) {
                 e.addSuppressed(ex);
                 throw new InvariantViolation(
-                    "There is no socket to close.\n" + e.getMessage()
+                    "There is no socket to close.\n",
+                    e
                 );
             }
             throw new InvariantViolation(
-                "There is no valid resource.\n" + e.getMessage()
+                "There is no valid resource.\n",
+                e
             );
         }
     }

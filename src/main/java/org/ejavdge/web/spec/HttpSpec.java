@@ -3,6 +3,7 @@ package org.ejavdge.web.spec;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.bytes.Bytes;
 
+@FunctionalInterface
 public interface HttpSpec {
     byte[] bytes() throws InvariantViolation;
 

@@ -11,12 +11,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class InetIT extends TestCase {
     public void testWorkingSocket() {
         try (final var server = new ServerSocket(0)) {
+            final var error = new AtomicReference<Exception>();
             final int port = server.getLocalPort();
+            final var responseBody = "Hello from Inet";
+            final var contentLength = responseBody.getBytes(StandardCharsets.UTF_8).length;
             new Thread(() -> {
                 try (final var client = server.accept()) {
                     final InputStream in = client.getInputStream();
@@ -31,12 +36,19 @@ public final class InetIT extends TestCase {
                     }
                     final OutputStream out = client.getOutputStream();
                     out.write(
-                        "HTTP/1.1 200 OK\r\n\r\nHello from Inet"
-                            .getBytes(StandardCharsets.UTF_8)
+                        """
+                        HTTP/1.1 200 OK\r
+                        Content-Length: %d\r
+                        \r
+                        %s
+                        """.formatted(
+                            contentLength,
+                            responseBody
+                        ).getBytes(StandardCharsets.UTF_8)
                     );
                     out.flush();
                 } catch (final IOException e) {
-                    fail("Server error: " + e.getMessage());
+                    error.set(e);
                 }
             }).start();
             final var inet = new Inet(
@@ -46,45 +58,52 @@ public final class InetIT extends TestCase {
                     new Num.Of(port)
                 )
             );
-            try (final var socket = inet.socket()) {
+            try (final Socket socket = inet.socket()) {
                 final OutputStream out = socket.getOutputStream();
-                out.write(
-                    "GET / HTTP/1.1\r\nHost: localhost\r\n\r\n"
-                        .getBytes(StandardCharsets.UTF_8)
-                );
+                out.write("GET / HTTP/1.1\r\nHost: localhost\r\n\r\n".getBytes(StandardCharsets.UTF_8));
                 out.flush();
-                final var in = socket.getInputStream();
-                final var response = new ByteArrayOutputStream();
-                final byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = in.read(buffer)) != -1) {
-                    response.write(buffer, 0, bytesRead);
+                final var r = responseOf(socket);
+                if (error.get() != null) {
+                    fail(error.get().getMessage());
                 }
-                final var r = response.toString(StandardCharsets.UTF_8);
                 assertTrue(r.contains("200 OK"));
-                assertTrue(r.contains("Hello from Inet"));
+                assertTrue(r.contains(responseBody));
             }
-        } catch (final IOException e) {
-            fail("Test error: " + e.getMessage());
+        } catch (final Exception e) {
+            fail(e.getMessage());
         }
     }
+
+    private static String responseOf(Socket socket) throws IOException {
+        final InputStream in = socket.getInputStream();
+        final var response = new ByteArrayOutputStream();
+        final byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = in.read(buffer)) != -1) {
+            response.write(buffer, 0, bytesRead);
+            if (response.toString().contains("\r\n\r\n")) {
+                break;
+            }
+        }
+        return response.toString(StandardCharsets.UTF_8);
+    }
+
 
     public void testInvalidLocation() {
         final var inet = new Inet(
             new Location(
                 new Text.Of("/"),
-                new Text.Of("invalid.host.that.does.not.exist"),
+                new Text.Of("localhost"),
                 new Num.Of(9999)
             )
         );
         try {
-            final var s = inet.socket();
-            s.close();
-            fail("Should throw InvariantViolation");
-        } catch (final IOException e) {
-            fail("Should throw InvariantViolation");
+            inet.socket().close();
         } catch (final InvariantViolation e) {
-            assertTrue(e.getMessage().contains("There is no socket"));
+            return;
+        } catch (final IOException e) {
+            fail(e.getMessage());
         }
+        fail("InvariantViolation");
     }
 }

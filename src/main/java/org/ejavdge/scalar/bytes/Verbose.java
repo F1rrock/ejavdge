@@ -1,5 +1,7 @@
 package org.ejavdge.scalar.bytes;
 
+import java.io.PrintStream;
+
 public final class Verbose implements Bytes {
 
     private final Bytes origin;
@@ -12,7 +14,8 @@ public final class Verbose implements Bytes {
 
     @Override
     public byte[] content() {
-        System.out.println(this.message);
+        final PrintStream out = System.out;
+        out.println(this.message);
         return this.origin.content();
     }
 }

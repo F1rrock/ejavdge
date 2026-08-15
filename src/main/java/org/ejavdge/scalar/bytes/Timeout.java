@@ -31,28 +31,28 @@ public final class Timeout implements Bytes {
                 );
             } catch (final TimeoutException err) {
                 future.cancel(true);
-                throw new InvariantViolation(
+                throw new InvariantViolation( // NOPMD
                     "Bytes content evaluation timed out after "
                     + this.duration
                 );
             } catch (final InterruptedException err) {
                 future.cancel(true);
                 Thread.currentThread().interrupt();
-                throw new InvariantViolation(
+                throw new InvariantViolation( // NOPMD
                     "Bytes content evaluation was interrupted."
                 );
             } catch (final ExecutionException err) {
                 final Throwable cause = err.getCause();
                 if (cause instanceof InvariantViolation) {
-                    throw (InvariantViolation) cause;
+                    throw (InvariantViolation) cause; // NOPMD
                 }
                 if (cause instanceof RuntimeException) {
-                    throw (RuntimeException) cause;
+                    throw (RuntimeException) cause; // NOPMD
                 }
                 if (cause instanceof Error) {
-                    throw (Error) cause;
+                    throw (Error) cause; // NOPMD
                 }
-                throw new IllegalStateException(cause);
+                throw new IllegalStateException(cause); // NOPMD
             }
         } finally {
             executor.shutdownNow();

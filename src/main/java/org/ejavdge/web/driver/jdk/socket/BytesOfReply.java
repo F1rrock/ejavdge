@@ -13,7 +13,6 @@ public final class BytesOfReply implements ByteStream {
         this.rep = r;
     }
 
-    @Override
     public IntStream content() throws InvariantViolation {
         final var stream = this.rep.stream();
         return IntStream.generate(() -> {
@@ -21,8 +20,7 @@ public final class BytesOfReply implements ByteStream {
                 return stream.read();
             } catch (final IOException e) {
                 throw new InvariantViolation(
-                    "There is no bytes to read.\n",
-                    e
+                    "There is no bytes to read.\n" + e.getMessage()
                 );
             }
         }).onClose(() -> {
@@ -30,8 +28,7 @@ public final class BytesOfReply implements ByteStream {
                 stream.close();
             } catch (final IOException e) {
                 throw new InvariantViolation(
-                    "There is no socket to close.\n",
-                    e
+                    "There is no socket to close.\n" + e.getMessage()
                 );
             }
         });

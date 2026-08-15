@@ -2,7 +2,6 @@ package org.ejavdge.scalar.text;
 
 import org.ejavdge.error.InvariantViolation;
 
-@FunctionalInterface
 public interface Text {
     String content() throws InvariantViolation;
 

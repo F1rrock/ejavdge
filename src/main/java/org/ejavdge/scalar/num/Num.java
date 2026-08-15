@@ -2,7 +2,6 @@ package org.ejavdge.scalar.num;
 
 import org.ejavdge.error.InvariantViolation;
 
-@FunctionalInterface
 public interface Num {
     int value() throws InvariantViolation;
 

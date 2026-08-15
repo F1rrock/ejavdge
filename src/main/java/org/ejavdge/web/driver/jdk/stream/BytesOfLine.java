@@ -8,15 +8,15 @@ import java.util.stream.IntStream;
 import java.io.ByteArrayOutputStream;
 
 public final class BytesOfLine implements Bytes {
-    private final IntStream src;
+    private final int[] src;
 
-    public BytesOfLine(final int ...src) {
-        this.src = IntStream.of(src);
+    public BytesOfLine(final int[] src) {
+        this.src = src;
     }
 
     @Override
     public byte[] content() throws InvariantViolation {
-        return this.src
+        return IntStream.of(this.src)
             .collect(
                 ByteArrayOutputStream::new,
                 ByteArrayOutputStream::write,

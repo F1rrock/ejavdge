@@ -26,8 +26,7 @@ public final class Utf8Text implements Text {
                 .toString();
         } catch (final CharacterCodingException e) {
             throw new InvariantViolation(
-                "Bytes do not contain valid UTF-8\n",
-                e
+                "Bytes do not contain valid UTF-8"
             );
         }
     }

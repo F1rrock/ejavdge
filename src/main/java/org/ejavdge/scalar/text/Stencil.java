@@ -30,8 +30,7 @@ public final class Stencil implements Text {
             );
         } catch (final IllegalFormatException e) {
             throw new InvariantViolation(
-                "Incorrect stencil.\n",
-                e
+                "Incorrect stencil.\n" + e.getMessage()
             );
         }
     }

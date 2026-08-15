@@ -21,8 +21,7 @@ public final class NumOfHex implements Num {
             return Integer.parseInt(s, 16);
         } catch (final NumberFormatException e) {
             throw new InvariantViolation(
-                s + " is not a valid hex number.\n",
-                e
+                s + " is not a valid hex number.\n" + e.getMessage()
             );
         }
     }

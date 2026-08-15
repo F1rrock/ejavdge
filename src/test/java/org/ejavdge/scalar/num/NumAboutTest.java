@@ -25,8 +25,8 @@ public final class NumAboutTest extends TestCase {
             ).value();
         } catch (final InvariantViolation err) {
             assertEquals(
-                "problem with illegal\nwrong value",
-                err.getMessage() + err.getCause().getMessage()
+                "problem with illegal: wrong value",
+                err.getMessage()
             );
             return;
         }
@@ -46,9 +46,8 @@ public final class NumAboutTest extends TestCase {
             ).value();
         } catch (final InvariantViolation err) {
             assertEquals(
-                "problem with unknown\nproblem with illegal\nwrong value",
-                err.getMessage() + err.getCause().getMessage()
-                    + err.getCause().getCause().getMessage()
+                "problem with unknown: problem with illegal: wrong value",
+                err.getMessage()
             );
             return;
         }

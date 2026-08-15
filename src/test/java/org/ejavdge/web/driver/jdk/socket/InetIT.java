@@ -30,7 +30,7 @@ public final class InetIT extends TestCase {
                     int bytesRead;
                     while ((bytesRead = in.read(buffer)) != -1) {
                         arr.write(buffer, 0, bytesRead);
-                        if (arr.toString().contains("\r\n\r\n")) {
+                        if (arr.toString(StandardCharsets.UTF_8).contains("\r\n\r\n")) {
                             break;
                         }
                     }
@@ -81,7 +81,7 @@ public final class InetIT extends TestCase {
         int bytesRead;
         while ((bytesRead = in.read(buffer)) != -1) {
             response.write(buffer, 0, bytesRead);
-            if (response.toString().contains("\r\n\r\n")) {
+            if (response.toString(StandardCharsets.UTF_8).contains("\r\n\r\n")) {
                 break;
             }
         }

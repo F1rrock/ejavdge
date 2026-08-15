@@ -21,7 +21,8 @@ public final class NumOfText implements Num {
             return Integer.parseInt(s);
         } catch (final NumberFormatException e) {
             throw new InvariantViolation(
-                s + " is not a valid number.\n" + e.getMessage()
+                s + " is not a valid number.\n",
+                e
             );
         }
     }

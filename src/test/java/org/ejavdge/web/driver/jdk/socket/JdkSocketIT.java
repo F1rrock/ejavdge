@@ -26,7 +26,7 @@ public final class JdkSocketIT extends TestCase {
                     int bytesRead;
                     while ((bytesRead = in.read(buffer)) != -1) {
                         arr.write(buffer, 0, bytesRead);
-                        if (arr.toString().contains("\r\n\r\n")) {
+                        if (arr.toString(StandardCharsets.UTF_8).contains("\r\n\r\n")) {
                             break;
                         }
                     }
@@ -61,7 +61,10 @@ public final class JdkSocketIT extends TestCase {
             new Num.Of(9999)
         );
         final var req = new Request(
-            new HttpSpec.Of("GET / HTTP/1.1\r\nHost: localhost\r\n".getBytes())
+            new HttpSpec.Of(
+                "GET / HTTP/1.1\r\nHost: localhost\r\n"
+                    .getBytes(StandardCharsets.UTF_8)
+            )
         );
         try {
             driver.resourceOf(loc, req);
@@ -79,7 +82,7 @@ public final class JdkSocketIT extends TestCase {
                     final InputStream in = client.getInputStream();
                     final var buffer = new byte[1024];
                     while (in.read(buffer) != -1) {
-                        if (new String(buffer).contains("\r\n\r\n")) {
+                        if (new String(buffer, StandardCharsets.UTF_8).contains("\r\n\r\n")) {
                             break;
                         }
                     }
@@ -104,7 +107,10 @@ public final class JdkSocketIT extends TestCase {
                 new Num.Of(port)
             );
             final var req = new Request(
-                new HttpSpec.Of("GET / HTTP/1.1\r\nHost: localhost\r\n".getBytes())
+                new HttpSpec.Of(
+                    "GET / HTTP/1.1\r\nHost: localhost\r\n"
+                        .getBytes(StandardCharsets.UTF_8)
+                )
             );
             assertEquals(
                 """
@@ -130,7 +136,7 @@ public final class JdkSocketIT extends TestCase {
                     final InputStream in = client.getInputStream();
                     final var buffer = new byte[1024];
                     while (in.read(buffer) != -1) {
-                        if (new String(buffer).contains("\r\n\r\n")) {
+                        if (new String(buffer, StandardCharsets.UTF_8).contains("\r\n\r\n")) {
                             break;
                         }
                     }
@@ -152,7 +158,10 @@ public final class JdkSocketIT extends TestCase {
                 new Num.Of(port)
             );
             final var req = new Request(
-                new HttpSpec.Of("GET / HTTP/1.1\r\nHost: localhost\r\n".getBytes())
+                new HttpSpec.Of(
+                    "GET / HTTP/1.1\r\nHost: localhost\r\n"
+                        .getBytes(StandardCharsets.UTF_8)
+                )
             );
             try {
                 driver.resourceOf(loc, req);

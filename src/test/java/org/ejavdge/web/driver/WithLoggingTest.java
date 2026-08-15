@@ -10,6 +10,8 @@ import org.ejavdge.web.context.Location;
 import org.ejavdge.web.spec.HttpSpec;
 import org.ejavdge.web.spec.Request;
 
+import java.nio.charset.StandardCharsets;
+
 public final class WithLoggingTest extends TestCase {
     public void testWithLog() {
         final var log = new FakeLogger();
@@ -19,7 +21,7 @@ public final class WithLoggingTest extends TestCase {
                 "Response to: " + new Utf8Text(
                     new Bytes.Of(req.bytes())
                 ).content()
-            ).getBytes(),
+            ).getBytes(StandardCharsets.UTF_8),
             log
         ).resourceOf(
             new Location(
@@ -32,8 +34,7 @@ public final class WithLoggingTest extends TestCase {
                     """
                     GET /test HTTP/1.1\r
                     Host: localhost\r
-                    """
-                        .getBytes()
+                    """.getBytes(StandardCharsets.UTF_8)
                 )
             )
         );
@@ -55,7 +56,7 @@ public final class WithLoggingTest extends TestCase {
                 "Response to: " + new Utf8Text(
                     new Bytes.Of(req.bytes())
                 ).content()
-            ).getBytes(),
+            ).getBytes(StandardCharsets.UTF_8),
             log
         ).resourceOf(
             new Location(
@@ -68,7 +69,7 @@ public final class WithLoggingTest extends TestCase {
                     """
                     GET /test HTTP/1.1\r
                     Host: localhost\r
-                    """.getBytes()
+                    """.getBytes(StandardCharsets.UTF_8)
                 )
             )
         );
@@ -95,7 +96,8 @@ public final class WithLoggingTest extends TestCase {
                         """
                         GET / HTTP/1.1\r
                         Host: example.com\r
-                        """.getBytes())
+                        """.getBytes(StandardCharsets.UTF_8)
+                    )
                 )
             );
         } catch (final InvariantViolation e) {

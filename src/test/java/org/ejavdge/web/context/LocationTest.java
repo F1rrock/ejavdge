@@ -35,6 +35,11 @@ public final class LocationTest extends TestCase {
         assertEquals(
             "url:/ejudge?name%201=value%201&name%202=value%202:host:0.0.0.0:port:90:",
             new Location(
+                new Location(
+                    new Text.Of("/ejudge"),
+                    new Text.Of("0.0.0.0"),
+                    new Num.Of(90)
+                ),
                 new WithEntry(
                     new Text.Of("name 1"),
                     new Text.Of("value 1"),
@@ -42,11 +47,29 @@ public final class LocationTest extends TestCase {
                         new Text.Of("name 2"),
                         new Text.Of("value 2")
                     )
-                ),
+                )
+            ).imprint(new FakeMedia())
+        );
+    }
+
+    public void testQueryCompose() {
+        assertEquals(
+            "url:/ejudge?name%201=value%201&name%202=value%202:host:0.0.0.0:port:90:",
+            new Location(
                 new Location(
-                    new Text.Of("/ejudge"),
-                    new Text.Of("0.0.0.0"),
-                    new Num.Of(90)
+                    new Location(
+                        new Text.Of("/ejudge"),
+                        new Text.Of("0.0.0.0"),
+                        new Num.Of(90)
+                    ),
+                    new WithEntry(
+                        new Text.Of("name 1"),
+                        new Text.Of("value 1")
+                    )
+                ),
+                new WithEntry(
+                    new Text.Of("name 2"),
+                    new Text.Of("value 2")
                 )
             ).imprint(new FakeMedia())
         );

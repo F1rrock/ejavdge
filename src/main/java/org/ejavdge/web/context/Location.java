@@ -5,33 +5,25 @@ import org.ejavdge.scalar.num.Num;
 import org.ejavdge.scalar.num.NumAbout;
 import org.ejavdge.scalar.num.Positive;
 import org.ejavdge.scalar.text.*;
-import org.ejavdge.web.media.Form;
 import org.ejavdge.web.media.Media;
 import org.ejavdge.web.media.WhiteList;
+import org.ejavdge.web.resource.Url;
 
 public final class Location implements Context {
-    private final Text url;
+    private final Url url;
     private final Text host;
     private final Num port;
 
-    public Location(final Context query, final Location origin) {
-        this(
-            new Stencil(
-                new Text.Of("%s?%s"),
-                origin.url,
-                new Utf8Text(
-                    new Form.ImprintOf(query)
-                )
-            ),
-            origin.host,
-            origin.port
-        );
+    public Location(final Location loc, final Context query) {
+        this.url = new Url(loc.url, query);
+        this.host = loc.host;
+        this.port = loc.port;
     }
 
-    public Location(final Text u, final Text h, final Num p) {
-        this.url = new TextAbout("url", u);
-        this.host = new TextAbout("host", h);
-        this.port = new NumAbout("port", new Positive(p));
+    public Location(final Text base, final Text host, final Num port) {
+        this.url = new Url(base);
+        this.host = new TextAbout("host", host);
+        this.port = new NumAbout("port", new Positive(port));
     }
 
     @Override

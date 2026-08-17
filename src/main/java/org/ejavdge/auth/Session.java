@@ -22,18 +22,15 @@ public final class Session implements Bytes {
             new BytesAbout(
                 "ejudge session",
                 new Memo(
-                    new WithRetry(
+                    new WithRetries(
                         new Verbose(
                             new WithTimeout(
-                                new BindOfBytes(
+                                new HasStatus(
+                                    new Num.Of(302),
                                     new LoginReply(
                                         driver,
                                         location,
                                         credentials
-                                    ),
-                                    bytes -> new HasStatus(
-                                        new Num.Of(302),
-                                        new Bytes.Of(bytes)
                                     )
                                 ),
                                 Duration.ofSeconds(5)

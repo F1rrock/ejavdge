@@ -2,74 +2,42 @@ package org.ejavdge.scalar.bytes;
 
 import junit.framework.TestCase;
 import org.ejavdge.error.InvariantViolation;
-import org.ejavdge.scalar.text.Text;
-import org.slf4j.Logger;
-
-import java.lang.reflect.Proxy;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public final class VerboseTest extends TestCase {
-    public void testPrintsMessageWhenCalled() {
-        final List<String> calls = new ArrayList<>();
+    public void testWithLog() {
+        final var log = new FakeLogger();
+        log.setEnabled(true);
         new Verbose(
-            new Bytes.Of("Hello".getBytes(StandardCharsets.UTF_8)),
-            new Text.Of("Fetching session..."),
-            logger(calls)
+            new Bytes.Of(new byte[0]),
+            "bla bla",
+            log
         ).content();
-        assertEquals(
-            Arrays.asList("debug", "Fetching session..."),
-            calls
-        );
+        assertEquals("bla bla", log.cache());
     }
 
-    public void testPreservesWrappedResult() {
-        assertEquals(
-            "Hello",
-            new String(
-                new Verbose(
-                    new Bytes.Of("Hello".getBytes(StandardCharsets.UTF_8)),
-                    new Text.Of("Fetching session..."),
-                    logger(new ArrayList<>())
-                ).content(),
-                StandardCharsets.UTF_8
-            )
-        );
+    public void testWithoutLog() {
+        final var log = new FakeLogger();
+        log.setEnabled(false);
+        new Verbose(
+            new Bytes.Of(new byte[0]),
+            "bla bla",
+            log
+        ).content();
+        assertFalse(log.written());
     }
 
-    public void testPreservesWrappedException() {
-        final InvariantViolation expected = new InvariantViolation("original");
+    public void testErrorPropagation() {
         try {
             new Verbose(
                 () -> {
-                    throw expected;
+                    throw new InvariantViolation("origin failed intentionally");
                 },
-                new Text.Of("Fetching session..."),
-                logger(new ArrayList<>())
+                "what"
             ).content();
-        } catch (final InvariantViolation actual) {
-            assertEquals(expected, actual);
+        } catch (final InvariantViolation e) {
+            assertEquals("origin failed intentionally", e.getMessage());
             return;
         }
         fail("InvariantViolation");
-    }
-
-    private static Logger logger(final List<String> calls) {
-        return (Logger) Proxy.newProxyInstance(
-            Logger.class.getClassLoader(),
-            new Class<?>[]{Logger.class},
-            (proxy, method, args) -> {
-                if (method.getName().equals("isDebugEnabled")) {
-                    return true;
-                }
-                if (method.getName().equals("debug") && args.length == 1) {
-                    calls.add("debug");
-                    calls.add((String) args[0]);
-                }
-                return null;
-            }
-        );
     }
 }

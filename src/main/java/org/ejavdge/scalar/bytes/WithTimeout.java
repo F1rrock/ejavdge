@@ -3,52 +3,53 @@ package org.ejavdge.scalar.bytes;
 import org.ejavdge.error.InvariantViolation;
 
 import java.time.Duration;
-import java.util.Collections;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
+import java.util.function.Supplier;
 
 public final class WithTimeout implements Bytes {
     private final Bytes origin;
-    private final Duration duration;
+    private final Duration timeout;
+    private final Supplier<ExecutorService> executor;
 
-    public WithTimeout(final Bytes bytes, final Duration timeout) {
-        this.origin = bytes;
-        this.duration = timeout;
+    public WithTimeout(final Bytes bs, final Duration t) {
+        this(bs, t, Executors::newSingleThreadExecutor);
+    }
+
+    public WithTimeout(final Bytes bs, final Duration t, Supplier<ExecutorService> e) {
+        this.origin = bs;
+        this.timeout = t;
+        this.executor = e;
     }
 
     @Override
     public byte[] content() throws InvariantViolation {
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
+        final var pool = this.executor.get();
         try {
-            return executor.invokeAny(
-                Collections.singleton(this.origin::content),
-                this.duration.toNanos(),
-                TimeUnit.NANOSECONDS
-            );
-        } catch (final TimeoutException err) {
-            throw new InvariantViolation(
-                "Bytes must be obtained within "
-                    + this.duration,
-                err
-            );
-        } catch (final InterruptedException err) {
-            Thread.currentThread().interrupt();
-            throw new InvariantViolation(
-                "Bytes could not be obtained within "
-                    + this.duration
-                    + " because operation interrupted.",
-                err
-            );
-        } catch (final ExecutionException err) {
-            throw new InvariantViolation(
-                "Bytes content evaluation failed.",
-                err
-            );
+            try {
+                return pool
+                    .submit(this.origin::content)
+                    .get(this.timeout.toMillis(), TimeUnit.MILLISECONDS);
+            } catch (final InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new InvariantViolation(
+                    "Bytes could not be obtained " +
+                        "because the operation was interrupted.",
+                    e
+                );
+            } catch (final ExecutionException e) {
+                throw new InvariantViolation(
+                    "Bytes could not be obtained " +
+                        "because the origin failed.",
+                    e
+                );
+            } catch (final TimeoutException e) {
+                throw new InvariantViolation(
+                    "Bytes not obtained within the allowed time.",
+                    e
+                );
+            }
         } finally {
-            executor.shutdownNow();
+            this.executor.get().shutdownNow();
         }
     }
 }

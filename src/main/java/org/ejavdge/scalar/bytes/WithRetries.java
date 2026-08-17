@@ -26,7 +26,7 @@ public final class WithRetries implements Bytes {
         } catch (final InvariantViolation e) {
             if (left <= 1) {
                 throw new InvariantViolation(
-                    "Bytes can not be obtained within " + left + " retries.\n",
+                    "Bytes not obtained within the allowed retry attempts.\n",
                     e
                 );
             }

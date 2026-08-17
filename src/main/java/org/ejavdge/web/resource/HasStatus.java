@@ -2,6 +2,7 @@ package org.ejavdge.web.resource;
 
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.bytes.Bytes;
+import org.ejavdge.scalar.bytes.Memo;
 import org.ejavdge.scalar.num.Num;
 
 public final class HasStatus implements Bytes {
@@ -10,9 +11,9 @@ public final class HasStatus implements Bytes {
     private final Num actual;
 
     public HasStatus(final Num n, final Bytes bs) {
-        this.origin = bs;
+        this.origin = new Memo(bs);
         this.expected = n;
-        this.actual = new Status(bs);
+        this.actual = new Status(this.origin);
     }
 
     @Override

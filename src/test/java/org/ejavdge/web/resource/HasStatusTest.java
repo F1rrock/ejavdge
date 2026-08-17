@@ -3,9 +3,11 @@ package org.ejavdge.web.resource;
 import junit.framework.TestCase;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.bytes.Bytes;
+import org.ejavdge.scalar.bytes.WithRetries;
 import org.ejavdge.scalar.num.Num;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public final class HasStatusTest extends TestCase {
     public void testExpectedStatus200() {
@@ -79,5 +81,22 @@ public final class HasStatusTest extends TestCase {
             return;
         }
         fail("InvariantViolation");
+    }
+
+    public void testBytesEval() {
+        final var calls = new AtomicInteger();
+        try {
+            new HasStatus(
+                new Num.Of(200),
+                () -> {
+                    calls.incrementAndGet();
+                    return "HTTP/1.1 200 OK\r\nLocation: /new\r\n\r\n"
+                        .getBytes(StandardCharsets.UTF_8);
+                }
+            ).content();
+            assertEquals(1, calls.get());
+        } catch (final InvariantViolation e) {
+            fail("InvariantViolation");
+        }
     }
 }

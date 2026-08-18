@@ -63,4 +63,34 @@ public final class StatusTest extends TestCase {
         }
         fail("InvariantViolation");
     }
+
+    public void testNonPositiveStatus() {
+        final var status = new Status(
+            new Bytes.Of(
+                "HTTP/1.1 -10 WHAT\r\nContent-Length: 0\r\n\r\n"
+                    .getBytes(StandardCharsets.UTF_8)
+            )
+        );
+        try {
+            status.value();
+        } catch (final InvariantViolation e) {
+            return;
+        }
+        fail("InvariantViolation");
+    }
+
+    public void testNotThreeDigitStatus() {
+        final var status = new Status(
+            new Bytes.Of(
+                "HTTP/1.1 10 WHAT\r\nContent-Length: 0\r\n\r\n"
+                    .getBytes(StandardCharsets.UTF_8)
+            )
+        );
+        try {
+            status.value();
+        } catch (final InvariantViolation e) {
+            return;
+        }
+        fail("InvariantViolation");
+    }
 }

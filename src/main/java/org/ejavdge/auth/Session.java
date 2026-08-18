@@ -10,14 +10,13 @@ import org.ejavdge.web.driver.WebDriver;
 import org.ejavdge.web.resource.HasStatus;
 import org.ejavdge.scalar.bytes.Verbose;
 import org.ejavdge.scalar.bytes.WithTimeout;
-import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
 public final class Session implements Bytes {
     private final Bytes src;
 
-    public Session(final WebDriver driver, final Location location, final Credentials credentials) {
+    public Session(final WebDriver d, final Location l, final Credentials c) {
         this(
             new BytesAbout(
                 "ejudge session",
@@ -27,16 +26,11 @@ public final class Session implements Bytes {
                             new WithTimeout(
                                 new HasStatus(
                                     new Num.Of(302),
-                                    new LoginReply(
-                                        driver,
-                                        location,
-                                        credentials
-                                    )
+                                    new LoginReply(d, l, c)
                                 ),
                                 Duration.ofSeconds(5)
                             ),
-                            new Text.Of("Fetching session..."),
-                            LoggerFactory.getLogger(Session.class)
+                            new Text.Of("Fetching session...")
                         ),
                         new Num.Of(5)
                     )

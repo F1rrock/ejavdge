@@ -8,20 +8,19 @@ import org.ejavdge.scalar.num.Num;
 public final class HasStatus implements Bytes {
     private final Bytes origin;
     private final Num expected;
-    private final Num actual;
 
     public HasStatus(final Num n, final Bytes bs) {
-        this.origin = new Memo(bs);
+        this.origin = bs;
         this.expected = n;
-        this.actual = new Status(this.origin);
     }
 
     @Override
     public byte[] content() throws InvariantViolation {
+        final var bs = new Memo(this.origin);
         final int e = this.expected.value();
-        final int a = this.actual.value();
+        final int a = new Status(bs).value();
         if (e == a) {
-            return this.origin.content();
+            return bs.content();
         }
         throw new InvariantViolation(
             "Expected status " + e + " but got " + a

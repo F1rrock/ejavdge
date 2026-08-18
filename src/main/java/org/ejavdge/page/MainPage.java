@@ -2,6 +2,7 @@ package org.ejavdge.page;
 
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.text.Text;
+import org.ejavdge.scalar.text.TextAbout;
 import org.ejavdge.scalar.text.TextOfNum;
 import org.ejavdge.scalar.text.Utf8Text;
 import org.ejavdge.web.context.WithEntry;
@@ -11,15 +12,18 @@ public final class MainPage implements Text {
 
     public MainPage(final ContestResource r) {
         this(
-            new Utf8Text(
-                new ContestResource(
-                    r,
-                    new WithEntry(
-                        new Text.Of("amp;action"),
-                        new TextOfNum(2),
+            new TextAbout(
+                "main page",
+                new Utf8Text(
+                    new ContestResource(
+                        r,
                         new WithEntry(
-                            new Text.Of("amp;lt"),
-                            new TextOfNum(1)
+                            new Text.Of("amp;action"),
+                            new TextOfNum(2),
+                            new WithEntry(
+                                new Text.Of("amp;lt"),
+                                new TextOfNum(1)
+                            )
                         )
                     )
                 )

@@ -1,4 +1,4 @@
-package org.ejavdge.page;
+package org.ejavdge.contest;
 
 import org.ejavdge.web.context.Location;
 import org.ejavdge.web.driver.WebDriver;

@@ -1,27 +1,27 @@
-package org.ejavdge.page;
+package org.ejavdge.contest;
 
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.scalar.text.TextAbout;
 import org.ejavdge.scalar.text.TextOfNum;
 import org.ejavdge.scalar.text.Utf8Text;
-import org.ejavdge.web.context.ProbId;
+import org.ejavdge.web.context.RunId;
 import org.ejavdge.web.context.WithEntry;
 
-public final class ProblemPage implements Text {
+public final class ReportPage implements Text {
     private final Text origin;
 
-    public ProblemPage(final ContestResource r, final ProbId p) {
+    public ReportPage(final ContestResource cr, final RunId id) {
         this(
             new TextAbout(
-                "problem page",
+                "report page",
                 new Utf8Text(
                     new ContestResource(
-                        r,
+                        cr,
                         new WithEntry(
                             new Text.Of("action"),
-                            new TextOfNum(139),
-                            p
+                            new TextOfNum(37),
+                            id
                         )
                     )
                 )
@@ -29,7 +29,7 @@ public final class ProblemPage implements Text {
         );
     }
 
-    public ProblemPage(final Text t) {
+    public ReportPage(final Text t) {
         this.origin = t;
     }
 

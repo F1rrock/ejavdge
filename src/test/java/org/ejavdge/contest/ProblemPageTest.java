@@ -1,4 +1,4 @@
-package org.ejavdge.page;
+package org.ejavdge.contest;
 
 import junit.framework.TestCase;
 import org.ejavdge.auth.Session;
@@ -7,11 +7,11 @@ import org.ejavdge.scalar.bytes.Bytes;
 import org.ejavdge.scalar.num.Num;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.web.context.Location;
-import org.ejavdge.web.context.RunId;
+import org.ejavdge.web.context.ProbId;
 
 import java.nio.charset.StandardCharsets;
 
-public final class ReportPageTest extends TestCase {
+public final class ProblemPageTest extends TestCase {
     public void testValidResource() {
         assertEquals(
             """
@@ -22,11 +22,11 @@ public final class ReportPageTest extends TestCase {
             Success\r
             0\r
             """,
-            new ReportPage(
+            new ProblemPage(
                 new ContestResource(
                     new FakeDriver(
                         """
-                        GET /ejudge?action=37&run_id=1&SID=1684bb4a0f94302c HTTP/1.1\r
+                        GET /ejudge?action=139&prob_id=1&SID=1684bb4a0f94302c HTTP/1.1\r
                         Host: 0.0.0.0:90\r
                         Cookie: EJSID=756b423a0a6fe6a7\r
                         \r
@@ -66,18 +66,18 @@ public final class ReportPageTest extends TestCase {
                         )
                     )
                 ),
-                new RunId(1)
+                new ProbId(1)
             ).content()
         );
     }
 
     public void testInvalidSession() {
         try {
-            new ReportPage(
+            new ProblemPage(
                 new ContestResource(
                     new FakeDriver(
                         """
-                        GET /ejudge?action=37&run_id=1&SID=1684bb4a0f94302c HTTP/1.1\r
+                        GET /ejudge?SID=1684bb4a0f94302c HTTP/1.1\r
                         Host: 0.0.0.0:90\r
                         Cookie: EJSID=756b423a0a6fe6a7\r
                         \r
@@ -116,7 +116,7 @@ public final class ReportPageTest extends TestCase {
                         )
                     )
                 ),
-                new RunId(1)
+                new ProbId(1)
             ).content();
         } catch (final InvariantViolation e) {
             return;

@@ -14,14 +14,7 @@ import java.nio.charset.StandardCharsets;
 public final class ProblemPageTest extends TestCase {
     public void testValidResource() {
         assertEquals(
-            """
-            HTTP/1.1 200 OK\r
-            Transfer-Encoding: chunked\r
-            \r
-            7\r
-            Success\r
-            0\r
-            """,
+            "Success",
             new ProblemPage(
                 new ContestResource(
                     new FakeDriver(
@@ -35,18 +28,12 @@ public final class ProblemPageTest extends TestCase {
                         HTTP/1.1 200 OK\r
                         Transfer-Encoding: chunked\r
                         \r
-                        15\r
-                        Invalid session\r
-                        0\r
-                        """.getBytes(StandardCharsets.UTF_8),
+                        Invalid session""".getBytes(StandardCharsets.UTF_8),
                         """
                         HTTP/1.1 200 OK\r
                         Transfer-Encoding: chunked\r
                         \r
-                        7\r
-                        Success\r
-                        0\r
-                        """.getBytes(StandardCharsets.UTF_8)
+                        Success""".getBytes(StandardCharsets.UTF_8)
                     ),
                     new Location(
                         new Text.Of("/ejudge"),
@@ -86,18 +73,12 @@ public final class ProblemPageTest extends TestCase {
                         HTTP/1.1 200 OK\r
                         Transfer-Encoding: chunked\r
                         \r
-                        15\r
-                        Invalid session\r
-                        0\r
-                        """.getBytes(StandardCharsets.UTF_8),
+                        Invalid session""".getBytes(StandardCharsets.UTF_8),
                         """
                         HTTP/1.1 200 OK\r
                         Transfer-Encoding: chunked\r
                         \r
-                        7\r
-                        Success\r
-                        0\r
-                        """.getBytes(StandardCharsets.UTF_8)
+                        Success""".getBytes(StandardCharsets.UTF_8)
                     ),
                     new Location(
                         new Text.Of("/ejudge"),

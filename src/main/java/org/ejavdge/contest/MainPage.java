@@ -14,15 +14,17 @@ public final class MainPage implements Text {
         this(
             new TextAbout(
                 "main page",
-                new Utf8Text(
-                    new ContestResource(
-                        r,
-                        new WithEntry(
-                            new Text.Of("amp;action"),
-                            new TextOfNum(2),
+                new Payload(
+                    new Utf8Text(
+                        new ContestResource(
+                            r,
                             new WithEntry(
-                                new Text.Of("amp;lt"),
-                                new TextOfNum(1)
+                                new Text.Of("amp;action"),
+                                new TextOfNum(2),
+                                new WithEntry(
+                                    new Text.Of("amp;lt"),
+                                    new TextOfNum(1)
+                                )
                             )
                         )
                     )

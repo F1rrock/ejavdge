@@ -13,14 +13,8 @@ import java.nio.charset.StandardCharsets;
 public final class RunStatusTest extends TestCase {
     public void testValidResource() {
         assertEquals(
-            """
-            HTTP/1.1 200 OK\r
-            Transfer-Encoding: chunked\r
-            \r
-            75\r
-            { "h": 8, "m": 8, "s": 56, "d": 19, "o": 8, "y": 2026, "r": 11667, "z": 1 }\r
-            0\r
-            """,
+            "{ \"h\": 8, \"m\": 8, \"s\": 56, \"d\": 19, " +
+                "\"o\": 8, \"y\": 2026, \"r\": 11667, \"z\": 1 }",
             new RunStatus(
                 new ContestResource(
                     new FakeDriver(
@@ -34,18 +28,12 @@ public final class RunStatusTest extends TestCase {
                         HTTP/1.1 200 OK\r
                         Transfer-Encoding: chunked\r
                         \r
-                        15\r
-                        Invalid session\r
-                        0\r
-                        """.getBytes(StandardCharsets.UTF_8),
+                        Invalid session""".getBytes(StandardCharsets.UTF_8),
                         """
                         HTTP/1.1 200 OK\r
                         Transfer-Encoding: chunked\r
                         \r
-                        75\r
-                        { "h": 8, "m": 8, "s": 56, "d": 19, "o": 8, "y": 2026, "r": 11667, "z": 1 }\r
-                        0\r
-                        """.getBytes(StandardCharsets.UTF_8)
+                        { "h": 8, "m": 8, "s": 56, "d": 19, "o": 8, "y": 2026, "r": 11667, "z": 1 }""".getBytes(StandardCharsets.UTF_8)
                     ),
                     new Location(
                         new Text.Of("/ejudge"),
@@ -84,18 +72,12 @@ public final class RunStatusTest extends TestCase {
                         HTTP/1.1 200 OK\r
                         Transfer-Encoding: chunked\r
                         \r
-                        15\r
-                        Invalid session\r
-                        0\r
-                        """.getBytes(StandardCharsets.UTF_8),
+                        Invalid session""".getBytes(StandardCharsets.UTF_8),
                         """
                         HTTP/1.1 200 OK\r
                         Transfer-Encoding: chunked\r
                         \r
-                        75\r
-                        { "h": 8, "m": 8, "s": 56, "d": 19, "o": 8, "y": 2026, "r": 11667, "z": 1 }\r
-                        0\r
-                        """.getBytes(StandardCharsets.UTF_8)
+                        { "h": 8, "m": 8, "s": 56, "d": 19, "o": 8, "y": 2026, "r": 11667, "z": 1 }""".getBytes(StandardCharsets.UTF_8)
                     ),
                     new Location(
                         new Text.Of("/ejudge"),

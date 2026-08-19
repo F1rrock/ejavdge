@@ -14,15 +14,17 @@ public final class RunStatus implements Text {
         this(
             new TextAbout(
                 "run status",
-                new Utf8Text(
-                    new ContestResource(
-                        r,
-                        new WithEntry(
-                            new Text.Of("action"),
-                            new TextOfNum(175),
+                new Payload(
+                    new Utf8Text(
+                        new ContestResource(
+                            r,
                             new WithEntry(
-                                new Text.Of("x"),
-                                new TextOfNum(1)
+                                new Text.Of("action"),
+                                new TextOfNum(175),
+                                new WithEntry(
+                                    new Text.Of("x"),
+                                    new TextOfNum(1)
+                                )
                             )
                         )
                     )

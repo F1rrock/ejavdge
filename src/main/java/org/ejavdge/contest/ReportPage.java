@@ -15,13 +15,15 @@ public final class ReportPage implements Text {
         this(
             new TextAbout(
                 "report page",
-                new Utf8Text(
-                    new ContestResource(
-                        cr,
-                        new WithEntry(
-                            new Text.Of("action"),
-                            new TextOfNum(37),
-                            id
+                new Payload(
+                    new Utf8Text(
+                        new ContestResource(
+                            cr,
+                            new WithEntry(
+                                new Text.Of("action"),
+                                new TextOfNum(37),
+                                id
+                            )
                         )
                     )
                 )

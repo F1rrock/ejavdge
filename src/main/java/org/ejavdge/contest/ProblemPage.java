@@ -15,13 +15,15 @@ public final class ProblemPage implements Text {
         this(
             new TextAbout(
                 "problem page",
-                new Utf8Text(
-                    new ContestResource(
-                        r,
-                        new WithEntry(
-                            new Text.Of("action"),
-                            new TextOfNum(139),
-                            p
+                new Payload(
+                    new Utf8Text(
+                        new ContestResource(
+                            r,
+                            new WithEntry(
+                                new Text.Of("action"),
+                                new TextOfNum(139),
+                                p
+                            )
                         )
                     )
                 )

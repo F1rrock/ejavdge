@@ -1,4 +1,4 @@
-package org.ejavdge.page;
+package org.ejavdge.contest;
 
 import org.ejavdge.auth.Session;
 import org.ejavdge.domain.tokens.Ejsid;

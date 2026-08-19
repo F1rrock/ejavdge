@@ -1,4 +1,4 @@
-package org.ejavdge.page;
+package org.ejavdge.contest;
 
 import junit.framework.TestCase;
 import org.ejavdge.auth.Session;
@@ -7,10 +7,11 @@ import org.ejavdge.scalar.bytes.Bytes;
 import org.ejavdge.scalar.num.Num;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.web.context.Location;
+import org.ejavdge.web.context.RunId;
 
 import java.nio.charset.StandardCharsets;
 
-public final class MainPageTest extends TestCase {
+public final class ReportPageTest extends TestCase {
     public void testValidResource() {
         assertEquals(
             """
@@ -21,31 +22,31 @@ public final class MainPageTest extends TestCase {
             Success\r
             0\r
             """,
-            new MainPage(
+            new ReportPage(
                 new ContestResource(
                     new FakeDriver(
                         """
-                            GET /ejudge?amp%3Baction=2&amp%3Blt=1&SID=1684bb4a0f94302c HTTP/1.1\r
-                            Host: 0.0.0.0:90\r
-                            Cookie: EJSID=756b423a0a6fe6a7\r
-                            \r
-                            """.getBytes(StandardCharsets.UTF_8),
+                        GET /ejudge?action=37&run_id=1&SID=1684bb4a0f94302c HTTP/1.1\r
+                        Host: 0.0.0.0:90\r
+                        Cookie: EJSID=756b423a0a6fe6a7\r
+                        \r
+                        """.getBytes(StandardCharsets.UTF_8),
                         """
-                            HTTP/1.1 200 OK\r
-                            Transfer-Encoding: chunked\r
-                            \r
-                            15\r
-                            Invalid session\r
-                            0\r
-                            """.getBytes(StandardCharsets.UTF_8),
+                        HTTP/1.1 200 OK\r
+                        Transfer-Encoding: chunked\r
+                        \r
+                        15\r
+                        Invalid session\r
+                        0\r
+                        """.getBytes(StandardCharsets.UTF_8),
                         """
-                            HTTP/1.1 200 OK\r
-                            Transfer-Encoding: chunked\r
-                            \r
-                            7\r
-                            Success\r
-                            0\r
-                            """.getBytes(StandardCharsets.UTF_8)
+                        HTTP/1.1 200 OK\r
+                        Transfer-Encoding: chunked\r
+                        \r
+                        7\r
+                        Success\r
+                        0\r
+                        """.getBytes(StandardCharsets.UTF_8)
                     ),
                     new Location(
                         new Text.Of("/ejudge"),
@@ -64,18 +65,19 @@ public final class MainPageTest extends TestCase {
                             """.getBytes(StandardCharsets.UTF_8)
                         )
                     )
-                )
+                ),
+                new RunId(1)
             ).content()
         );
     }
 
     public void testInvalidSession() {
         try {
-            new MainPage(
+            new ReportPage(
                 new ContestResource(
                     new FakeDriver(
                         """
-                        GET /ejudge?SID=1684bb4a0f94302c HTTP/1.1\r
+                        GET /ejudge?action=37&run_id=1&SID=1684bb4a0f94302c HTTP/1.1\r
                         Host: 0.0.0.0:90\r
                         Cookie: EJSID=756b423a0a6fe6a7\r
                         \r
@@ -113,7 +115,8 @@ public final class MainPageTest extends TestCase {
                             """.getBytes(StandardCharsets.UTF_8)
                         )
                     )
-                )
+                ),
+                new RunId(1)
             ).content();
         } catch (final InvariantViolation e) {
             return;

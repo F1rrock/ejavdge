@@ -1,4 +1,4 @@
-package org.ejavdge.page;
+package org.ejavdge.contest;
 
 import junit.framework.TestCase;
 import org.ejavdge.auth.Session;

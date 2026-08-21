@@ -8,7 +8,6 @@ import org.ejavdge.scalar.text.NonEmpty;
 import org.ejavdge.scalar.text.Stencil;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.scalar.text.TextAbout;
-import org.ejavdge.web.spec.Terminator;
 
 public final class FilePart implements Part {
     private final Bytes src;
@@ -22,6 +21,7 @@ public final class FilePart implements Part {
                             """
                             Content-Disposition: form-data; name="file"; filename="%s"\r
                             Content-Type: application/octet-stream\r
+                            \r
                             """
                         ),
                         new TextAbout(
@@ -30,7 +30,6 @@ public final class FilePart implements Part {
                         )
                     )
                 ),
-                new Terminator(),
                 bs
             )
         );

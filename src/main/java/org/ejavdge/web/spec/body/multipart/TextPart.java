@@ -14,7 +14,10 @@ public final class TextPart implements Part {
                 new Concat(
                     new Stencil(
                         new Text.Of(
-                            "Content-Disposition: form-data; name=\"%s\"\r\n\r\n"
+                            """
+                            Content-Disposition: form-data; name="%s"\r
+                            \r
+                            """
                         ),
                         new TextAbout(
                             "text variable name",

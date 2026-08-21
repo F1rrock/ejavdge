@@ -8,9 +8,7 @@ import org.ejavdge.scalar.bytes.BindOfBytes;
 import org.ejavdge.scalar.bytes.Bytes;
 import org.ejavdge.scalar.bytes.BytesAbout;
 import org.ejavdge.scalar.text.Text;
-import org.ejavdge.web.context.Context;
-import org.ejavdge.web.context.Location;
-import org.ejavdge.web.context.WithEntry;
+import org.ejavdge.web.context.*;
 import org.ejavdge.web.driver.WebDriver;
 import org.ejavdge.web.media.Cookies;
 import org.ejavdge.web.resource.WebResource;
@@ -52,27 +50,13 @@ public final class ContestResource implements Bytes {
                             new Header(
                                 new Text.Of("Cookie"),
                                 new Cookies.ImprintOf(
-                                    new WithEntry(
-                                        new Text.Of("EJSID"),
-                                        new Ejsid(
-                                            new Session(
-                                                new Bytes.Of(s)
-                                            )
-                                        )
-                                    )
+                                    new ContextOfEjsid(s)
                                 )
                             ),
                             new Get(
                                 new Location(
                                     this.location,
-                                    new WithEntry(
-                                        new Text.Of("SID"),
-                                        new Sid(
-                                            new Session(
-                                                new Bytes.Of(s)
-                                            )
-                                        )
-                                    )
+                                    new ContextOfSid(s)
                                 )
                             )
                         )

@@ -1,8 +1,6 @@
 package org.ejavdge.contest;
 
 import org.ejavdge.auth.Session;
-import org.ejavdge.domain.tokens.Ejsid;
-import org.ejavdge.domain.tokens.Sid;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.bytes.BindOfBytes;
 import org.ejavdge.scalar.bytes.Bytes;

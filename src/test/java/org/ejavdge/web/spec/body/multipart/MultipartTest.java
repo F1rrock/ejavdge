@@ -35,7 +35,12 @@ public final class MultipartTest extends TestCase {
                             )
                         )
                     ),
-                    new Text.Of("----WebKitFormBoundary7MA4YWxkTrZu0gW"),
+                    new Boundary(
+                        new Bytes.Of(
+                            "----WebKitFormBoundary7MA4YWxkTrZu0gW"
+                                .getBytes(StandardCharsets.UTF_8)
+                        )
+                    ),
                     new HttpSpec.Of(
                         new Bytes.Of(
                             """
@@ -89,7 +94,12 @@ public final class MultipartTest extends TestCase {
                             )
                         )
                     ),
-                    new Text.Of("----WebKitFormBoundary7MA4YWxkTrZu0gW"),
+                    new Boundary(
+                        new Bytes.Of(
+                            "----WebKitFormBoundary7MA4YWxkTrZu0gW"
+                                .getBytes(StandardCharsets.UTF_8)
+                        )
+                    ),
                     new HttpSpec.Of(
                         new Bytes.Of(
                             """
@@ -118,7 +128,12 @@ public final class MultipartTest extends TestCase {
             new String(
                 new Multipart(
                     new Items.Of<>(),
-                    new Text.Of("----WebKitFormBoundary7MA4YWxkTrZu0gW"),
+                    new Boundary(
+                        new Bytes.Of(
+                            "----WebKitFormBoundary7MA4YWxkTrZu0gW"
+                                .getBytes(StandardCharsets.UTF_8)
+                        )
+                    ),
                     new HttpSpec.Of(
                         new Bytes.Of(
                             """

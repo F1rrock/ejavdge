@@ -7,10 +7,10 @@ import org.ejavdge.scalar.text.TextOfNum;
 import org.ejavdge.scalar.text.Utf8Text;
 import org.ejavdge.web.context.WithEntry;
 
-public final class RunStatus implements Text {
+public final class StatusInJson implements Text {
     private final Text origin;
 
-    public RunStatus(final ContestResource r) {
+    public StatusInJson(final ContestResource r) {
         this(
             new TextAbout(
                 "run status",
@@ -33,7 +33,7 @@ public final class RunStatus implements Text {
         );
     }
 
-    public RunStatus(final Text t) {
+    public StatusInJson(final Text t) {
         this.origin = t;
     }
 

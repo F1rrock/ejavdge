@@ -10,12 +10,12 @@ import org.ejavdge.web.context.Location;
 
 import java.nio.charset.StandardCharsets;
 
-public final class RunStatusTest extends TestCase {
+public final class StatusInJsonTest extends TestCase {
     public void testValidResource() {
         assertEquals(
             "{ \"h\": 8, \"m\": 8, \"s\": 56, \"d\": 19, " +
                 "\"o\": 8, \"y\": 2026, \"r\": 11667, \"z\": 1 }",
-            new RunStatus(
+            new StatusInJson(
                 new ContestResource(
                     new FakeDriver(
                         """
@@ -59,7 +59,7 @@ public final class RunStatusTest extends TestCase {
 
     public void testInvalidSession() {
         try {
-            new RunStatus(
+            new StatusInJson(
                 new ContestResource(
                     new FakeDriver(
                         """

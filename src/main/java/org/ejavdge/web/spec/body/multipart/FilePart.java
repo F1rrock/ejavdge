@@ -1,6 +1,9 @@
 package org.ejavdge.web.spec.body.multipart;
 
 import org.ejavdge.error.InvariantViolation;
+import org.ejavdge.file.ByteFile;
+import org.ejavdge.file.ContentOf;
+import org.ejavdge.file.NameOf;
 import org.ejavdge.scalar.bytes.Bytes;
 import org.ejavdge.scalar.bytes.Concat;
 import org.ejavdge.scalar.bytes.Utf8;
@@ -11,6 +14,10 @@ import org.ejavdge.scalar.text.TextAbout;
 
 public final class FilePart implements Part {
     private final Bytes src;
+
+    public FilePart(final ByteFile f) {
+        this(new NameOf(f), new ContentOf(f));
+    }
 
     public FilePart(final Text n, final Bytes bs) {
         this(
@@ -35,8 +42,8 @@ public final class FilePart implements Part {
         );
     }
 
-    public FilePart(final Bytes src) {
-        this.src = src;
+    public FilePart(final Bytes bs) {
+        this.src = bs;
     }
 
     @Override

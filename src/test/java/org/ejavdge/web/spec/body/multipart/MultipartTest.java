@@ -3,7 +3,6 @@ package org.ejavdge.web.spec.body.multipart;
 import junit.framework.TestCase;
 import org.ejavdge.items.Items;
 import org.ejavdge.scalar.bytes.Bytes;
-import org.ejavdge.scalar.text.Text;
 import org.ejavdge.web.spec.HttpSpec;
 
 import java.nio.charset.StandardCharsets;

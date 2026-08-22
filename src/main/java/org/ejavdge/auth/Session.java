@@ -8,8 +8,6 @@ import org.ejavdge.web.context.Credentials;
 import org.ejavdge.web.context.Location;
 import org.ejavdge.web.driver.WebDriver;
 import org.ejavdge.web.resource.HasStatus;
-import org.ejavdge.scalar.bytes.Verbose;
-import org.ejavdge.scalar.bytes.WithTimeout;
 
 import java.time.Duration;
 

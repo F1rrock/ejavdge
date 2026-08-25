@@ -1,0 +1,529 @@
+<html><head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="/ejudge/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/ejudge/jquery-ui.icon-font.css">
+    <script src="/ejudge/jquery.min.js"></script>
+    <script src="/ejudge/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/ejudge/unpriv.js"></script>
+    <script>
+        MathJax = {
+            chtml: {
+                scale: 1,
+                mtextInheritFont: true
+            },
+            options: {
+                enableMenu: false
+            }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async="" src="/ejudge/mathjax/tex-mml-chtml.js">
+    </script>
+    <script type="text/javascript">
+        var SID="41278822bb5d4aa9";
+        var NEW_SRV_ACTION_JSON_USER_STATE=175;
+        var NEW_SRV_ACTION_VIEW_PROBLEM_SUMMARY=137;
+        var self_url="http://0.0.0.0:90/ejudge";
+        var script_name="/ejudge";
+        var jsonState = { "h": 11, "m": 55, "s": 37, "d": 25, "o": 8, "y": 2026 };
+        var updateFailedMessage = "STATUS UPDATE FAILED!";
+        var testingInProgressMessage = "TESTING IN PROGRESS...";
+        var testingCompleted = "TESTING COMPLETED";
+        var waitingTooLong = "REFRESH PAGE MANUALLY!";
+    </script>
+    <link rel="stylesheet" href="/ejudge/unpriv.css" type="text/css">
+    <link rel="stylesheet" href="/ejudge/unpriv3.css" type="text/css">
+
+
+    <title>vader [Test contest]: Submit a solution</title><style type="text/css">.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+</style><style type="text/css">.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+</style><style type="text/css">.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+</style><style id="MJX-CHTML-styles">
+    mjx-container[jax="CHTML"] {
+        line-height: 0;
+    }
+
+    mjx-container [space="1"] {
+        margin-left: .111em;
+    }
+
+    mjx-container [space="2"] {
+        margin-left: .167em;
+    }
+
+    mjx-container [space="3"] {
+        margin-left: .222em;
+    }
+
+    mjx-container [space="4"] {
+        margin-left: .278em;
+    }
+
+    mjx-container [space="5"] {
+        margin-left: .333em;
+    }
+
+    mjx-container [rspace="1"] {
+        margin-right: .111em;
+    }
+
+    mjx-container [rspace="2"] {
+        margin-right: .167em;
+    }
+
+    mjx-container [rspace="3"] {
+        margin-right: .222em;
+    }
+
+    mjx-container [rspace="4"] {
+        margin-right: .278em;
+    }
+
+    mjx-container [rspace="5"] {
+        margin-right: .333em;
+    }
+
+    mjx-container [size="s"] {
+        font-size: 70.7%;
+    }
+
+    mjx-container [size="ss"] {
+        font-size: 50%;
+    }
+
+    mjx-container [size="Tn"] {
+        font-size: 60%;
+    }
+
+    mjx-container [size="sm"] {
+        font-size: 85%;
+    }
+
+    mjx-container [size="lg"] {
+        font-size: 120%;
+    }
+
+    mjx-container [size="Lg"] {
+        font-size: 144%;
+    }
+
+    mjx-container [size="LG"] {
+        font-size: 173%;
+    }
+
+    mjx-container [size="hg"] {
+        font-size: 207%;
+    }
+
+    mjx-container [size="HG"] {
+        font-size: 249%;
+    }
+
+    mjx-container [width="full"] {
+        width: 100%;
+    }
+
+    mjx-box {
+        display: inline-block;
+    }
+
+    mjx-block {
+        display: block;
+    }
+
+    mjx-itable {
+        display: inline-table;
+    }
+
+    mjx-row {
+        display: table-row;
+    }
+
+    mjx-row > * {
+        display: table-cell;
+    }
+
+    mjx-mtext {
+        display: inline-block;
+    }
+
+    mjx-mstyle {
+        display: inline-block;
+    }
+
+    mjx-merror {
+        display: inline-block;
+        color: red;
+        background-color: yellow;
+    }
+
+    mjx-mphantom {
+        visibility: hidden;
+    }
+
+    _::-webkit-full-page-media, _:future, :root mjx-container {
+        will-change: opacity;
+    }
+
+    mjx-assistive-mml {
+        position: absolute !important;
+        top: 0px;
+        left: 0px;
+        clip: rect(1px, 1px, 1px, 1px);
+        padding: 1px 0px 0px 0px !important;
+        border: 0px !important;
+        display: block !important;
+        width: auto !important;
+        overflow: hidden !important;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    mjx-assistive-mml[display="block"] {
+        width: 100% !important;
+    }
+
+    mjx-c::before {
+        display: block;
+        width: 0;
+    }
+
+    .MJX-TEX {
+        font-family: MJXZERO, MJXTEX;
+    }
+
+    .TEX-B {
+        font-family: MJXZERO, MJXTEX-B;
+    }
+
+    .TEX-I {
+        font-family: MJXZERO, MJXTEX-I;
+    }
+
+    .TEX-MI {
+        font-family: MJXZERO, MJXTEX-MI;
+    }
+
+    .TEX-BI {
+        font-family: MJXZERO, MJXTEX-BI;
+    }
+
+    .TEX-S1 {
+        font-family: MJXZERO, MJXTEX-S1;
+    }
+
+    .TEX-S2 {
+        font-family: MJXZERO, MJXTEX-S2;
+    }
+
+    .TEX-S3 {
+        font-family: MJXZERO, MJXTEX-S3;
+    }
+
+    .TEX-S4 {
+        font-family: MJXZERO, MJXTEX-S4;
+    }
+
+    .TEX-A {
+        font-family: MJXZERO, MJXTEX-A;
+    }
+
+    .TEX-C {
+        font-family: MJXZERO, MJXTEX-C;
+    }
+
+    .TEX-CB {
+        font-family: MJXZERO, MJXTEX-CB;
+    }
+
+    .TEX-FR {
+        font-family: MJXZERO, MJXTEX-FR;
+    }
+
+    .TEX-FRB {
+        font-family: MJXZERO, MJXTEX-FRB;
+    }
+
+    .TEX-SS {
+        font-family: MJXZERO, MJXTEX-SS;
+    }
+
+    .TEX-SSB {
+        font-family: MJXZERO, MJXTEX-SSB;
+    }
+
+    .TEX-SSI {
+        font-family: MJXZERO, MJXTEX-SSI;
+    }
+
+    .TEX-SC {
+        font-family: MJXZERO, MJXTEX-SC;
+    }
+
+    .TEX-T {
+        font-family: MJXZERO, MJXTEX-T;
+    }
+
+    .TEX-V {
+        font-family: MJXZERO, MJXTEX-V;
+    }
+
+    .TEX-VB {
+        font-family: MJXZERO, MJXTEX-VB;
+    }
+
+    mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
+        font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
+    }
+
+    @font-face /* 0 */ {
+        font-family: MJXZERO;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Zero.woff") format("woff");
+    }
+
+    @font-face /* 1 */ {
+        font-family: MJXTEX;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff") format("woff");
+    }
+
+    @font-face /* 2 */ {
+        font-family: MJXTEX-B;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Main-Bold.woff") format("woff");
+    }
+
+    @font-face /* 3 */ {
+        font-family: MJXTEX-I;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff") format("woff");
+    }
+
+    @font-face /* 4 */ {
+        font-family: MJXTEX-MI;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Main-Italic.woff") format("woff");
+    }
+
+    @font-face /* 5 */ {
+        font-family: MJXTEX-BI;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Math-BoldItalic.woff") format("woff");
+    }
+
+    @font-face /* 6 */ {
+        font-family: MJXTEX-S1;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Size1-Regular.woff") format("woff");
+    }
+
+    @font-face /* 7 */ {
+        font-family: MJXTEX-S2;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff") format("woff");
+    }
+
+    @font-face /* 8 */ {
+        font-family: MJXTEX-S3;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Size3-Regular.woff") format("woff");
+    }
+
+    @font-face /* 9 */ {
+        font-family: MJXTEX-S4;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Size4-Regular.woff") format("woff");
+    }
+
+    @font-face /* 10 */ {
+        font-family: MJXTEX-A;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_AMS-Regular.woff") format("woff");
+    }
+
+    @font-face /* 11 */ {
+        font-family: MJXTEX-C;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Regular.woff") format("woff");
+    }
+
+    @font-face /* 12 */ {
+        font-family: MJXTEX-CB;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Bold.woff") format("woff");
+    }
+
+    @font-face /* 13 */ {
+        font-family: MJXTEX-FR;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Fraktur-Regular.woff") format("woff");
+    }
+
+    @font-face /* 14 */ {
+        font-family: MJXTEX-FRB;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Fraktur-Bold.woff") format("woff");
+    }
+
+    @font-face /* 15 */ {
+        font-family: MJXTEX-SS;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_SansSerif-Regular.woff") format("woff");
+    }
+
+    @font-face /* 16 */ {
+        font-family: MJXTEX-SSB;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_SansSerif-Bold.woff") format("woff");
+    }
+
+    @font-face /* 17 */ {
+        font-family: MJXTEX-SSI;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff") format("woff");
+    }
+
+    @font-face /* 18 */ {
+        font-family: MJXTEX-SC;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Script-Regular.woff") format("woff");
+    }
+
+    @font-face /* 19 */ {
+        font-family: MJXTEX-T;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Typewriter-Regular.woff") format("woff");
+    }
+
+    @font-face /* 20 */ {
+        font-family: MJXTEX-V;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Vector-Regular.woff") format("woff");
+    }
+
+    @font-face /* 21 */ {
+        font-family: MJXTEX-VB;
+        src: url("http://0.0.0.0:90/ejudge/mathjax/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
+    }
+</style></head>
+<body onload="startClock()"><div id="main-cont"><div id="container"><div id="l12-col"><div id="l12">
+    <div class="main_phrase">vader [Test contest]: Submit a solution</div>
+    <div id="main-menu">
+        <ul>
+
+
+
+
+            <li><div class="contest_actions_item"><a class="menu" href="http://0.0.0.0:90/ejudge?SID=41278822bb5d4aa9&amp;action=2">Info</a></div></li><li><div class="contest_actions_item"><a class="menu" href="http://0.0.0.0:90/ejudge?SID=41278822bb5d4aa9&amp;action=137">Summary</a></div></li><li><div class="contest_actions_item"><a class="menu" href="http://0.0.0.0:90/ejudge?SID=41278822bb5d4aa9&amp;action=140">Submissions</a></div></li><li><div class="contest_actions_item"><a class="menu" href="http://0.0.0.0:90/ejudge?SID=41278822bb5d4aa9&amp;action=94">Standings</a></div></li><li><div class="contest_actions_item"><a class="menu" href="http://0.0.0.0:90/ejudge?SID=41278822bb5d4aa9&amp;action=141">Submit clar</a></div></li><li><div class="contest_actions_item"><a class="menu" href="http://0.0.0.0:90/ejudge?SID=41278822bb5d4aa9&amp;action=142">Clars</a></div></li>
+
+            <li><div class="contest_actions_item"><a class="menu" href="http://0.0.0.0:90/ejudge?SID=41278822bb5d4aa9&amp;action=143">Settings</a></div></li>
+
+
+            <li><div class="contest_actions_item"><a class="menu" href="http://0.0.0.0:90/ejudge?SID=41278822bb5d4aa9&amp;action=74">Logout [vader]</a></div></li>
+        </ul>
+    </div>
+</div></div>
+
+    <div id="l11"><img src="/ejudge/logo3.png" alt="logo"></div>
+
+    <div id="l13">
+        <div class="server_status_on" id="statusLine">
+            <div id="currentTime">16:16:10</div> / <b>RUNNING</b><div id="reloadButton" style="visibility: hidden">/ <a class="menu" onclick="reloadPage()"><b>[ REFRESH ]</b></a></div><div id="statusString" style="visibility: hidden"></div></div>
+        <br>
+        <table class="probNav">
+            <tbody><tr id="probNavTopList"><td width="100%" class="nTopNavList"><ul class="nTopNavList"><li class="first-rad"><div class="nProbEmpty"><a class="tab" href="http://0.0.0.0:90/ejudge?SID=41278822bb5d4aa9&amp;action=139&amp;prob_id=1">A</a></div></li><li><div class="nProbEmpty"><a class="tab" href="http://0.0.0.0:90/ejudge?SID=41278822bb5d4aa9&amp;action=139&amp;prob_id=2">B</a></div></li><li id="nTopNavSelected"><div class="nProbCurrent"><a class="tab" href="http://0.0.0.0:90/ejudge?SID=41278822bb5d4aa9&amp;action=139&amp;prob_id=3">WithLinks</a></div></li></ul></td></tr>
+            <tr><td id="probNavTaskArea" valign="top"><div id="probNavTaskArea-ins">
+
+
+
+
+                <h2>Submit a solution for WithLinks</h2>
+
+                <table class="line-table-wb">
+
+
+
+
+
+                    <tbody><tr><td><b>Time limit:</b></td><td><tt>1 s</tt></td></tr>
+
+
+                    <tr><td><b>Real time limit:</b></td><td><tt>5 s</tt></td></tr>
+
+
+                    <tr><td><b>Memory limit:</b></td><td><tt>1G</tt></td></tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </tbody></table>
+
+                <h3>with file</h3><p>На стандартном потоке ввода задаются два целых числа, не меньшие
+                -32000 и не большие 32000.
+                На стандартный поток вывода напечатайте сумму этих чисел.
+            </p>
+                <a href="https://google.com">google</a>
+                <p>
+                    Числа задаются по одному в строке. Пробельные символы перед числом и после
+                    него отсутствуют. Пустые строки в вводе отсутствуют.
+                </p>
+                <a href="https://youtube.com">youtube</a>
+                <a href="https://apple.com">apple</a>
+
+
+                <p>&nbsp;</p><div id="ej-submit-tabs">
+
+                <div id="ej-main-submit-tab">
+                    <h3>Submit a solution</h3><form method="post" enctype="multipart/form-data" action="http://0.0.0.0:90/ejudge"><input type="hidden" name="SID" value="41278822bb5d4aa9"><input type="hidden" name="prob_id" value="3">
+                    <table class="b0">
+                        <tbody><tr><td class="b0">Language:</td><td class="b0"><select name="lang_id"><option value=""></option><option value="2">gcc - GNU C 14.2.1</option><option value="3">g++ - GNU C++ 14.2.1</option><option value="14">perl - Perl 5.38.4</option><option value="23">python3 - Python3 3.12.10</option><option value="25">make - Make 4.4.1</option><option value="28">gcc-vg - GNU C (valgrind) 14.2.1</option><option value="29">g++-vg - GNU C++ (valgrind) 14.2.1</option><option value="51">clang - clang C 18.1.8</option><option value="52">clang++ - clang C++ 18.1.8</option><option value="54">make-vg - Make (valgrind) 4.4.1</option><option value="67">gas - GNU AS 14.2.1</option><option value="70">rust - Rust 1.86.0</option><option value="72">node - NodeJS 20.19.1</option><option value="81">bash - Bash 5.2.26(1)-release</option><option value="82">r - R 4.4.3 (2025-02-28)</option></select></td></tr>
+                        <tr><td class="b0">File</td><td class="b0"><input type="file" name="file"></td></tr>
+                        <tr><td class="b0">Send!</td><td class="b0"><input type="submit" name="action_40" value="Send!"></td></tr></tbody></table></form>
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+            </div></td></tr>
+            <tr id="probNavBottomList"><td width="100%" class="nBottomNavList"><ul class="nBottomNavList"><li id="first-rad"><div class="nProbEmpty"><a class="tab" href="http://0.0.0.0:90/ejudge?SID=41278822bb5d4aa9&amp;action=139&amp;prob_id=1">A</a></div></li><li><div class="nProbEmpty"><a class="tab" href="http://0.0.0.0:90/ejudge?SID=41278822bb5d4aa9&amp;action=139&amp;prob_id=2">B</a></div></li><li id="nBottomNavSelected"><div class="nProbCurrent"><a class="tab" href="http://0.0.0.0:90/ejudge?SID=41278822bb5d4aa9&amp;action=139&amp;prob_id=3">WithLinks</a></div></li></ul></td></tr></tbody></table>
+        <div id="footer"><p class="ejudge_copyright"><a href="https://ejudge.ru">ejudge 3.13.0 #1 (2026-03-31 17:55:48)</a>.</p>
+            <p class="ejudge_copyright">Copyright © 2000-2026 Alexander Chernov.</p>
+        </div>
+    </div>
+</div>
+</div>
+
+
+</body></html>

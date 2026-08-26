@@ -13,7 +13,7 @@ public final class InnerText implements DocPath {
 
     public InnerText(final Text t, final DocPath p) {
         this.src = new Stencil(
-            new Text.Of("string-join(%s/text(), '%s')"),
+            new Text.Of("string-join(%s//text(), '%s')"),
             new TextOfPath(p),
             t
         );

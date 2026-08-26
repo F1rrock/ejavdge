@@ -13,7 +13,7 @@ public final class LinksOnly implements DocPath {
 
     public LinksOnly(final Text t, final DocPath p) {
         this.src = new Stencil(
-            new Text.Of("string-join(%s/@href, '%s')"),
+            new Text.Of("string-join(%s//@href, '%s')"),
             new TextOfPath(
                 new OnlyTag("a", p)
             ),

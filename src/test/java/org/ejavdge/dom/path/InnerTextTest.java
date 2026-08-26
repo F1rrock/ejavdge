@@ -7,7 +7,7 @@ import org.ejavdge.scalar.text.Text;
 public final class InnerTextTest extends TestCase {
     public void testDefaultSeparator() {
         assertEquals(
-            "string-join(//*/text(), '\n')",
+            "string-join(//*//text(), '\n')",
             new InnerText(
                 new DocPath.Of("//*")
             ).view()
@@ -16,7 +16,7 @@ public final class InnerTextTest extends TestCase {
 
     public void testCustomSeparator() {
         assertEquals(
-            "string-join(//*/text(), ', ')",
+            "string-join(//*//text(), ', ')",
             new InnerText(
                 new Text.Of(", "),
                 new DocPath.Of("//*")

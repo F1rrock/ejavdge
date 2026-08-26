@@ -7,7 +7,7 @@ import org.ejavdge.scalar.text.Text;
 public final class LinksOnlyTest extends TestCase {
     public void testDefaultSeparator() {
         assertEquals(
-            "string-join(//*[local-name() = 'a']/@href, '\n')",
+            "string-join(//*[local-name() = 'a']//@href, '\n')",
             new LinksOnly(
                 new DocPath.Of("//*")
             ).view()
@@ -16,7 +16,7 @@ public final class LinksOnlyTest extends TestCase {
 
     public void testCustomSeparator() {
         assertEquals(
-            "string-join(//*[local-name() = 'a']/@href, ', ')",
+            "string-join(//*[local-name() = 'a']//@href, ', ')",
             new LinksOnly(
                 new Text.Of(", "),
                 new DocPath.Of("//*")

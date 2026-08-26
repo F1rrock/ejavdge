@@ -6,9 +6,9 @@ import org.ejavdge.error.InvariantViolation;
 public final class ChildrenOfTest extends TestCase {
     public void testOfRoot() {
         assertEquals(
-            "//*/*",
+            "//*[local-name()='div']//*",
             new ChildrenOf(
-                new DocPath.Of("//*")
+                new DocPath.Of("//*[local-name()='div']")
             ).view()
         );
     }

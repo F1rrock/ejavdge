@@ -9,7 +9,7 @@ public final class ChildrenOf implements DocPath {
 
     public ChildrenOf(final DocPath p) {
         this.src = new Stencil(
-            new Text.Of("%s/*"),
+            new Text.Of("%s//*"),
             new TextOfPath(p)
         );
     }

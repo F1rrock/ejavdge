@@ -9,10 +9,10 @@ import org.ejavdge.scalar.text.NonEmpty;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.scalar.text.TextAbout;
 
-public final class Available implements Text {
+public final class AvailableProbs implements Text {
     private final Text origin;
 
-    public Available(final XmlEngine e, final MainPage p) {
+    public AvailableProbs(final XmlEngine e, final MainPage p) {
         this(
             new TextAbout(
                 "available problems",
@@ -44,7 +44,7 @@ public final class Available implements Text {
         );
     }
 
-    public Available(final Text t) {
+    public AvailableProbs(final Text t) {
         this.origin = t;
     }
 

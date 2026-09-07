@@ -1,7 +1,6 @@
 package org.ejavdge.app.setup;
 
 import org.ejavdge.error.InvariantViolation;
-import org.ejavdge.scalar.text.NonEmpty;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.scalar.text.TextAbout;
 import org.ejavdge.workspace.env.ValueOf;

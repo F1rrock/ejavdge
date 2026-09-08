@@ -22,6 +22,7 @@ public final class WithTimeout implements Bytes {
     }
 
     @Override
+    @SuppressWarnings("PMD.PreserveStackTrace")
     public byte[] content() throws InvariantViolation {
         final var pool = this.executor.get();
         try {

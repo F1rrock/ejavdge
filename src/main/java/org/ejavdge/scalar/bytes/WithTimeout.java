@@ -40,7 +40,7 @@ public final class WithTimeout implements Bytes {
                 throw new InvariantViolation(
                     "Bytes could not be obtained " +
                         "because the origin failed.",
-                    e
+                    e.getCause()
                 );
             } catch (final TimeoutException e) {
                 throw new InvariantViolation(
@@ -49,7 +49,7 @@ public final class WithTimeout implements Bytes {
                 );
             }
         } finally {
-            this.executor.get().shutdownNow();
+            pool.shutdownNow();
         }
     }
 }

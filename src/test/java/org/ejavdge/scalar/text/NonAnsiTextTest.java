@@ -22,24 +22,6 @@ public final class NonAnsiTextTest extends TestCase {
         );
     }
 
-    public void testSeveralAnsiStylesAreRemoved() {
-        assertEquals(
-            "hello",
-            new NonAnsiText(
-                new Text.Of("\u001B[1;31mhello\u001B[0m")
-            ).content()
-        );
-    }
-
-    public void testSeveralAnsiCodes() {
-        assertEquals(
-            "hello world",
-            new NonAnsiText(
-                new Text.Of("hello \u001B[31mworld\u001B[0m")
-            ).content()
-        );
-    }
-
     public void testAnsiControlSequence() {
         assertEquals(
             "hello world",

@@ -2,7 +2,6 @@ package org.ejavdge.workspace.out;
 
 import junit.framework.TestCase;
 import org.ejavdge.error.InvariantViolation;
-import org.ejavdge.scalar.text.NonAnsiText;
 import org.ejavdge.scalar.text.Text;
 
 public final class WithoutAnsiTest extends TestCase {
@@ -19,23 +18,22 @@ public final class WithoutAnsiTest extends TestCase {
         new WithoutAnsi(
             t -> builder.append(t.content())
         ).write(new Text.Of("\u001B[31mhello\u001B[0m"));
-        assertEquals("hello world", builder.toString());
+        assertEquals("hello", builder.toString());
     }
 
     public void testAnsiControlSequence() {
-        assertEquals(
-            "hello world",
-            new NonAnsiText(
-                new Text.Of("hello \u001B[2Jworld")
-            ).content()
-        );
+        final var builder = new StringBuilder();
+        new WithoutAnsi(
+            t -> builder.append(t.content())
+        ).write(new Text.Of("hello \u001B[2Jworld"));
+        assertEquals("hello world", builder.toString());
     }
 
     public void testBrokenOrigin() {
         try {
-            new NonAnsiText(() -> {
+            new WithoutAnsi(t -> {
                 throw new InvariantViolation("there is no text");
-            }).content();
+            }).write(new Text.Of("hello world"));
         } catch (final InvariantViolation err) {
             return;
         }

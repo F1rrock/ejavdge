@@ -8,11 +8,17 @@ import org.ejavdge.scalar.text.Text;
 import org.ejavdge.scalar.text.Trimmed;
 import org.ejavdge.scalar.text.palette.Red;
 
-public final class WithReport implements Out {
+public final class WithDetailedReport implements Out {
     private final Out origin;
+    private final Out err;
 
-    public WithReport(final Out o) {
+    public WithDetailedReport(final Out o) {
+        this(o, o);
+    }
+
+    public WithDetailedReport(final Out o, final Out e) {
         this.origin = o;
+        this.err = e;
     }
 
     @Override
@@ -20,7 +26,7 @@ public final class WithReport implements Out {
         try {
             this.origin.write(t);
         } catch (final InvariantViolation e) {
-            this.origin.write(
+            this.err.write(
                 new Red(
                     new Stencil(
                         new Text.Of("Error: %s"),

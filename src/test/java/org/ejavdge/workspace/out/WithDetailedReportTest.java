@@ -37,7 +37,7 @@ public final class WithDetailedReportTest extends TestCase {
     public void testAlternateErrorOut() throws InvariantViolation {
         final var err = new StringBuilder();
         new WithDetailedReport(
-            t -> {},
+            Text::content,
             t -> err.append(t.content())
         ).write(
             () -> {

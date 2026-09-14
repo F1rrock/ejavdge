@@ -4,9 +4,9 @@ import junit.framework.TestCase;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.text.Text;
 
-public final class WithReportTest extends TestCase {
+public final class WithDetailedReportTest extends TestCase {
     public void testWritingOfText() throws InvariantViolation {
-        new WithReport(
+        new WithDetailedReport(
             t -> assertEquals(
                 "hello",
                 t.content()
@@ -16,7 +16,7 @@ public final class WithReportTest extends TestCase {
 
     public void testReportingError() throws InvariantViolation {
         final var output = new StringBuilder();
-        new WithReport(t -> output.append(t.content())).write(
+        new WithDetailedReport(t -> output.append(t.content())).write(
             () -> {
                 throw new InvariantViolation(
                     "There is no text",
@@ -31,6 +31,29 @@ public final class WithReportTest extends TestCase {
                 "\nCaused by: There is no origin" +
                 "\u001B[0m",
             output.toString()
+        );
+    }
+
+    public void testAlternateErrorOut() throws InvariantViolation {
+        final var err = new StringBuilder();
+        new WithDetailedReport(
+            Text::content,
+            t -> err.append(t.content())
+        ).write(
+            () -> {
+                throw new InvariantViolation(
+                    "There is no text",
+                    new InvariantViolation(
+                        "There is no origin"
+                    )
+                );
+            }
+        );
+        assertEquals(
+            "\u001B[31mError: There is no text" +
+                "\nCaused by: There is no origin" +
+                "\u001B[0m",
+            err.toString()
         );
     }
 }

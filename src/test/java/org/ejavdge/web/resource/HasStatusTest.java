@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.bytes.Bytes;
 import org.ejavdge.scalar.num.Num;
+import org.ejavdge.scalar.text.Text;
 
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -115,6 +116,21 @@ public final class HasStatusTest extends TestCase {
             assertEquals(2, calls.get());
         } catch (final InvariantViolation e) {
             fail("InvariantViolation");
+        }
+    }
+
+    public void testCustomErrorMessage() {
+        final var message = "There is invalid credentials.";
+        try {
+            new HasStatus(
+                new Num.Of(302),
+                new Text.Of(message),
+                () -> "HTTP/1.1 200 OK\r\nLocation: /new\r\n\r\n"
+                    .getBytes(StandardCharsets.UTF_8)
+            ).content();
+            fail("InvariantViolation");
+        } catch (final InvariantViolation e) {
+            assertEquals(message, e.getMessage());
         }
     }
 }

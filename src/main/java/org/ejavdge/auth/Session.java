@@ -24,6 +24,7 @@ public final class Session implements Bytes {
                             new WithTimeout(
                                 new HasStatus(
                                     new Num.Of(302),
+                                    new Text.Of("There is invalid credentials."),
                                     new LoginReply(d, l, c)
                                 ),
                                 Duration.ofSeconds(5)

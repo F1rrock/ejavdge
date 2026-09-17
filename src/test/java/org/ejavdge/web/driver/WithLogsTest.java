@@ -11,12 +11,13 @@ import org.ejavdge.web.spec.HttpSpec;
 import org.ejavdge.web.spec.Request;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public final class WithLoggingTest extends TestCase {
+public final class WithLogsTest extends TestCase {
     public void testWithLog() {
         final var log = new FakeLogger();
         log.setEnabled(true);
-        new WithLogging(
+        new WithLogsDriver(
             (loc, req) -> (
                 "Response to: " + new Utf8Text(
                     new Bytes.Of(req.bytes())
@@ -51,7 +52,7 @@ public final class WithLoggingTest extends TestCase {
     public void testWithoutLog() {
         final var log = new FakeLogger();
         log.setEnabled(false);
-        new WithLogging(
+        new WithLogsDriver(
             (loc, req) -> (
                 "Response to: " + new Utf8Text(
                     new Bytes.Of(req.bytes())
@@ -80,7 +81,7 @@ public final class WithLoggingTest extends TestCase {
         try {
             final var log = new FakeLogger();
             log.setEnabled(false);
-            new WithLogging(
+            new WithLogsDriver(
                 (loc, req) -> {
                     throw new InvariantViolation("origin failed intentionally");
                 },
@@ -105,5 +106,35 @@ public final class WithLoggingTest extends TestCase {
             return;
         }
         fail("Expected InvariantViolation from origin");
+    }
+
+    public void testRequestBytesCalls() {
+        final var log = new FakeLogger();
+        log.setEnabled(true);
+        final var calls = new AtomicInteger(0);
+        new WithLogsDriver(
+            (loc, req) -> (
+                "Response to: " + new Utf8Text(
+                    new Bytes.Of(req.bytes())
+                ).content()
+            ).getBytes(StandardCharsets.UTF_8),
+            log
+        ).resourceOf(
+            new Location(
+                new Text.Of("/"),
+                new Text.Of("example.com"),
+                new Num.Of(80)
+            ),
+            new Request(
+                (HttpSpec) () -> {
+                    calls.incrementAndGet();
+                    return """
+                        GET / HTTP/1.1\r
+                        Host: example.com\r
+                        """.getBytes(StandardCharsets.UTF_8);
+                }
+            )
+        );
+        assertEquals(calls.get(), 1);
     }
 }

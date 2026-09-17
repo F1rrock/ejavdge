@@ -2,7 +2,7 @@ package org.ejavdge.app.setup;
 
 import org.ejavdge.web.context.Location;
 import org.ejavdge.web.driver.WebDriver;
-import org.ejavdge.web.driver.WithLogging;
+import org.ejavdge.web.driver.WithLogsDriver;
 import org.ejavdge.web.driver.jdk.socket.JdkSocket;
 import org.ejavdge.web.spec.Request;
 import org.slf4j.Logger;
@@ -16,7 +16,7 @@ public final class PresetDriver implements WebDriver {
     }
 
     public PresetDriver(final Logger l) {
-        this.origin = new WithLogging(
+        this.origin = new WithLogsDriver(
             new JdkSocket(),
             l
         );

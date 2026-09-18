@@ -19,6 +19,18 @@ public final class NonEmptyTest extends TestCase {
         } catch (final InvariantViolation v) {
             return;
         }
-        fail("InvariantViolation expected");
+        fail("InvariantViolation");
+    }
+
+    public void testWithCustomMessage() {
+        try {
+            new NonEmpty(
+                new Empty(),
+                new Text.Of("There is a message.")
+            ).content();
+            fail("InvariantViolation");
+        } catch (final InvariantViolation e) {
+            assertEquals("There is a message.", e.getMessage());
+        }
     }
 }

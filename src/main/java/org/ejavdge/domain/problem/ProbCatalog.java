@@ -38,7 +38,8 @@ public final class ProbCatalog implements Text {
                                 )
                             )
                         )
-                    )
+                    ),
+                    new Text.Of("There is no available problems.")
                 )
             )
         );

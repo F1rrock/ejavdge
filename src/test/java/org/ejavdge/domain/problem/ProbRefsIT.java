@@ -10,7 +10,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.Arrays;
 
-public final class ProbBriefIT extends TestCase {
+public final class ProbRefsIT extends TestCase {
     private String problem;
 
     @Override
@@ -24,7 +24,7 @@ public final class ProbBriefIT extends TestCase {
 
     public void testForNbsp() {
         assertFalse(
-            new ProbBrief(
+            new ProbRefs(
                 new JsoupWithSaxon(),
                 new ProblemPage(
                     new Text.Of(this.problem)
@@ -34,78 +34,61 @@ public final class ProbBriefIT extends TestCase {
     }
 
     public void testOfTrimmedLines() {
-        final var brief = new ProbBrief(
+        final var refs = new ProbRefs(
             new JsoupWithSaxon(),
             new ProblemPage(
                 new Text.Of(this.problem)
             )
         ).content();
         assertEquals(
-            Arrays.stream(brief.split("\n")).toList(),
-            Arrays.stream(brief.split("\n")).map(String::trim).toList()
+            Arrays.stream(refs.split("\n")).toList(),
+            Arrays.stream(refs.split("\n")).map(String::trim).toList()
         );
     }
 
-    public void testBriefBase() {
+    public void testGoogleRef() {
         assertTrue(
-            new ProbBrief(
+            new ProbRefs(
                 new JsoupWithSaxon(),
                 new ProblemPage(
                     new Text.Of(this.problem)
                 )
-            ).content().startsWith(
-                """
-                Submit a solution for WithLinks
-                with file
-                На стандартном потоке ввода задаются два целых числа, не меньшие
-                -32000 и не большие 32000.
-                На стандартный поток вывода напечатайте сумму этих чисел.
-                
-                google
-                
-                Числа задаются по одному в строке. Пробельные символы перед числом и после
-                него отсутствуют. Пустые строки в вводе отсутствуют.
-                
-                youtube
-                apple"""
-            )
+            ).content().startsWith("https://google.com")
         );
     }
 
-    public void testInnerLinks() {
-        assertFalse(
-            new ProbBrief(
-                new JsoupWithSaxon(),
-                new ProblemPage(
-                    new Text.Of(this.problem)
-                )
-            ).content().endsWith(
-                """
-                https://google.com
-                https://youtube.com
-                https://apple.com"""
+    public void testNoInnerText() {
+        final var refs = new ProbRefs(
+            new JsoupWithSaxon(),
+            new ProblemPage(
+                new Text.Of(this.problem)
             )
-        );
+        ).content();
+        assertFalse(refs.contains("На стандартном потоке"));
     }
 
-    public void testFullBrief() {
+    public void testOnlyLinks() {
+        final var refs = new ProbRefs(
+            new JsoupWithSaxon(),
+            new ProblemPage(
+                new Text.Of(this.problem)
+            )
+        ).content();
+        for (final String line : refs.split("\n")) {
+            assertTrue(
+                "Not a link: " + line,
+                line.startsWith("http://") || line.startsWith("https://")
+            );
+        }
+    }
+
+    public void testFullListOfRefs() {
         assertEquals(
-        """
-            Submit a solution for WithLinks
-            with file
-            На стандартном потоке ввода задаются два целых числа, не меньшие
-            -32000 и не большие 32000.
-            На стандартный поток вывода напечатайте сумму этих чисел.
-            
-            google
-            
-            Числа задаются по одному в строке. Пробельные символы перед числом и после
-            него отсутствуют. Пустые строки в вводе отсутствуют.
-            
-            youtube
-            apple
-            """,
-            new ProbBrief(
+            """
+            https://google.com
+            https://youtube.com
+            https://apple.com""",
+            new ProbRefs(
                 new JsoupWithSaxon(),
                 new ProblemPage(
                     new Text.Of(this.problem)
@@ -115,8 +98,8 @@ public final class ProbBriefIT extends TestCase {
     }
 
     public void testWrongPage() {
-        try {
-            new ProbBrief(
+        assertTrue(
+            new ProbRefs(
                 new JsoupWithSaxon(),
                 new ProblemPage(
                     new Text.Of(
@@ -129,16 +112,13 @@ public final class ProbBriefIT extends TestCase {
                         """
                     )
                 )
-            ).content();
-        } catch (final InvariantViolation e) {
-            return;
-        }
-        fail("InvariantViolation");
+            ).content().isEmpty()
+        );
     }
 
     public void testBrokenPage() {
         try {
-            new ProbBrief(
+            new ProbRefs(
                 new JsoupWithSaxon(),
                 new ProblemPage(
                     () -> {
@@ -154,7 +134,7 @@ public final class ProbBriefIT extends TestCase {
 
     public void testBrokenEngine() {
         try {
-            new ProbBrief(
+            new ProbRefs(
                 (xml, path) -> {
                     throw new InvariantViolation("There is no engine.");
                 },

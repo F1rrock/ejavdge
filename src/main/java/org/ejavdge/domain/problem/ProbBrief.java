@@ -26,7 +26,7 @@ public final class ProbBrief implements Text {
                                 new WithoutNbsp(
                                     new XmlSelection(
                                         e, p,
-                                        new BindOfPath(
+                                        new InnerText(
                                             new WithoutClass(
                                                 "line-table-wb",
                                                 new WithoutTags(
@@ -44,10 +44,6 @@ public final class ProbBrief implements Text {
                                                         )
                                                     )
                                                 )
-                                            ),
-                                            path -> new AllOf(
-                                                new InnerText(new DocPath.Of(path)),
-                                                new LinksOnly(new DocPath.Of(path))
                                             )
                                         )
                                     )

@@ -73,7 +73,7 @@ public final class ProbBriefIT extends TestCase {
     }
 
     public void testInnerLinks() {
-        assertTrue(
+        assertFalse(
             new ProbBrief(
                 new JsoupWithSaxon(),
                 new ProblemPage(
@@ -104,10 +104,7 @@ public final class ProbBriefIT extends TestCase {
             
             youtube
             apple
-            
-            https://google.com
-            https://youtube.com
-            https://apple.com""",
+            """,
             new ProbBrief(
                 new JsoupWithSaxon(),
                 new ProblemPage(

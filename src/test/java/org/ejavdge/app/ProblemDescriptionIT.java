@@ -93,6 +93,7 @@ public final class ProblemDescriptionIT extends TestCase {
                 youtube
                 apple
                 
+                Used references:
                 https://google.com
                 https://youtube.com
                 https://apple.com""",

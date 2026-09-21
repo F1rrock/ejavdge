@@ -5,6 +5,10 @@ import org.ejavdge.error.InvariantViolation;
 public final class ContentBased implements Text {
     private final Text origin;
 
+    public ContentBased(final String s) {
+        this(new Text.Of(s));
+    }
+
     public ContentBased(final Text t) {
         this.origin = t;
     }

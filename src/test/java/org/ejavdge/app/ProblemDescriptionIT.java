@@ -78,7 +78,7 @@ public final class ProblemDescriptionIT extends TestCase {
                 out
             ).run();
             assertEquals(
-            """
+                """
                 Submit a solution for WithLinks
                 with file
                 На стандартном потоке ввода задаются два целых числа, не меньшие
@@ -86,15 +86,32 @@ public final class ProblemDescriptionIT extends TestCase {
                 На стандартный поток вывода напечатайте сумму этих чисел.
                 
                 google
+                attachment
                 
                 Числа задаются по одному в строке. Пробельные символы перед числом и после
                 него отсутствуют. Пустые строки в вводе отсутствуют.
                 
                 youtube
                 apple
+                Examples
+                Input
+                1
+                2
+                
+                Output
+                3
+                
+                Input
+                4
+                5
+                
+                Output
+                9
+                
                 
                 Used references:
                 https://google.com
+                https://example.com
                 https://youtube.com
                 https://apple.com""",
                 output.toString()

@@ -86,6 +86,7 @@ public final class ProbRefsIT extends TestCase {
         assertEquals(
             """
             https://google.com
+            https://example.com
             https://youtube.com
             https://apple.com""",
             new ProbRefs(

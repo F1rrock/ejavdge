@@ -132,7 +132,8 @@ public final class JavaProgramIT extends TestCase {
             new JavaProgram(
                 new JdkFile(
                     new File("/path/that/does/not/exist/Main.java")
-                )
+                ),
+                new Text.Of(".")
             ).outcomeOf(new Text.Of(""));
         } catch (final InvariantViolation e) {
             return;
@@ -142,6 +143,6 @@ public final class JavaProgramIT extends TestCase {
 
     private JavaProgram program(final String source) throws IOException {
         Files.writeString(this.tempFile.toPath(), source);
-        return new JavaProgram(new JdkFile(this.tempFile));
+        return new JavaProgram(new JdkFile(this.tempFile), new Text.Of("."));
     }
 }

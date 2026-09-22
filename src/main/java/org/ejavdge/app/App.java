@@ -1,6 +1,8 @@
 package org.ejavdge.app;
 
+import org.ejavdge.error.InvariantViolation;
+
 @FunctionalInterface
 public interface App {
-    void run();
+    void run() throws InvariantViolation;
 }

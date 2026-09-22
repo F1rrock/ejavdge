@@ -40,12 +40,14 @@ public final class DownloadingOf implements Effect {
                 ),
                 new BytesAbout(
                     "contents of attachment",
-                    new ResourceOf(
-                        d,
-                        new Location(
-                            new PathOf(u),
-                            new HostOf(u),
-                            new PortOf(u)
+                    new PayloadOf(
+                        new ResourceOf(
+                            d,
+                            new Location(
+                                new PathOf(u),
+                                new HostOf(u),
+                                new PortOf(u)
+                            )
                         )
                     )
                 )

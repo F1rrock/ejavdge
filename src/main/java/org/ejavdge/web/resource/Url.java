@@ -16,6 +16,10 @@ public final class Url implements Text {
         this.query = new Union(u.query, query);
     }
 
+    public Url(final String s) {
+        this(new Text.Of(s));
+    }
+
     public Url(final Text t) {
         this.base = t;
         this.query = new NoContext();

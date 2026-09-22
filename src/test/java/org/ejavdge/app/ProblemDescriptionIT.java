@@ -111,7 +111,7 @@ public final class ProblemDescriptionIT extends TestCase {
                 
                 Used references:
                 https://google.com
-                https://example.com
+                https://localhost:8000/sample.txt
                 https://youtube.com
                 https://apple.com""",
                 output.toString()

@@ -77,7 +77,7 @@ public final class ProbRefsIT extends TestCase {
         for (final String line : refs.split("\n")) {
             assertTrue(
                 "Not a link: " + line,
-                line.startsWith("http://") || line.startsWith("https://")
+                line.startsWith("http://localhost") || line.startsWith("https://")
             );
         }
     }
@@ -86,7 +86,7 @@ public final class ProbRefsIT extends TestCase {
         assertEquals(
             """
             https://google.com
-            https://example.com
+            https://localhost:8000/sample.txt
             https://youtube.com
             https://apple.com""",
             new ProbRefs(

@@ -8,12 +8,25 @@ import org.ejavdge.scalar.text.Utf8Text;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
-public final class JavaProgram implements Program {
+public final class JavaProgram implements ByteFile, Program {
     private final ByteFile file;
+    private final Text path;
 
-    public JavaProgram(final ByteFile f) {
+    public JavaProgram(final ByteFile f, final Text p) {
         this.file = f;
+        this.path = p;
+    }
+
+    @Override
+    public String name() throws InvariantViolation {
+        return this.file.name();
+    }
+
+    @Override
+    public byte[] content() throws InvariantViolation {
+        return this.file.content();
     }
 
     @Override
@@ -23,6 +36,7 @@ public final class JavaProgram implements Program {
             try {
                 Files.write(src, this.file.content());
                 final var p = new ProcessBuilder("java", src.toString())
+                    .directory(Path.of(this.path.content()).toFile())
                     .redirectErrorStream(true)
                     .start();
                 try {

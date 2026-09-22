@@ -26,9 +26,9 @@ import org.ejavdge.workspace.out.WritingOf;
 public final class LocalProbe implements App {
     private final Effect src;
 
-    public LocalProbe(final ByteFile f) {
+    public LocalProbe(final JavaProgram p) {
         this(
-            f,
+            p,
             new ContestResource(
                 new PresetDriver(),
                 new Location(
@@ -54,14 +54,14 @@ public final class LocalProbe implements App {
         );
     }
 
-    public LocalProbe(final ByteFile f, final ContestResource r, final Out o) {
+    public LocalProbe(final JavaProgram p, final ContestResource r, final Out o) {
         this(
             new WritingOf(
                 new Feedback(
                     new Green(new Text.Of("Success: all local tests passed")),
                     new Red(new Text.Of("Fail: some local tests failed")),
                     new VerdictBySamples(
-                        new JavaProgram(f),
+                        p,
                         new ProbExamples(
                             new ProbBrief(
                                 new PresetEngine(),
@@ -71,7 +71,7 @@ public final class LocalProbe implements App {
                                         new ProbByName(
                                             new PresetEngine(),
                                             new MainPage(r),
-                                            new ProbNameOf(f)
+                                            new ProbNameOf(p)
                                         )
                                     )
                                 )

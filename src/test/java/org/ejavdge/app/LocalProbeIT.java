@@ -5,6 +5,7 @@ import org.ejavdge.auth.Session;
 import org.ejavdge.contest.ContestResource;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.file.ByteFile;
+import org.ejavdge.file.JavaProgram;
 import org.ejavdge.scalar.bytes.Bytes;
 import org.ejavdge.scalar.num.Num;
 import org.ejavdge.scalar.text.Text;
@@ -44,7 +45,10 @@ public final class LocalProbeIT extends TestCase {
             final var problem = this.problemPage();
             final var output = new StringBuilder();
             new LocalProbe(
-                this.file(CORRECT),
+                new JavaProgram(
+                    this.file(CORRECT),
+                    new Text.Of(".")
+                ),
                 this.resource(
                     (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
                         .contains("prob_id=3")
@@ -68,7 +72,10 @@ public final class LocalProbeIT extends TestCase {
             final var problem = this.problemPage();
             final var output = new StringBuilder();
             new LocalProbe(
-                this.file(WRONG),
+                new JavaProgram(
+                    this.file(WRONG),
+                    new Text.Of(".")
+                ),
                 this.resource(
                     (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
                         .contains("prob_id=3")
@@ -94,7 +101,10 @@ public final class LocalProbeIT extends TestCase {
             final var problem = this.problemPage();
             final var calls = new AtomicInteger(0);
             new LocalProbe(
-                this.file(CORRECT),
+                new JavaProgram(
+                    this.file(CORRECT),
+                    new Text.Of(".")
+                ),
                 this.resource(
                     (loc, req) -> {
                         if (new String(req.bytes(), StandardCharsets.UTF_8)
@@ -121,7 +131,10 @@ public final class LocalProbeIT extends TestCase {
             final var problem = this.problemPage();
             final var calls = new AtomicInteger(0);
             new LocalProbe(
-                this.file(CORRECT),
+                new JavaProgram(
+                    this.file(CORRECT),
+                    new Text.Of(".")
+                ),
                 this.resource(
                     (loc, req) -> {
                         if (new String(req.bytes(), StandardCharsets.UTF_8)
@@ -147,7 +160,10 @@ public final class LocalProbeIT extends TestCase {
             final var main = this.mainPage();
             final var problem = this.problemPage();
             new LocalProbe(
-                this.file(CORRECT),
+                new JavaProgram(
+                    this.file(CORRECT),
+                    new Text.Of(".")
+                ),
                 new ContestResource(
                     (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
                         .contains("prob_id=3")
@@ -179,7 +195,10 @@ public final class LocalProbeIT extends TestCase {
     public void testBrokenDriver() {
         try {
             new LocalProbe(
-                this.file(CORRECT),
+                new JavaProgram(
+                    this.file(CORRECT),
+                    new Text.Of(".")
+                ),
                 this.resource(
                     (loc, req) -> {
                         throw new InvariantViolation("there is no resources.");

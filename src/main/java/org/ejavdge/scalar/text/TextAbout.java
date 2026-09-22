@@ -17,7 +17,9 @@ public final class TextAbout implements Text {
             return this.origin.content();
         } catch (final InvariantViolation err) {
             throw new InvariantViolation(
-                "problem with %s\n".formatted(this.subject),
+                """
+                problem with %s
+                """.formatted(this.subject),
                 err
             );
         }

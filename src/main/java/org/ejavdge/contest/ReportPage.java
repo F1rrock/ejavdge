@@ -16,8 +16,8 @@ public final class ReportPage implements Text {
         this(
             new TextAbout(
                 "report page",
-                new PayloadOf(
-                    new Utf8Text(
+                new Utf8Text(
+                    new PayloadOf(
                         new ContestResource(
                             cr,
                             new WithEntry(

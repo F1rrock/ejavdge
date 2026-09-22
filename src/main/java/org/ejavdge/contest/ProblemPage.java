@@ -16,8 +16,8 @@ public final class ProblemPage implements Text {
         this(
             new TextAbout(
                 "problem page",
-                new PayloadOf(
-                    new Utf8Text(
+                new Utf8Text(
+                    new PayloadOf(
                         new ContestResource(
                             r,
                             new WithEntry(

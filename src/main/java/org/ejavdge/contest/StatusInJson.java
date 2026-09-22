@@ -15,8 +15,8 @@ public final class StatusInJson implements Text {
         this(
             new TextAbout(
                 "run status",
-                new PayloadOf(
-                    new Utf8Text(
+                new Utf8Text(
+                    new PayloadOf(
                         new ContestResource(
                             r,
                             new WithEntry(

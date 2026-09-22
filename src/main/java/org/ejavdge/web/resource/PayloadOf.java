@@ -1,22 +1,25 @@
 package org.ejavdge.web.resource;
 
 import org.ejavdge.error.InvariantViolation;
-import org.ejavdge.scalar.text.Text;
+import org.ejavdge.scalar.bytes.Bytes;
 
-public final class PayloadOf implements Text {
-    private final Text origin;
+import java.nio.charset.StandardCharsets;
 
-    public PayloadOf(final Text t) {
-        this.origin = t;
+public final class PayloadOf implements Bytes {
+    private final Bytes origin;
+
+    public PayloadOf(final Bytes b) {
+        this.origin = b;
     }
 
     @Override
-    public String content() throws InvariantViolation {
-        final String full = this.origin.content();
+    public byte[] content() throws InvariantViolation {
+        final var full = new String(
+            this.origin.content(),
+            StandardCharsets.ISO_8859_1
+        );
         final int idx = full.indexOf("\r\n\r\n");
-        if (idx == -1) {
-            return full;
-        }
-        return full.substring(idx + 4);
+        return (idx == -1 ? full : full.substring(idx + 4))
+            .getBytes(StandardCharsets.ISO_8859_1);
     }
 }

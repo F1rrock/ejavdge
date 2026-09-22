@@ -15,8 +15,8 @@ public final class MainPage implements Text {
         this(
             new TextAbout(
                 "main page",
-                new PayloadOf(
-                    new Utf8Text(
+                new Utf8Text(
+                    new PayloadOf(
                         new ContestResource(
                             r,
                             new WithEntry(

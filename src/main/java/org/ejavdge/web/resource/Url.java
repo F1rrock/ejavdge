@@ -32,7 +32,10 @@ public final class Url implements Text {
             new Concat(
                 new TextAbout(
                     "base",
-                    new NonEmpty(this.base)
+                    new NonEmpty(
+                        this.base,
+                        new Text.Of("There is empty URL.")
+                    )
                 ),
                 new Fallback(
                     new BindOfText(

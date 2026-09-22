@@ -1,12 +1,12 @@
-package org.ejavdge.contest;
+package org.ejavdge.web.resource;
 
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.text.Text;
 
-public final class Payload implements Text {
+public final class PayloadOf implements Text {
     private final Text origin;
 
-    public Payload(final Text t) {
+    public PayloadOf(final Text t) {
         this.origin = t;
     }
 

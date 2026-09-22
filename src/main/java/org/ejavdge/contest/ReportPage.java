@@ -7,6 +7,7 @@ import org.ejavdge.scalar.text.TextOfNum;
 import org.ejavdge.scalar.text.Utf8Text;
 import org.ejavdge.web.context.RunId;
 import org.ejavdge.web.context.WithEntry;
+import org.ejavdge.web.resource.PayloadOf;
 
 public final class ReportPage implements Text {
     private final Text origin;
@@ -15,7 +16,7 @@ public final class ReportPage implements Text {
         this(
             new TextAbout(
                 "report page",
-                new Payload(
+                new PayloadOf(
                     new Utf8Text(
                         new ContestResource(
                             cr,

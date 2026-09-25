@@ -28,7 +28,7 @@ public final class ProbNameOf implements Text {
                                     "There is no problem marker"
                                 ),
                                 new Text.Of(
-                                    "(comment like `#problem: <SHORT_NAME>` is required)."
+                                    "(comment like `// problem: <SHORT_NAME>` is required)."
                                 )
                             )
                         )

@@ -52,10 +52,7 @@ public final class DownloadingOf implements Effect {
                     )
                 )
             ),
-            new Map<>(
-                u -> new BindOfText(new Url(u), Text.Of::new),
-                us
-            )
+            us
         );
     }
 

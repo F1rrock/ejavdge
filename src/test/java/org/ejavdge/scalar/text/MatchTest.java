@@ -35,4 +35,17 @@ public final class MatchTest extends TestCase {
         }
         fail("InvariantViolation");
     }
+
+    public void testWithCustomMessage() {
+        try {
+            new Match(
+                new Text.Of("foo"),
+                new Text.Of("\\d+"),
+                new Text.Of("There is no valid text.")
+            ).content();
+            fail("InvariantViolation");
+        } catch (final InvariantViolation e) {
+            assertEquals("There is no valid text.", e.getMessage());
+        }
+    }
 }

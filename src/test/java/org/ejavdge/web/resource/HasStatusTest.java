@@ -147,4 +147,17 @@ public final class HasStatusTest extends TestCase {
             assertFalse(e.getMessage().isEmpty());
         }
     }
+
+    public void testWithoutCustomMessage() {
+        try {
+            new HasStatus(
+                new Num.Of(302),
+                () -> "HTTP/1.1 200 OK\r\nLocation: /new\r\n\r\n"
+                    .getBytes(StandardCharsets.UTF_8)
+            ).content();
+            fail("InvariantViolation");
+        } catch (final InvariantViolation e) {
+            assertFalse(e.getMessage().isEmpty());
+        }
+    }
 }

@@ -10,6 +10,8 @@ import org.ejavdge.web.context.Location;
 import org.ejavdge.web.context.ProbId;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class ProblemPageTest extends TestCase {
     public void testValidResource() {
@@ -103,5 +105,38 @@ public final class ProblemPageTest extends TestCase {
             return;
         }
         fail("InvariantViolation");
+    }
+
+    public void testProbIdCalls() {
+        final var calls = new AtomicInteger(0);
+        new ProblemPage(
+            new ContestResource(
+                (loc, req) -> req.bytes(),
+                new Location(
+                    new Text.Of("/ejudge"),
+                    new Text.Of("0.0.0.0"),
+                    new Num.Of(90)
+                ),
+                new Session(
+                    new Bytes.Of(
+                        """
+                        HTTP/1.1 302 FOUND\r
+                        Set-Cookie: EJSID=756b423a0a6fe6a7;\r
+                        Location: http://0.0.0.0:90/ejudge?SID=1684bb4a0f94302c&action=2&lt=1\r
+                        Content-Length: 2\r
+                        \r
+                        OK\r
+                        """.getBytes(StandardCharsets.UTF_8)
+                    )
+                )
+            ),
+            new ProbId(
+                () -> {
+                    calls.incrementAndGet();
+                    return 1;
+                }
+            )
+        ).content();
+        assertEquals(1, calls.get());
     }
 }

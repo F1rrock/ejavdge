@@ -19,7 +19,7 @@ public final class HasStatus implements Bytes {
     public HasStatus(final Num n, final Text t, final Bytes bs) {
         this.origin = bs;
         this.expected = n;
-        this.message = t;
+        this.message = new NonEmpty(t);
     }
 
     @Override

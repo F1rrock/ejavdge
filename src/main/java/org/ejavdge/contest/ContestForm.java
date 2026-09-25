@@ -52,6 +52,7 @@ public final class ContestForm implements Envelope {
                 this.session,
                 s -> new HasStatus(
                     new Num.Of(302),
+                    new Text.Of("There is a problem with sending."),
                     new WebResource(
                         this.driver,
                         this.location,

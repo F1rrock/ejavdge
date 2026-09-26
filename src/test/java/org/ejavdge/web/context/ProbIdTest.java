@@ -4,6 +4,8 @@ import junit.framework.TestCase;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.web.media.FakeMedia;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public final class ProbIdTest extends TestCase {
     public void testImprint() {
         assertEquals(
@@ -19,5 +21,14 @@ public final class ProbIdTest extends TestCase {
             return;
         }
         fail("InvariantViolation");
+    }
+
+    public void testOriginCalls() {
+        final var calls = new AtomicInteger(0);
+        new ProbId(() -> {
+            calls.incrementAndGet();
+            return 90;
+        }).imprint(new FakeMedia());
+        assertEquals(1, calls.get());
     }
 }

@@ -1,10 +1,13 @@
 package org.ejavdge.web.resource;
 
 import junit.framework.TestCase;
+import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.text.Text;
+import org.ejavdge.web.context.Context;
 import org.ejavdge.web.context.FakeContext;
 import org.ejavdge.web.context.NoContext;
 import org.ejavdge.web.context.WithEntry;
+import org.ejavdge.web.media.Media;
 
 public final class UrlTest extends TestCase {
     public void testBaseOnly() {
@@ -59,5 +62,23 @@ public final class UrlTest extends TestCase {
                 )
             ).content()
         );
+    }
+
+    public void testUrlDoesNotIgnoreInvalidQuery() {
+        try {
+            new Url(
+                new Url("/ejudge"),
+                new Context() {
+                    @Override
+                    public <T> T imprint(final Media<T> media) {
+                        throw new InvariantViolation("query failed");
+                    }
+                }
+            ).content();
+        } catch (final InvariantViolation e) {
+            return;
+        }
+
+        fail("InvariantViolation");
     }
 }

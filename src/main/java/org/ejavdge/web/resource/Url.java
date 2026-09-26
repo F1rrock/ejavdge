@@ -37,19 +37,20 @@ public final class Url implements Text {
                         new Text.Of("There is empty URL.")
                     )
                 ),
-                new Fallback(
-                    new BindOfText(
-                        new NonEmpty(
-                            new Utf8Text(
-                                new Form.ImprintOf(this.query)
+                new BindOfText(
+                    new Utf8Text(
+                        new Form.ImprintOf(this.query)
+                    ),
+                    s -> new Fallback(
+                        new BindOfText(
+                            new NonEmpty(new Text.Of(s)),
+                            p -> new Concat(
+                                new Text.Of("?"),
+                                new Text.Of(p)
                             )
                         ),
-                        s -> new Concat(
-                            new Text.Of("?"),
-                            new Text.Of(s)
-                        )
-                    ),
-                    new Empty()
+                        new Empty()
+                    )
                 )
             )
         ).content();

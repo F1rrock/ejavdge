@@ -10,6 +10,7 @@ import org.ejavdge.scalar.text.Text;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public final class ProbAttachmentsIT extends TestCase {
     private String problem;
@@ -142,6 +143,57 @@ public final class ProbAttachmentsIT extends TestCase {
             return;
         }
         fail("InvariantViolation");
+    }
+
+    public void testProblemPageCalls() {
+        final var calls = new AtomicInteger(0);
+        new ProbAttachments(
+            new JsoupWithSaxon(),
+            new ProblemPage(
+                () -> {
+                    calls.incrementAndGet();
+                    return this.problem;
+                }
+            )
+        ).contents();
+        assertEquals(1, calls.get());
+    }
+
+    public void testProblemPageCallsWithEvalOfLinks() {
+        final var calls = new AtomicInteger(0);
+        new ProbAttachments(
+            new JsoupWithSaxon(),
+            new ProblemPage(
+                () -> {
+                    calls.incrementAndGet();
+                    return this.problem;
+                }
+            )
+        ).contents()
+            .stream()
+            .map(Text::content)
+            .forEach(ignored -> {});
+        assertEquals(1, calls.get());
+    }
+
+    public void testEmptyAttachmentsFromValidProblemPage() {
+        assertTrue(
+            new ProbAttachments(
+                new JsoupWithSaxon(),
+                new ProblemPage(
+                    new Text.Of(
+                        """
+                        <html>
+                            <body>
+                                <h1>Problem</h1>
+                                <p>No local tests here.</p>
+                            </body>
+                        </html>
+                        """
+                    )
+                )
+            ).contents().isEmpty()
+        );
     }
 
     public void testFromItems() throws InvariantViolation {

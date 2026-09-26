@@ -22,7 +22,7 @@ public final class DownloadingOf implements Effect {
     private final Text path;
     private final Items<ByteFile> files;
 
-    public DownloadingOf(final Items<Text> us,final WebDriver d, final Text p) {
+    public DownloadingOf(final Items<Text> us, final WebDriver d, final Text p) {
         this.path = p;
         this.files = new Map<>(
             u -> new ByteFile.Of(

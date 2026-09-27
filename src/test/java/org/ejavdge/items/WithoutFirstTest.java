@@ -1,7 +1,6 @@
 package org.ejavdge.items;
 
 import junit.framework.TestCase;
-import org.ejavdge.app.setup.Password;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.num.Num;
 import org.ejavdge.scalar.text.Text;

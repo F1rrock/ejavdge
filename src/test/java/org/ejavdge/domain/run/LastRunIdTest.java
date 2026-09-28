@@ -28,17 +28,17 @@ public final class LastRunIdTest extends TestCase {
 
     public void testLastRunId() {
         assertEquals(
-            9,
+            "9",
             new LastRunId(
                 new JsoupWithSaxon(),
                 new ProblemPage(new Text.Of(PAGE))
-            ).value()
+            ).content()
         );
     }
 
     public void testAnotherId() {
         assertEquals(
-            42,
+            "42",
             new LastRunId(
                 new JsoupWithSaxon(),
                 new ProblemPage(new Text.Of("""
@@ -57,13 +57,13 @@ public final class LastRunIdTest extends TestCase {
                     </div>
                     </body></html>
                     """))
-            ).value()
+            ).content()
         );
     }
 
     public void testIdWithWhitespace() {
         assertEquals(
-            7,
+            "7",
             new LastRunId(
                 new JsoupWithSaxon(),
                 new ProblemPage(new Text.Of("""
@@ -84,7 +84,7 @@ public final class LastRunIdTest extends TestCase {
                     </div>
                     </body></html>
                     """))
-            ).value()
+            ).content()
         );
     }
 
@@ -93,7 +93,7 @@ public final class LastRunIdTest extends TestCase {
             new LastRunId(
                 new JsoupWithSaxon(),
                 new ProblemPage(new Text.Of(""))
-            ).value();
+            ).content();
         } catch (final InvariantViolation e) {
             return;
         }
@@ -111,7 +111,7 @@ public final class LastRunIdTest extends TestCase {
                     </body></html>
                     """
                 ))
-            ).value();
+            ).content();
         } catch (final InvariantViolation e) {
             return;
         }
@@ -135,7 +135,7 @@ public final class LastRunIdTest extends TestCase {
                     </div>
                     </body></html>
                     """))
-            ).value();
+            ).content();
         } catch (final InvariantViolation e) {
             return;
         }
@@ -162,7 +162,7 @@ public final class LastRunIdTest extends TestCase {
                     </div>
                     </body></html>
                     """))
-            ).value();
+            ).content();
         } catch (final InvariantViolation e) {
             return;
         }
@@ -170,7 +170,8 @@ public final class LastRunIdTest extends TestCase {
     }
 
     public void testNonNumericId() {
-        try {
+        assertEquals(
+            "abc",
             new LastRunId(
                 new JsoupWithSaxon(),
                 new ProblemPage(new Text.Of("""
@@ -189,11 +190,8 @@ public final class LastRunIdTest extends TestCase {
                     </div>
                     </body></html>
                     """))
-            ).value();
-        } catch (final InvariantViolation e) {
-            return;
-        }
-        fail("InvariantViolation");
+            ).content()
+        );
     }
 
     public void testBrokenPage() {
@@ -205,7 +203,7 @@ public final class LastRunIdTest extends TestCase {
                         throw new InvariantViolation("There is no text.");
                     }
                 )
-            ).value();
+            ).content();
         } catch (final InvariantViolation e) {
             return;
         }
@@ -219,7 +217,7 @@ public final class LastRunIdTest extends TestCase {
                     throw new InvariantViolation("There is no engine.");
                 },
                 new ProblemPage(new Text.Of(PAGE))
-            ).value();
+            ).content();
         } catch (final InvariantViolation e) {
             return;
         }

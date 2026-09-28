@@ -23,8 +23,10 @@ public final class WithoutClasses implements DocPath {
                 new Text.Of(" or "),
                 new Map<>(
                     t -> new Stencil(
-                        new Text.Of(
-                            "@class = '%s'"
+                        new Concat(
+                            "ancestor-or-self::*[",
+                            "contains(concat(' ', normalize-space(@class), ' '), ' %s ')",
+                            "]"
                         ),
                         t
                     ),

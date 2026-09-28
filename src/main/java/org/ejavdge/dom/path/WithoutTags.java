@@ -25,7 +25,7 @@ public final class WithoutTags implements DocPath {
                 new Map<>(
                     t -> new Stencil(
                         new Text.Of(
-                            "local-name() = '%s'"
+                            "ancestor-or-self::*[local-name() = '%s']"
                         ),
                         t
                     ),

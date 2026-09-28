@@ -56,4 +56,27 @@ public final class WithDetailedReportTest extends TestCase {
             err.toString()
         );
     }
+
+    public void testAnAlternateOriginError() {
+        final var output = new StringBuilder();
+        new WithDetailedReport(t -> output.append(t.content())).write(
+            () -> {
+                throw new InvariantViolation(
+                    "There is no text",
+                    new InvariantViolation(
+                        "There is no socket to connect",
+                        new RuntimeException(
+                            "connection refused"
+                        )
+                    )
+                );
+            }
+        );
+        assertEquals(
+            "\u001B[31mError: There is no text" +
+                "\nCaused by: There is no socket to connect" +
+                "\u001B[0m",
+            output.toString()
+        );
+    }
 }

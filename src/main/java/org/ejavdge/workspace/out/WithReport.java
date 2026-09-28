@@ -45,12 +45,12 @@ public final class WithReport implements Out {
         @Override
         public String content() throws InvariantViolation {
             final var cause = this.error.getCause();
-            if (cause == null) {
-                return new Trimmed(
-                    new Text.Of(this.error.getMessage())
-                ).content();
+            if (cause instanceof InvariantViolation) {
+                return new ReportOfError(cause).content();
             }
-            return new ReportOfError(cause).content();
+            return new Trimmed(
+                new Text.Of(this.error.getMessage())
+            ).content();
         }
     }
 }

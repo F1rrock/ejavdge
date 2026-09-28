@@ -25,7 +25,7 @@ public final class ReportDetailsIT extends TestCase {
         assertEquals(
         """
             
-            
+                   \s
             L
             Command-line parameters
             

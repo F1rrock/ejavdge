@@ -1,9 +1,7 @@
 package org.ejavdge.web.context;
 
 import org.ejavdge.error.InvariantViolation;
-import org.ejavdge.scalar.text.NonEmpty;
-import org.ejavdge.scalar.text.Text;
-import org.ejavdge.scalar.text.TextAbout;
+import org.ejavdge.scalar.text.*;
 import org.ejavdge.web.media.Media;
 
 public final class RunId implements Context {
@@ -17,7 +15,16 @@ public final class RunId implements Context {
         this.src = new TextAbout(
             "run id",
             new NonEmpty(
-                t,
+                new BindOfText(
+                    t,
+                    id -> new Fallback(
+                        new Match(
+                            new Text.Of(id),
+                            new Text.Of("^.*?(?=#$)")
+                        ),
+                        new Text.Of(id)
+                    )
+                ),
                 new Text.Of("there is no run id")
             )
         );

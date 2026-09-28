@@ -21,9 +21,25 @@ public final class RunIdTest extends TestCase {
 
     public void testNonNumericId() {
         assertEquals(
-            "run_id:68#:",
-            new RunId("68#").imprint(new FakeMedia())
+            "run_id:abc:",
+            new RunId("abc").imprint(new FakeMedia())
         );
+    }
+
+    public void testNumWithSharp() {
+        assertEquals(
+            "run_id:6832:",
+            new RunId("6832#").imprint(new FakeMedia())
+        );
+    }
+
+    public void testSharpOnly() {
+        try {
+            new RunId("#").imprint(new FakeMedia());
+        } catch (final InvariantViolation e) {
+            return;
+        }
+        fail("InvariantViolation");
     }
 
     public void testEmptyId() {

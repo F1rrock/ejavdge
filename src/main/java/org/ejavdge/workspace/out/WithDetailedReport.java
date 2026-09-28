@@ -48,21 +48,21 @@ public final class WithDetailedReport implements Out {
         public String content() throws InvariantViolation {
             final var cause = this.error.getCause();
             final var message = this.error.getMessage();
-            if (cause == null) {
-                return message;
-            }
-            return new Concat(
-                new Text.Of("\n"),
-                new Items.Of<>(
-                    new Trimmed(
-                        new Text.Of(message)
-                    ),
-                    new Stencil(
-                        new Text.Of("Caused by: %s"),
-                        new ReportOfError(cause)
+            if (cause instanceof InvariantViolation) {
+                return new Concat(
+                    new Text.Of("\n"),
+                    new Items.Of<>(
+                        new Trimmed(
+                            new Text.Of(message)
+                        ),
+                        new Stencil(
+                            new Text.Of("Caused by: %s"),
+                            new ReportOfError(cause)
+                        )
                     )
-                )
-            ).content();
+                ).content();
+            }
+            return message;
         }
     }
 }

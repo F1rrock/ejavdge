@@ -53,7 +53,7 @@ public final class ReportPageTest extends TestCase {
                         )
                     )
                 ),
-                new RunId(1)
+                new RunId("1")
             ).content()
         );
     }
@@ -97,7 +97,7 @@ public final class ReportPageTest extends TestCase {
                         )
                     )
                 ),
-                new RunId(1)
+                new RunId("1")
             ).content();
         } catch (final InvariantViolation e) {
             return;

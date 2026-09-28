@@ -8,7 +8,9 @@ import org.ejavdge.scalar.text.Text;
 public final class WithoutClassesTest extends TestCase {
     public void testSingleClass() {
         assertEquals(
-            "//*[not(@class = 'main')]",
+            "//*[not(ancestor-or-self::*["
+                + "contains(concat(' ', normalize-space(@class), ' '), ' main ')"
+                + "])]",
             new WithoutClasses(
                 new Items.Of<>(new Text.Of("main"))
             ).view()
@@ -17,7 +19,13 @@ public final class WithoutClassesTest extends TestCase {
 
     public void testMultipleClasses() {
         assertEquals(
-            "//*[not(@class = 'main' or @class = 'secondary')]",
+            "//*[not(ancestor-or-self::*["
+                + "contains(concat(' ', normalize-space(@class), ' '), ' main ')"
+                + "]"
+                + " or "
+                + "ancestor-or-self::*["
+                + "contains(concat(' ', normalize-space(@class), ' '), ' secondary ')"
+                + "])]",
             new WithoutClasses(
                 new Items.Of<>(
                     new Text.Of("main"),
@@ -29,7 +37,9 @@ public final class WithoutClassesTest extends TestCase {
 
     public void testWithPath() {
         assertEquals(
-            "//*[@id = 'container'][not(@class = 'main')]",
+            "//*[@id = 'container'][not(ancestor-or-self::*["
+                + "contains(concat(' ', normalize-space(@class), ' '), ' main ')"
+                + "])]",
             new WithoutClasses(
                 new Items.Of<>(new Text.Of("main")),
                 new DocPath.Of("//*[@id = 'container']")
@@ -48,7 +58,9 @@ public final class WithoutClassesTest extends TestCase {
 
     public void testEmptyClassString() {
         assertEquals(
-            "//*[not(@class = '')]",
+            "//*[not(ancestor-or-self::*["
+                + "contains(concat(' ', normalize-space(@class), ' '), '  ')"
+                + "])]",
             new WithoutClasses(
                 new Items.Of<>(new Text.Of(""))
             ).view()

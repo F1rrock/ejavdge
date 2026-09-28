@@ -7,7 +7,7 @@ import org.ejavdge.scalar.text.Text;
 
 import java.util.List;
 
-public final class WithoutFirstTest extends TestCase {
+public final class OnlyFirstTest extends TestCase {
     private final Items<Text> empty = new Items.Of<>();
     private final Items<Text> single = new Items.Of<>(
         new Text.Of("1")
@@ -21,21 +21,25 @@ public final class WithoutFirstTest extends TestCase {
     public void testEmptySource() {
         assertEquals(
             List.of(),
-            new WithoutFirst<>(this.empty).contents()
+            new OnlyFirst<>(this.empty).contents()
         );
     }
 
     public void testSingleElementSource() {
         assertEquals(
-            List.of(),
-            new WithoutFirst<>(this.single).contents()
+            List.of("1"),
+            new OnlyFirst<>(this.single)
+                .contents()
+                .stream()
+                .map(Text::content)
+                .toList()
         );
     }
 
     public void testSeveralElementSource() {
         assertEquals(
-            List.of("2", "3"),
-            new WithoutFirst<>(this.several)
+            List.of("1"),
+            new OnlyFirst<>(this.several)
                 .contents()
                 .stream()
                 .map(Text::content)
@@ -43,10 +47,10 @@ public final class WithoutFirstTest extends TestCase {
         );
     }
 
-    public void testWithoutFirstN() {
+    public void testOnlyFirstN() {
         assertEquals(
-            List.of("3"),
-            new WithoutFirst<>(new Num.Of(2), this.several)
+            List.of("1", "2"),
+            new OnlyFirst<>(new Num.Of(2), this.several)
                 .contents()
                 .stream()
                 .map(Text::content)
@@ -54,24 +58,17 @@ public final class WithoutFirstTest extends TestCase {
         );
     }
 
-    public void testWithoutAllElements() {
+    public void testOnlyZeroElements() {
         assertEquals(
             List.of(),
-            new WithoutFirst<>(new Num.Of(3), this.several).contents()
+            new OnlyFirst<>(new Num.Of(0), this.several).contents()
         );
     }
 
-    public void testWithoutMoreThanSize() {
-        assertEquals(
-            List.of(),
-            new WithoutFirst<>(new Num.Of(10), this.several).contents()
-        );
-    }
-
-    public void testWithoutZeroElements() {
+    public void testOnlyFirstMoreThanSizeElements() {
         assertEquals(
             List.of("1", "2", "3"),
-            new WithoutFirst<>(new Num.Of(0), this.several)
+            new OnlyFirst<>(new Num.Of(10), this.several)
                 .contents()
                 .stream()
                 .map(Text::content)
@@ -79,9 +76,9 @@ public final class WithoutFirstTest extends TestCase {
         );
     }
 
-    public void testWithoutNegativeAmountOfElements() {
+    public void testOnlyNegativeAmountOfElements() {
         try {
-            new WithoutFirst<>(new Num.Of(-1), this.several)
+            new OnlyFirst<>(new Num.Of(-1), this.several)
                 .contents()
                 .stream()
                 .map(Text::content)
@@ -94,7 +91,7 @@ public final class WithoutFirstTest extends TestCase {
 
     public void testBrokenSource() {
         try {
-            new WithoutFirst<Text>(
+            new OnlyFirst<Text>(
                 () -> {
                     throw new InvariantViolation("There is no items.");
                 }

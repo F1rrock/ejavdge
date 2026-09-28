@@ -44,7 +44,8 @@ public final class ProbByName implements Num {
                                 )
                             )
                         ),
-                        new Text.Of("(?<=prob_id=\\s*)\\d+")
+                        new Text.Of("(?<=prob_id=\\s*)\\d+"),
+                        new Text.Of("There is no problem with this name.")
                     )
                 )
             )

@@ -8,7 +8,7 @@ import org.ejavdge.scalar.text.Text;
 public final class WithoutTagsTest extends TestCase {
     public void testSingleTag() {
         assertEquals(
-            "//*[not(local-name() = 'div')]",
+            "//*[not(ancestor-or-self::*[local-name() = 'div'])]",
             new WithoutTags(
                 new Items.Of<>(new Text.Of("div"))
             ).view()
@@ -17,7 +17,8 @@ public final class WithoutTagsTest extends TestCase {
 
     public void testMultipleTags() {
         assertEquals(
-            "//*[not(local-name() = 'div' or local-name() = 'span')]",
+            "//*[not(ancestor-or-self::*[local-name() = 'div'] "
+                + "or ancestor-or-self::*[local-name() = 'span'])]",
             new WithoutTags(
                 new Items.Of<>(
                     new Text.Of("div"),
@@ -29,7 +30,7 @@ public final class WithoutTagsTest extends TestCase {
 
     public void testWithPath() {
         assertEquals(
-            "//*[@id = 'main'][not(local-name() = 'p')]",
+            "//*[@id = 'main'][not(ancestor-or-self::*[local-name() = 'p'])]",
             new WithoutTags(
                 new Items.Of<>(new Text.Of("p")),
                 new DocPath.Of("//*[@id = 'main']")

@@ -7,14 +7,18 @@ import org.ejavdge.scalar.text.Text;
 public final class WithoutClassTest extends TestCase {
     public void testClassOnly() {
         assertEquals(
-            "//*[not(@class = 'main')]",
+            "//*[not(ancestor-or-self::*["
+                + "contains(concat(' ', normalize-space(@class), ' '), ' main ')"
+                + "])]",
             new WithoutClass("main").view()
         );
     }
 
     public void testClassWithPath() {
         assertEquals(
-            "//*[@id = 'container'][not(@class = 'main')]",
+            "//*[@id = 'container'][not(ancestor-or-self::*["
+                + "contains(concat(' ', normalize-space(@class), ' '), ' main ')"
+                + "])]",
             new WithoutClass(
                 "main",
                 new DocPath.Of("//*[@id = 'container']")
@@ -24,7 +28,9 @@ public final class WithoutClassTest extends TestCase {
 
     public void testTextClass() {
         assertEquals(
-            "//*[not(@class = 'main')]",
+            "//*[not(ancestor-or-self::*["
+                + "contains(concat(' ', normalize-space(@class), ' '), ' main ')"
+                + "])]",
             new WithoutClass(new Text.Of("main")).view()
         );
     }
@@ -38,7 +44,9 @@ public final class WithoutClassTest extends TestCase {
 
     public void testEmptyClass() {
         assertEquals(
-            "//*[not(@class = '')]",
+            "//*[not(ancestor-or-self::*["
+                + "contains(concat(' ', normalize-space(@class), ' '), '  ')"
+                + "])]",
             new WithoutClass(
                 "",
                 new DocPath.Of("//*")

@@ -8,20 +8,27 @@ public final class RunIdTest extends TestCase {
     public void testPositiveId() {
         assertEquals(
             "run_id:90:",
-            new RunId(90).imprint(new FakeMedia())
+            new RunId("90").imprint(new FakeMedia())
         );
     }
 
     public void testZeroId() {
         assertEquals(
             "run_id:0:",
-            new RunId(0).imprint(new FakeMedia())
+            new RunId("0").imprint(new FakeMedia())
         );
     }
 
-    public void testNegativeId() {
+    public void testNonNumericId() {
+        assertEquals(
+            "run_id:68#:",
+            new RunId("68#").imprint(new FakeMedia())
+        );
+    }
+
+    public void testEmptyId() {
         try {
-            new RunId(-5).imprint(new FakeMedia());
+            new RunId("").imprint(new FakeMedia());
         } catch (final InvariantViolation e) {
             return;
         }

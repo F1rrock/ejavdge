@@ -1,4 +1,4 @@
-package org.ejavdge.app;
+package org.ejavdge.domain.run;
 
 import junit.framework.TestCase;
 import org.ejavdge.auth.Session;
@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class LocalProbeIT extends TestCase {
+public final class VerdictOfProbeIT extends TestCase {
     private static final String CORRECT = """
         // problem: WithLinks
         import java.util.Scanner;
@@ -39,59 +39,49 @@ public final class LocalProbeIT extends TestCase {
         }
         """;
 
-    public void testLocalProbePasses() {
+    public void testPassesOnCorrectSolution() {
         try {
             final var main = this.mainPage();
             final var problem = this.problemPage();
-            final var output = new StringBuilder();
-            new LocalProbe(
-                new JavaProgram(
-                    this.file(CORRECT),
-                    new Text.Of(".")
-                ),
-                this.resource(
-                    (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
-                        .contains("prob_id=3")
-                        ? problem
-                        : main
-                ),
-                text -> output.append(text.content())
-            ).run();
-            assertEquals(
-                "\u001B[32mSuccess: all local tests passed\u001B[0m",
-                output.toString()
+            assertTrue(
+                new VerdictOfProbe(
+                    new JavaProgram(
+                        this.file(CORRECT),
+                        new Text.Of(".")
+                    ),
+                    this.resource(
+                        (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
+                            .contains("prob_id=3")
+                            ? problem
+                            : main
+                    )
+                ).ok()
             );
         } catch (final IOException | InvariantViolation e) {
             throw new AssertionError(e);
         }
     }
 
-    public void testLocalProbeFails() {
+    public void testFailsOnWrongSolution() {
         try {
             final var main = this.mainPage();
             final var problem = this.problemPage();
-            final var output = new StringBuilder();
-            new LocalProbe(
-                new JavaProgram(
-                    this.file(WRONG),
-                    new Text.Of(".")
-                ),
-                this.resource(
-                    (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
-                        .contains("prob_id=3")
-                        ? problem
-                        : main
-                ),
-                text -> output.append(text.content())
-            ).run();
-            assertEquals(
-                "\u001B[31mFail: some local tests failed\u001B[0m",
-                output.toString()
+            assertFalse(
+                new VerdictOfProbe(
+                    new JavaProgram(
+                        this.file(WRONG),
+                        new Text.Of(".")
+                    ),
+                    this.resource(
+                        (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
+                            .contains("prob_id=3")
+                            ? problem
+                            : main
+                    )
+                ).ok()
             );
-        } catch (final IOException e) {
+        } catch (final IOException | InvariantViolation e) {
             throw new AssertionError(e);
-        } catch (final InvariantViolation e) {
-            fail(e.getMessage());
         }
     }
 
@@ -100,7 +90,7 @@ public final class LocalProbeIT extends TestCase {
             final var main = this.mainPage();
             final var problem = this.problemPage();
             final var calls = new AtomicInteger(0);
-            new LocalProbe(
+            new VerdictOfProbe(
                 new JavaProgram(
                     this.file(CORRECT),
                     new Text.Of(".")
@@ -114,14 +104,11 @@ public final class LocalProbeIT extends TestCase {
                         }
                         return main;
                     }
-                ),
-                Text::content
-            ).run();
+                )
+            ).ok();
             assertEquals(1, calls.get());
-        } catch (final IOException e) {
+        } catch (final IOException | InvariantViolation e) {
             throw new AssertionError(e);
-        } catch (final InvariantViolation e) {
-            fail(e.getMessage());
         }
     }
 
@@ -130,7 +117,7 @@ public final class LocalProbeIT extends TestCase {
             final var main = this.mainPage();
             final var problem = this.problemPage();
             final var calls = new AtomicInteger(0);
-            new LocalProbe(
+            new VerdictOfProbe(
                 new JavaProgram(
                     this.file(CORRECT),
                     new Text.Of(".")
@@ -144,22 +131,43 @@ public final class LocalProbeIT extends TestCase {
                         calls.incrementAndGet();
                         return main;
                     }
-                ),
-                Text::content
-            ).run();
+                )
+            ).ok();
             assertEquals(1, calls.get());
+        } catch (final IOException | InvariantViolation e) {
+            throw new AssertionError(e);
+        }
+    }
+
+    public void testUnknownProblem() {
+        try {
+            final var main = this.mainPage();
+            final var problem = this.problemPage();
+            new VerdictOfProbe(
+                new JavaProgram(
+                    this.file("// problem: NonexistentProblem\n"),
+                    new Text.Of(".")
+                ),
+                this.resource(
+                    (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
+                        .contains("prob_id=3")
+                        ? problem
+                        : main
+                )
+            ).ok();
+        } catch (final InvariantViolation e) {
+            return;
         } catch (final IOException e) {
             throw new AssertionError(e);
-        } catch (final InvariantViolation e) {
-            fail(e.getMessage());
         }
+        fail("InvariantViolation");
     }
 
     public void testInvalidSession() {
         try {
             final var main = this.mainPage();
             final var problem = this.problemPage();
-            new LocalProbe(
+            new VerdictOfProbe(
                 new JavaProgram(
                     this.file(CORRECT),
                     new Text.Of(".")
@@ -181,9 +189,8 @@ public final class LocalProbeIT extends TestCase {
                             """.getBytes(StandardCharsets.UTF_8)
                         )
                     )
-                ),
-                Text::content
-            ).run();
+                )
+            ).ok();
         } catch (final InvariantViolation e) {
             return;
         } catch (final IOException e) {
@@ -194,7 +201,7 @@ public final class LocalProbeIT extends TestCase {
 
     public void testBrokenDriver() {
         try {
-            new LocalProbe(
+            new VerdictOfProbe(
                 new JavaProgram(
                     this.file(CORRECT),
                     new Text.Of(".")
@@ -203,9 +210,27 @@ public final class LocalProbeIT extends TestCase {
                     (loc, req) -> {
                         throw new InvariantViolation("there is no resources.");
                     }
-                ),
-                Text::content
-            ).run();
+                )
+            ).ok();
+        } catch (final InvariantViolation e) {
+            return;
+        }
+        fail("InvariantViolation");
+    }
+
+    public void testFromVerdict() {
+        assertTrue(
+            new VerdictOfProbe(() -> true).ok()
+        );
+    }
+
+    public void testFromBrokenVerdict() {
+        try {
+            new VerdictOfProbe(
+                () -> {
+                    throw new InvariantViolation("There is no verdict.");
+                }
+            ).ok();
         } catch (final InvariantViolation e) {
             return;
         }

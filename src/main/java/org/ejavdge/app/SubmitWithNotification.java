@@ -27,7 +27,7 @@ public final class SubmitWithNotification implements App {
                         new WithTimeout(
                             new WithPolling(
                                 new WritingOf(
-                                    new Text.Of("Tested!"),
+                                    new Text.Of("Tested by Ejudge!"),
                                     o
                                 ),
                                 new ReportReadiness(

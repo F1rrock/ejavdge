@@ -8,11 +8,11 @@ import java.io.ByteArrayOutputStream;
 import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 
-public final class BodyOf implements Bytes {
+public final class AlternateBodyOf implements Bytes {
     private final HttpResponse src;
     private final UnaryOperator<IntStream> policy;
 
-    public BodyOf(final HttpResponse r, final UnaryOperator<IntStream> o) {
+    public AlternateBodyOf(final HttpResponse r, final UnaryOperator<IntStream> o) {
         this.src = r;
         this.policy = o;
     }

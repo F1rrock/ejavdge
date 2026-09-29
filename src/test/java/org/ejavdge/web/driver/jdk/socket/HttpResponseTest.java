@@ -94,9 +94,9 @@ public final class HttpResponseTest extends TestCase {
 
     public void testEmptyBody() {
         final var response = new HttpResponse(
-            new ByteStream.Of("".chars())
+            new ByteStream.Of("HTTP/1.1 200 OK\r\n\r\n".chars())
         );
-        assertEquals("", utf8(response.body().limit(0)));
+        assertEquals("", utf8(response.body()));
     }
 
     public void testEmptyHeaders() {
@@ -129,6 +129,31 @@ public final class HttpResponseTest extends TestCase {
             """,
             headers
         );
+    }
+
+    public void testStatusBody() {
+        final var response = new HttpResponse(
+            new ByteStream.Of(
+                 """
+                 HTTP/1.1 200 OK\r
+                 Date: Tue, 29 Sep 2026 12:01:58 GMT\r
+                 Server: Apache/2.4.52 (Ubuntu)\r
+                 Cache-Control: no-cache\r
+                 Content-Length: 65\r
+                 Content-Type: text/plain; charset=utf-8\r
+                 \r
+                 { "h": 15, "m": 23, "s": 31, "d": 29, "o": 9, "y": 2026, "z": 1 }""".chars()
+            )
+        );
+        assertEquals(
+            """
+            { "h": 15, "m": 23, "s": 31, "d": 29, "o": 9, "y": 2026, "z": 1 }""",
+            utf8(response.body().limit(65))
+        );
+    }
+
+    private static String utf8(final byte[] bytes) {
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 
     private static String utf8(final IntStream src) {

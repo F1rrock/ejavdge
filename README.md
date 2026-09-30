@@ -10,18 +10,21 @@ tests, submitting source files, and retrieving judging reports.
 - The `java` executable on `PATH` for local solution execution.
 
 ## Features
-| Action | Purpose |
-| --- | --- |
-| `AvailableProblems` | List problems available in the contest. |
-| `AlreadySolved` | List problems the current user has solved. |
-| `ProblemDescription` | Read a problem statement and its references. |
-| `AttachmentsDownload` | Download a problem's attachments to a chosen directory. |
-| `LocalProbe` | Run a Java solution against samples fetched from the problem page. |
-| `SilentSubmit` | Submit a source file using the contest's submission form. |
-| `LastReport` | Read the latest run's report, falling back to run information when the report is empty. |
+| Action                   | Purpose                                                                                                 |
+|--------------------------|---------------------------------------------------------------------------------------------------------|
+| `AvailableProblems`      | Show available problem names for the current contest.                                                   |
+| `AlreadySolved`          | Show already solved problem names for the current contest.                                              |
+| `ProblemDescription`     | Show description of current problem.                                                                    |
+| `AttachmentsDownload`    | Download attachments of current problem.                                                                |
+| `LocalProbe`             | Perform local testing of solution.                                                                      |
+| `LastReport`             | Read the latest run's report, falling back to run information when the report is unavailable.           |
+| `SilentSubmit`           | Submit current file as solution.                                                                        |
+| `SubmitWithNotification` | Submit current file as solution and send a notification when report is available.                       |
+| `ReportedSubmit`         | Submit current file as solution and display the resulting report.                                       |
+| `ProbedSubmit`           | Probe current file against local examples, then submit it as solution and display the resulting report. |
 
 ## Configuration
-The default application setup read `.env` from the process's working directory.
+The default application setup reads `.env` from the process's working directory.
 Create it from the provided example before running server-backed actions.
 On Windows PowerShell:
 ```powershell
@@ -38,7 +41,7 @@ PASSWORD=your_password
 CONTEST_ID=1
 BASE_URL=10.21.17.68
 PORT=80
-CLIENT_PATH=/ejudge
+CLIENT_PATH=/new-client
 ```
 
 ## Solution Markers
@@ -75,7 +78,6 @@ import org.ejavdge.scalar.text.Text;
 public final class EjavdgeExample {
     public static void main(String[] args) {
         var solution = new JdkFile(new File("Main.java"));
-
         new AvailableProblems().run();
         new ProblemDescription(solution).run();
         new LocalProbe(
@@ -84,7 +86,7 @@ public final class EjavdgeExample {
     }
 }
 ```
-Run this after configured `.env`. `Main.java` must contain a problem marker and an executable Java
+Run this after configuring `.env`. `Main.java` must contain a problem marker and an executable Java
 `main` method.
 
 
@@ -100,7 +102,7 @@ src/main/java/org/ejavdge/
   contest/      Contest pages, resources, and submission forms
   domain/       Problems, solutions, runs, reports, and session tokens
   dom/          HTML/XML parsing and document selection
-  effect/       Side-effect composition
+  effect/       Side-effects and their composition
   file/         File access, downloads, and Java program execution
   items/        Collection transformations
   scalar/       Text, byte, and numeric values

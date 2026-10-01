@@ -19,10 +19,10 @@ import org.ejavdge.web.context.ProbId;
 import org.ejavdge.workspace.out.Out;
 import org.ejavdge.workspace.out.WritingOf;
 
-public final class ProblemDescription implements App {
+public final class ProblemDescriptionApp implements App {
     private final Effect src;
 
-    public ProblemDescription(final ByteFile f) {
+    public ProblemDescriptionApp(final ByteFile f) {
         this(
             new ContestResource(
                 new PresetDriver(),
@@ -50,7 +50,7 @@ public final class ProblemDescription implements App {
         );
     }
 
-    public ProblemDescription(final ContestResource r, final ByteFile f, final Out o) {
+    public ProblemDescriptionApp(final ContestResource r, final ByteFile f, final Out o) {
         this(
             new WritingOf(
                 new BindOfText(
@@ -95,7 +95,7 @@ public final class ProblemDescription implements App {
         );
     }
 
-    public ProblemDescription(final Effect e) {
+    public ProblemDescriptionApp(final Effect e) {
         this.src = e;
     }
 

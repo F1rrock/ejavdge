@@ -7,7 +7,7 @@ import org.ejavdge.error.InvariantViolation;
 public final class ReportedSubmit implements App {
     private final Effect src;
 
-    public ReportedSubmit(final SubmitWithNotification s, final LastReport r) {
+    public ReportedSubmit(final SubmitWithNotification s, final LastReportApp r) {
         this(
             new Sequence(
                 new RunningOf(s),

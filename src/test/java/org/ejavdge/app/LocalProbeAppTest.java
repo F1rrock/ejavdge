@@ -7,10 +7,10 @@ import org.ejavdge.scalar.text.Text;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class LocalProbeTest extends TestCase {
+public final class LocalProbeAppTest extends TestCase {
     public void testSuccessFeedbackIsGreen() {
         final var output = new StringBuilder();
-        new LocalProbe(
+        new LocalProbeApp(
             new VerdictOfProbe(() -> true),
             text -> output.append(text.content())
         ).run();
@@ -22,7 +22,7 @@ public final class LocalProbeTest extends TestCase {
 
     public void testFailFeedbackIsRed() {
         final var output = new StringBuilder();
-        new LocalProbe(
+        new LocalProbeApp(
             new VerdictOfProbe(() -> false),
             text -> output.append(text.content())
         ).run();
@@ -34,7 +34,7 @@ public final class LocalProbeTest extends TestCase {
 
     public void testVerdictCheckedOnce() {
         final var calls = new AtomicInteger(0);
-        new LocalProbe(
+        new LocalProbeApp(
             new VerdictOfProbe(() -> {
                 calls.incrementAndGet();
                 return true;
@@ -47,7 +47,7 @@ public final class LocalProbeTest extends TestCase {
     public void testBrokenVerdictWritesError() {
         final var output = new StringBuilder();
         try {
-            new LocalProbe(
+            new LocalProbeApp(
                 new VerdictOfProbe(() -> {
                     throw new InvariantViolation("There is no verdict.");
                 }),
@@ -61,7 +61,7 @@ public final class LocalProbeTest extends TestCase {
 
     public void testOutputNotCalledBeforeRun() {
         final var calls = new AtomicInteger(0);
-        new LocalProbe(
+        new LocalProbeApp(
             new VerdictOfProbe(() -> true),
             text -> calls.incrementAndGet()
         );
@@ -70,7 +70,7 @@ public final class LocalProbeTest extends TestCase {
 
     public void testFromEffect() {
         final var calls = new AtomicInteger(0);
-        new LocalProbe(
+        new LocalProbeApp(
             calls::incrementAndGet
         ).run();
         assertEquals(1, calls.get());
@@ -78,7 +78,7 @@ public final class LocalProbeTest extends TestCase {
 
     public void testFromBrokenEffect() {
         try {
-            new LocalProbe(
+            new LocalProbeApp(
                 () -> {
                     throw new InvariantViolation("There is no effect.");
                 }

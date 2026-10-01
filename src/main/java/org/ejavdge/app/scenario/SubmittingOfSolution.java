@@ -18,46 +18,64 @@ import org.ejavdge.web.context.ContextOfSolution;
 import org.ejavdge.web.context.LangId;
 import org.ejavdge.web.context.ProbId;
 
+import java.util.function.Function;
+
+
 public final class SubmittingOfSolution implements Effect {
-    private final ByteFile file;
-    private final ContestForm form;
-    private final ContestResource resource;
+    private final Effect origin;
 
     public SubmittingOfSolution(final ByteFile f, final ContestForm cf, final ContestResource cr) {
-        this.file = f;
-        this.form = cf;
-        this.resource = cr;
+        this(
+            new BindNumToEffect(
+                new ProbByName(
+                    new PresetEngine(),
+                    new MainPage(cr),
+                    new ProbNameOf(f)
+                ),
+                id -> new SendingOf(
+                    new Solution(
+                        cf,
+                        new ContextOfSolution(
+                            new ProbId(id),
+                            new LangId(
+                                new SolutionLang(
+                                    new PresetEngine(),
+                                    new ProblemPage(
+                                        cr,
+                                        new ProbId(id)
+                                    ),
+                                    f
+                                )
+                            )
+                        ),
+                        f
+                    )
+                )
+            )
+        );
+    }
+
+    public SubmittingOfSolution(final Effect e) {
+        this.origin = e;
     }
 
     @Override
     public void perform() throws InvariantViolation {
-        final var pid = new ProbId(
-            new Num.Of(
-                new ProbByName(
-                    new PresetEngine(),
-                    new MainPage(this.resource),
-                    new ProbNameOf(this.file)
-                ).value()
-            )
-        );
-        new SendingOf(
-            new Solution(
-                this.form,
-                new ContextOfSolution(
-                    pid,
-                    new LangId(
-                        new SolutionLang(
-                            new PresetEngine(),
-                            new ProblemPage(
-                                this.resource,
-                                pid
-                            ),
-                            this.file
-                        )
-                    )
-                ),
-                this.file
-            )
-        ).perform();
+        this.origin.perform();
+    }
+
+    private static final class BindNumToEffect implements Effect {
+        private final Num src;
+        private final Function<Integer, Effect> func;
+
+        public BindNumToEffect(final Num n, final Function<Integer, Effect> f) {
+            this.src = n;
+            this.func = f;
+        }
+
+        @Override
+        public void perform() throws InvariantViolation {
+            this.func.apply(this.src.value()).perform();
+        }
     }
 }

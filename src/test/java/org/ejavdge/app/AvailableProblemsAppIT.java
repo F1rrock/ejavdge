@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class AvailableProblemsIT extends TestCase {
+public final class AvailableProblemsAppIT extends TestCase {
     private String main;
     private String problem;
     private Location location;
@@ -69,7 +69,7 @@ public final class AvailableProblemsIT extends TestCase {
                 return this.main.getBytes(StandardCharsets.UTF_8);
             };
             final var out = new CapturingOut();
-            new AvailableProblems(
+            new AvailableProblemsApp(
                 this.validResource(driver),
                 out
             ).run();
@@ -94,7 +94,7 @@ public final class AvailableProblemsIT extends TestCase {
     public void testMainPageCalls() {
         try {
             final var calls = new AtomicInteger(0);
-            new AvailableProblems(
+            new AvailableProblemsApp(
                 this.validResource(
                     (loc, req) -> {
                         if (new String(req.bytes(), StandardCharsets.UTF_8).contains("prob_id=")) {
@@ -115,7 +115,7 @@ public final class AvailableProblemsIT extends TestCase {
     public void testAnyPageCalls() {
         try {
             final var calls = new AtomicInteger(0);
-            new AvailableProblems(
+            new AvailableProblemsApp(
                 this.validResource(
                     (loc, req) -> {
                         calls.incrementAndGet();
@@ -135,7 +135,7 @@ public final class AvailableProblemsIT extends TestCase {
 
     public void testInvalidSession() {
         try {
-            new AvailableProblems(
+            new AvailableProblemsApp(
                 new ContestResource(
                     (loc, req) -> {
                         if (new String(req.bytes(), StandardCharsets.UTF_8).contains("prob_id=")) {
@@ -166,7 +166,7 @@ public final class AvailableProblemsIT extends TestCase {
 
     public void testBrokenDriver() {
         try {
-            new AvailableProblems(
+            new AvailableProblemsApp(
                 this.validResource(
                     (loc, req) -> {
                         throw new InvariantViolation("there is no resources.");
@@ -182,7 +182,7 @@ public final class AvailableProblemsIT extends TestCase {
 
     public void testWrongPage() {
         try {
-            new AvailableProblems(
+            new AvailableProblemsApp(
                 this.validResource(
                     (loc, req) -> {
                         if (new String(req.bytes(), StandardCharsets.UTF_8).contains("prob_id=")) {

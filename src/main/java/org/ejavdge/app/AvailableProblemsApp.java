@@ -11,10 +11,10 @@ import org.ejavdge.web.context.Location;
 import org.ejavdge.workspace.out.Out;
 import org.ejavdge.workspace.out.WritingOf;
 
-public final class AvailableProblems implements App {
+public final class AvailableProblemsApp implements App {
     private final Effect src;
 
-    public AvailableProblems() {
+    public AvailableProblemsApp() {
         this(
             new Location(
                 new ClientPath(),
@@ -30,7 +30,7 @@ public final class AvailableProblems implements App {
         );
     }
 
-    public AvailableProblems(final Location l, final Credentials c, final Out o) {
+    public AvailableProblemsApp(final Location l, final Credentials c, final Out o) {
         this(
             new ContestResource(
                 new PresetDriver(),
@@ -45,7 +45,7 @@ public final class AvailableProblems implements App {
         );
     }
 
-    public AvailableProblems(final ContestResource c, final Out o) {
+    public AvailableProblemsApp(final ContestResource c, final Out o) {
         this(
             new WritingOf(
                 new ProbCatalog(
@@ -57,7 +57,7 @@ public final class AvailableProblems implements App {
         );
     }
 
-    public AvailableProblems(final Effect e) {
+    public AvailableProblemsApp(final Effect e) {
         this.src = e;
     }
 

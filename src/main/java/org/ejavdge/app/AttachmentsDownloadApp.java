@@ -1,16 +1,16 @@
 package org.ejavdge.app;
 
-import org.ejavdge.app.flow.DownloadingOfAttachments;
+import org.ejavdge.app.scenario.DownloadingOfAttachments;
 import org.ejavdge.effect.Effect;
 import org.ejavdge.scalar.text.Notice;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.workspace.out.Out;
 import org.ejavdge.workspace.out.WritingOf;
 
-public final class AttachmentsDownload implements App {
+public final class AttachmentsDownloadApp implements App {
     private final Effect src;
 
-    public AttachmentsDownload(final DownloadingOfAttachments d, final Out o) {
+    public AttachmentsDownloadApp(final DownloadingOfAttachments d, final Out o) {
         this(
             new WritingOf(
                 new Notice(
@@ -22,7 +22,7 @@ public final class AttachmentsDownload implements App {
         );
     }
 
-    public AttachmentsDownload(final Effect e) {
+    public AttachmentsDownloadApp(final Effect e) {
         this.src = e;
     }
 

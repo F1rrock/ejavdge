@@ -47,7 +47,7 @@ public final class LocalProbe implements App {
     }
 
     public LocalProbe(final JavaProgram p, final ContestResource r, final Out o) {
-        this(new VerdictOfProbe(p, r), o);
+        this(new VerdictOfProbe(p, new PresetEngine(), r), o);
     }
 
     public LocalProbe(final VerdictOfProbe v, final Out o) {

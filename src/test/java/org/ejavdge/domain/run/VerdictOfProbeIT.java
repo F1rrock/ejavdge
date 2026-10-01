@@ -1,6 +1,7 @@
 package org.ejavdge.domain.run;
 
 import junit.framework.TestCase;
+import org.ejavdge.app.setup.PresetEngine;
 import org.ejavdge.auth.Session;
 import org.ejavdge.contest.ContestResource;
 import org.ejavdge.error.InvariantViolation;
@@ -49,6 +50,7 @@ public final class VerdictOfProbeIT extends TestCase {
                         this.file(CORRECT),
                         new Text.Of(".")
                     ),
+                    new PresetEngine(),
                     this.resource(
                         (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
                             .contains("prob_id=3")
@@ -72,6 +74,7 @@ public final class VerdictOfProbeIT extends TestCase {
                         this.file(WRONG),
                         new Text.Of(".")
                     ),
+                    new PresetEngine(),
                     this.resource(
                         (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
                             .contains("prob_id=3")
@@ -95,6 +98,7 @@ public final class VerdictOfProbeIT extends TestCase {
                     this.file(CORRECT),
                     new Text.Of(".")
                 ),
+                new PresetEngine(),
                 this.resource(
                     (loc, req) -> {
                         if (new String(req.bytes(), StandardCharsets.UTF_8)
@@ -122,6 +126,7 @@ public final class VerdictOfProbeIT extends TestCase {
                     this.file(CORRECT),
                     new Text.Of(".")
                 ),
+                new PresetEngine(),
                 this.resource(
                     (loc, req) -> {
                         if (new String(req.bytes(), StandardCharsets.UTF_8)
@@ -148,6 +153,7 @@ public final class VerdictOfProbeIT extends TestCase {
                     this.file("// problem: NonexistentProblem\n"),
                     new Text.Of(".")
                 ),
+                new PresetEngine(),
                 this.resource(
                     (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
                         .contains("prob_id=3")
@@ -172,6 +178,7 @@ public final class VerdictOfProbeIT extends TestCase {
                     this.file(CORRECT),
                     new Text.Of(".")
                 ),
+                new PresetEngine(),
                 new ContestResource(
                     (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
                         .contains("prob_id=3")
@@ -206,6 +213,7 @@ public final class VerdictOfProbeIT extends TestCase {
                     this.file(CORRECT),
                     new Text.Of(".")
                 ),
+                new PresetEngine(),
                 this.resource(
                     (loc, req) -> {
                         throw new InvariantViolation("there is no resources.");

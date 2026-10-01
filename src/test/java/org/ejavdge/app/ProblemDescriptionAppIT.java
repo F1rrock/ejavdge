@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class ProblemDescriptionIT extends TestCase {
+public final class ProblemDescriptionAppIT extends TestCase {
     public void testProblemDescription() {
         try {
             final var main = Files.readString(
@@ -48,7 +48,7 @@ public final class ProblemDescriptionIT extends TestCase {
             };
             final var output = new StringBuilder();
             final Out out = text -> output.append(text.content());
-            new ProblemDescription(
+            new ProblemDescriptionApp(
                 new ContestResource(
                     driver,
                     new Location(
@@ -84,31 +84,31 @@ public final class ProblemDescriptionIT extends TestCase {
                 На стандартном потоке ввода задаются два целых числа, не меньшие
                 -32000 и не большие 32000.
                 На стандартный поток вывода напечатайте сумму этих чисел.
-                
+
                 google
                 attachment
-                
+
                 Числа задаются по одному в строке. Пробельные символы перед числом и после
                 него отсутствуют. Пустые строки в вводе отсутствуют.
-                
+
                 youtube
                 apple
                 Examples
                 Input
                 1
                 2
-                
+
                 Output
                 3
-                
+
                 Input
                 4
                 5
-                
+
                 Output
                 9
-                
-                
+
+
                 Used references:
                 https://google.com
                 https://localhost:8000/sample.txt
@@ -136,7 +136,7 @@ public final class ProblemDescriptionIT extends TestCase {
                 ).toPath()
             );
             final var calls = new AtomicInteger(0);
-            new ProblemDescription(
+            new ProblemDescriptionApp(
                 new ContestResource(
                     (loc, req) -> {
                         if (new String(req.bytes(), StandardCharsets.UTF_8).contains("prob_id=3")) {
@@ -192,7 +192,7 @@ public final class ProblemDescriptionIT extends TestCase {
                 ).toPath()
             );
             final var calls = new AtomicInteger(0);
-            new ProblemDescription(
+            new ProblemDescriptionApp(
                 new ContestResource(
                     (loc, req) -> {
                         if (new String(req.bytes(), StandardCharsets.UTF_8).contains("prob_id=3")) {
@@ -248,7 +248,7 @@ public final class ProblemDescriptionIT extends TestCase {
                 ).toPath()
             );
             final var calls = new AtomicInteger(0);
-            new ProblemDescription(
+            new ProblemDescriptionApp(
                 new ContestResource(
                     new WithLogsDriver(
                         (loc, req) -> {
@@ -306,7 +306,7 @@ public final class ProblemDescriptionIT extends TestCase {
                     "src/test/resources/pages/problem.html"
                 ).toPath()
             );
-            new ProblemDescription(
+            new ProblemDescriptionApp(
                 new ContestResource(
                     new WithLogsDriver(
                         (loc, req) -> {
@@ -352,7 +352,7 @@ public final class ProblemDescriptionIT extends TestCase {
 
     public void testBrokenDriver() {
         try {
-            new ProblemDescription(
+            new ProblemDescriptionApp(
                 new ContestResource(
                     (loc, req) -> {
                         throw new InvariantViolation("there is no resources.");
@@ -401,7 +401,7 @@ public final class ProblemDescriptionIT extends TestCase {
                     "src/test/resources/pages/problem.html"
                 ).toPath()
             );
-            new ProblemDescription(
+            new ProblemDescriptionApp(
                 new ContestResource(
                     new WithLogsDriver(
                         (loc, req) -> {

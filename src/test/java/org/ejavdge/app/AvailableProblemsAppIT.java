@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class AlreadySolvedIT extends TestCase {
+public final class AvailableProblemsAppIT extends TestCase {
     private String main;
     private String problem;
     private Location location;
@@ -56,51 +56,45 @@ public final class AlreadySolvedIT extends TestCase {
         );
     }
 
-    private boolean containsProblem(final String n) {
+    private void testProblem(final String n) {
         try {
             final WebDriver driver = (loc, req) -> {
                 final var request = new String(
                     req.bytes(),
                     StandardCharsets.UTF_8
                 );
-                if (request.contains("prob_id=")) {
+                if (request.contains("prob_id=3")) {
                     return this.problem.getBytes(StandardCharsets.UTF_8);
                 }
                 return this.main.getBytes(StandardCharsets.UTF_8);
             };
             final var out = new CapturingOut();
-            new AlreadySolved(
+            new AvailableProblemsApp(
                 this.validResource(driver),
                 out
             ).run();
-            return out.text().contains(n);
+            assertTrue(out.text().contains(n));
         } catch (final InvariantViolation e) {
             throw new AssertionError(e);
         }
     }
 
     public void testProblemA() {
-        assertTrue(
-            containsProblem("A")
-        );
+        testProblem("A");
     }
 
     public void testProblemB() {
-        assertFalse(
-            containsProblem("B")
-        );
+        testProblem("B");
     }
 
     public void testProblemWithLinks() {
-        assertFalse(
-            containsProblem("WithLinks")
-        );
+        testProblem("WithLinks");
     }
 
     public void testMainPageCalls() {
         try {
             final var calls = new AtomicInteger(0);
-            new AlreadySolved(
+            new AvailableProblemsApp(
                 this.validResource(
                     (loc, req) -> {
                         if (new String(req.bytes(), StandardCharsets.UTF_8).contains("prob_id=")) {
@@ -121,7 +115,7 @@ public final class AlreadySolvedIT extends TestCase {
     public void testAnyPageCalls() {
         try {
             final var calls = new AtomicInteger(0);
-            new AlreadySolved(
+            new AvailableProblemsApp(
                 this.validResource(
                     (loc, req) -> {
                         calls.incrementAndGet();
@@ -141,7 +135,7 @@ public final class AlreadySolvedIT extends TestCase {
 
     public void testInvalidSession() {
         try {
-            new AlreadySolved(
+            new AvailableProblemsApp(
                 new ContestResource(
                     (loc, req) -> {
                         if (new String(req.bytes(), StandardCharsets.UTF_8).contains("prob_id=")) {
@@ -172,7 +166,7 @@ public final class AlreadySolvedIT extends TestCase {
 
     public void testBrokenDriver() {
         try {
-            new AlreadySolved(
+            new AvailableProblemsApp(
                 this.validResource(
                     (loc, req) -> {
                         throw new InvariantViolation("there is no resources.");
@@ -187,25 +181,28 @@ public final class AlreadySolvedIT extends TestCase {
     }
 
     public void testWrongPage() {
-        final var out = new CapturingOut();
-        new AlreadySolved(
-            this.validResource(
-                (loc, req) -> {
-                    if (new String(req.bytes(), StandardCharsets.UTF_8).contains("prob_id=")) {
-                        return this.problem.getBytes(StandardCharsets.UTF_8);
+        try {
+            new AvailableProblemsApp(
+                this.validResource(
+                    (loc, req) -> {
+                        if (new String(req.bytes(), StandardCharsets.UTF_8).contains("prob_id=")) {
+                            return this.problem.getBytes(StandardCharsets.UTF_8);
+                        }
+                        return """
+                        <html>
+                            <body>
+                                <p>404 Not found</p>
+                            </body>
+                        </html>
+                        """.getBytes(StandardCharsets.UTF_8);
                     }
-                    return """
-                    <html>
-                        <body>
-                            <p>404 Not found</p>
-                        </body>
-                    </html>
-                    """.getBytes(StandardCharsets.UTF_8);
-                }
-            ),
-            out
-        ).run();
-        assertEquals("You have not solved anything yet :(", out.text());
+                ),
+                Text::content
+            ).run();
+        } catch (final InvariantViolation e) {
+            return;
+        }
+        fail("InvariantViolation");
     }
 
     private static final class CapturingOut implements Out {

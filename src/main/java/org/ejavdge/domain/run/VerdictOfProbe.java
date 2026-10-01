@@ -1,9 +1,9 @@
 package org.ejavdge.domain.run;
 
-import org.ejavdge.app.setup.PresetEngine;
 import org.ejavdge.contest.ContestResource;
 import org.ejavdge.contest.MainPage;
 import org.ejavdge.contest.ProblemPage;
+import org.ejavdge.dom.engine.XmlEngine;
 import org.ejavdge.domain.Verdict;
 import org.ejavdge.domain.problem.ProbBrief;
 import org.ejavdge.domain.problem.ProbByName;
@@ -17,18 +17,18 @@ import org.ejavdge.web.context.ProbId;
 public final class VerdictOfProbe implements Verdict {
     private final Verdict origin;
 
-    public VerdictOfProbe(final JavaProgram p, final ContestResource r) {
+    public VerdictOfProbe(final JavaProgram p, final XmlEngine e, final ContestResource r) {
         this(
             new VerdictBySamples(
                 p,
                 new ProbExamples(
                     new ProbBrief(
-                        new PresetEngine(),
+                        e,
                         new ProblemPage(
                             r,
                             new ProbId(
                                 new ProbByName(
-                                    new PresetEngine(),
+                                    e,
                                     new MainPage(r),
                                     new ProbNameOf(p)
                                 )

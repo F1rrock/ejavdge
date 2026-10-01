@@ -1,4 +1,4 @@
-package org.ejavdge.app;
+package org.ejavdge.app.scenario;
 
 import junit.framework.TestCase;
 import org.ejavdge.auth.Session;
@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.concurrent.atomic.AtomicReference;
 
-public final class SilentSubmitIT extends TestCase {
+public final class SubmittingOfSolutionIT extends TestCase {
     private static final String EJSID = "756b423a0a6fe6a7";
     private static final String SID = "1684bb4a0f94302c";
 
@@ -45,11 +45,11 @@ public final class SilentSubmitIT extends TestCase {
 
     public void testPostingOfSolution() {
         final var posted = new AtomicReference<String>();
-        new SilentSubmit(
+        new SubmittingOfSolution(
             this.file(),
             this.form(this.driver(posted)),
             this.resource(this.driver(posted))
-        ).run();
+        ).perform();
         if (posted.get() == null) {
             fail("There is no post request.");
             return;
@@ -59,11 +59,11 @@ public final class SilentSubmitIT extends TestCase {
 
     public void testCookieInPost() {
         final var posted = new AtomicReference<String>();
-        new SilentSubmit(
+        new SubmittingOfSolution(
             this.file(),
             this.form(this.driver(posted)),
             this.resource(this.driver(posted))
-        ).run();
+        ).perform();
         final var request = posted.get();
         assertTrue(
             request.contains("Cookie:")
@@ -73,11 +73,11 @@ public final class SilentSubmitIT extends TestCase {
 
     public void testContentTypeInPost() {
         final var posted = new AtomicReference<String>();
-        new SilentSubmit(
+        new SubmittingOfSolution(
             this.file(),
             this.form(this.driver(posted)),
             this.resource(this.driver(posted))
-        ).run();
+        ).perform();
         final var request = posted.get();
         assertTrue(
             request.contains("Content-Type: multipart/form-data")
@@ -87,11 +87,11 @@ public final class SilentSubmitIT extends TestCase {
 
     public void testSidInPost() {
         final var posted = new AtomicReference<String>();
-        new SilentSubmit(
+        new SubmittingOfSolution(
             this.file(),
             this.form(this.driver(posted)),
             this.resource(this.driver(posted))
-        ).run();
+        ).perform();
         final var body = posted.get();
         assertTrue(
             body.contains("name=\"SID\"")
@@ -101,11 +101,11 @@ public final class SilentSubmitIT extends TestCase {
 
     public void testProbIdInPost() {
         final var posted = new AtomicReference<String>();
-        new SilentSubmit(
+        new SubmittingOfSolution(
             this.file(),
             this.form(this.driver(posted)),
             this.resource(this.driver(posted))
-        ).run();
+        ).perform();
         final var body = posted.get();
         assertTrue(
             body.contains("name=\"prob_id\"")
@@ -115,11 +115,11 @@ public final class SilentSubmitIT extends TestCase {
 
     public void testLangIdInPost() {
         final var posted = new AtomicReference<String>();
-        new SilentSubmit(
+        new SubmittingOfSolution(
             this.file(),
             this.form(this.driver(posted)),
             this.resource(this.driver(posted))
-        ).run();
+        ).perform();
         final var body = posted.get();
         assertTrue(
             body.contains("name=\"lang_id\"")
@@ -129,11 +129,11 @@ public final class SilentSubmitIT extends TestCase {
 
     public void testActionInPost() {
         final var posted = new AtomicReference<String>();
-        new SilentSubmit(
+        new SubmittingOfSolution(
             this.file(),
             this.form(this.driver(posted)),
             this.resource(this.driver(posted))
-        ).run();
+        ).perform();
         final var body = posted.get();
         assertTrue(
             body.contains("name=\"action_40\"")
@@ -143,11 +143,11 @@ public final class SilentSubmitIT extends TestCase {
 
     public void testFilePartInPost() {
         final var posted = new AtomicReference<String>();
-        new SilentSubmit(
+        new SubmittingOfSolution(
             this.file(),
             this.form(this.driver(posted)),
             this.resource(this.driver(posted))
-        ).run();
+        ).perform();
         final var body = posted.get();
         assertTrue(
             body.contains("filename=\"problem\"")
@@ -159,11 +159,11 @@ public final class SilentSubmitIT extends TestCase {
         try {
             final var posted = new AtomicReference<String>();
             final var driver = this.unexpectedStatusDriver(posted);
-            new SilentSubmit(
+            new SubmittingOfSolution(
                 this.file(),
                 this.form(driver),
                 this.resource(driver)
-            ).run();
+            ).perform();
         } catch (final InvariantViolation e) {
             return;
         }
@@ -173,11 +173,11 @@ public final class SilentSubmitIT extends TestCase {
     public void testUnknownProblem() {
         final var posted = new AtomicReference<String>();
         try {
-            new SilentSubmit(
+            new SubmittingOfSolution(
                 this.file("// problem: NonexistentProblem\n"),
                 this.form(this.driver(posted)),
                 this.resource(this.driver(posted))
-            ).run();
+            ).perform();
         } catch (final InvariantViolation e) {
             assertNull(posted.get());
             return;
@@ -191,11 +191,11 @@ public final class SilentSubmitIT extends TestCase {
             final WebDriver driver = (loc, req) -> {
                 throw new InvariantViolation("There is no resource.");
             };
-            new SilentSubmit(
+            new SubmittingOfSolution(
                 this.file(),
                 this.form(driver),
                 this.resource(driver)
-            ).run();
+            ).perform();
         } catch (final InvariantViolation e) {
             assertNull(posted.get());
             return;
@@ -206,7 +206,7 @@ public final class SilentSubmitIT extends TestCase {
     public void testBrokenFile() {
         final var posted = new AtomicReference<String>();
         try {
-            new SilentSubmit(
+            new SubmittingOfSolution(
                 new ByteFile.Of(
                     new Text.Of("broken"),
                     () -> {
@@ -215,7 +215,7 @@ public final class SilentSubmitIT extends TestCase {
                 ),
                 this.form(this.driver(posted)),
                 this.resource(this.driver(posted))
-            ).run();
+            ).perform();
         } catch (final InvariantViolation e) {
             assertNull(posted.get());
             return;

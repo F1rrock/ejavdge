@@ -1,6 +1,7 @@
-package org.ejavdge.app;
+package org.ejavdge.domain.report;
 
 import junit.framework.TestCase;
+import org.ejavdge.app.setup.PresetEngine;
 import org.ejavdge.auth.Session;
 import org.ejavdge.contest.ContestResource;
 import org.ejavdge.error.InvariantViolation;
@@ -10,9 +11,7 @@ import org.ejavdge.scalar.num.Num;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.web.context.Location;
 import org.ejavdge.web.driver.WebDriver;
-import org.ejavdge.web.driver.WithLogsDriver;
 import org.ejavdge.web.spec.Request;
-import org.ejavdge.workspace.out.Out;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,37 +53,6 @@ public final class LastReportIT extends TestCase {
                 }
                 return main.getBytes(StandardCharsets.UTF_8);
             };
-            final var output = new StringBuilder();
-            final Out out = text -> output.append(text.content());
-            new LastReport(
-                new ByteFile.Of(
-                    new Text.Of("problem"),
-                    new Bytes.Of(
-                        "// problem: WithLinks\n".getBytes(StandardCharsets.UTF_8)
-                    )
-                ),
-                new ContestResource(
-                    driver,
-                    new Location(
-                        new Text.Of("/ejudge"),
-                        new Text.Of("localhost"),
-                        new Num.Of(90)
-                    ),
-                    new Session(
-                        new Bytes.Of(
-                            """
-                            HTTP/1.1 302 FOUND\r
-                            Set-Cookie: EJSID=756b423a0a6fe6a7;\r
-                            Location: http://localhost:90/ejudge?SID=1684bb4a0f94302c&action=2&lt=1\r
-                            Content-Length: 2\r
-                            \r
-                            OK\r
-                            """.getBytes(StandardCharsets.UTF_8)
-                        )
-                    )
-                ),
-                out
-            ).run();
             assertEquals(
                 """
                 OK
@@ -96,139 +64,167 @@ public final class LastReportIT extends TestCase {
                 This is NOT RECOMMENDED for correct judging.
                 Please, modify the core_pattern file.
                 For example, consider disabling abrtd.
-                
-                
+
+
                 Result: OK
                 Result: OK
                 Result: OK
-                
+
                        \s
                 L
                 Command-line parameters
-                
+
                        \s
                 I
                 Test input
-                
+
                        \s
                 O
                 Program output
-                
+
                        \s
                 A
                 Correct output
-                
+
                        \s
                 E
                 Program output to stderr
-                
+
                        \s
                 C
                 Checker output
-                
+
                        \s
                 F
                 Additional test information
-                
+
                        \s
                 ====== Test #1 =======
-                
-                
+
+
                 --- Input: size 14 ---
-                
+
                 6
                 1 2 3 4 5 6
-                
-                
+
+
                 --- Output: size 11 ---
-                
+
                 1 3 5 6 4 2
-                
+
                 --- Correct: size 12 ---
-                
+
                 1 3 5 6 4 2
-                
-                
+
+
                 --- Stderr: size 0 ---
-                
-                
-                
+
+
+
                 --- Checker output: size 3 ---
-                
+
                 OK
-                
-                
+
+
                 --- Resource usage ---
-                
+
                 program: { utime=699, stime=523, ptime=1222, rtime=297, maxvsz=2440470528, maxrss=87969792, nvcsw=48, nivcsw=49 }
                 checker: { utime=0, stime=1, ptime=1, rtime=2, maxvsz=430080, maxrss=2228224, nvcsw=1, nivcsw=0 }
-                
-                
+
+
                 ====== Test #2 =======
-                
-                
+
+
                 --- Input: size 18 ---
-                
+
                 5
                 1.5 0 -2 7.25 3
-                
-                
+
+
                 --- Output: size 15 ---
-                
+
                 1.5 -2 3 7.25 0
-                
+
                 --- Correct: size 16 ---
-                
+
                 1.5 -2 3 7.25 0
-                
-                
+
+
                 --- Stderr: size 0 ---
-                
-                
-                
+
+
+
                 --- Checker output: size 3 ---
-                
+
                 OK
-                
-                
+
+
                 --- Resource usage ---
-                
+
                 program: { utime=689, stime=491, ptime=1179, rtime=298, maxvsz=2371514368, maxrss=87764992, nvcsw=45, nivcsw=44 }
                 checker: { utime=0, stime=1, ptime=1, rtime=1, maxvsz=430080, maxrss=2228224, nvcsw=1, nivcsw=0 }
-                
-                
+
+
                 ====== Test #3 =======
-                
-                
+
+
                 --- Input: size 8 ---
-                
+
                 2
                 10 20
-                
-                
+
+
                 --- Output: size 5 ---
-                
+
                 10 20
-                
+
                 --- Correct: size 6 ---
-                
+
                 10 20
-                
-                
+
+
                 --- Stderr: size 0 ---
-                
-                
-                
+
+
+
                 --- Checker output: size 3 ---
-                
+
                 OK
-                
-                
+
+
                 --- Resource usage ---
-                
+
                 program: { utime=720, stime=497, ptime=1217, rtime=291, maxvsz=2441179136, maxrss=87973888, nvcsw=46, nivcsw=37 }
                 checker: { utime=0, stime=1, ptime=1, rtime=2, maxvsz=430080, maxrss=2097152, nvcsw=1, nivcsw=0 }""",
-                output.toString()
+                new LastReport(
+                    new ByteFile.Of(
+                        new Text.Of("problem"),
+                        new Bytes.Of(
+                            "// problem: WithLinks\n".getBytes(StandardCharsets.UTF_8)
+                        )
+                    ),
+                    new PresetEngine(),
+                    new ContestResource(
+                        driver,
+                        new Location(
+                            new Text.Of("/ejudge"),
+                            new Text.Of("localhost"),
+                            new Num.Of(90)
+                        ),
+                        new Session(
+                            new Bytes.Of(
+                                """
+                                HTTP/1.1 302 FOUND\r
+                                Set-Cookie: EJSID=756b423a0a6fe6a7;\r
+                                Location: http://localhost:90/ejudge?SID=1684bb4a0f94302c&action=2&lt=1\r
+                                Content-Length: 2\r
+                                \r
+                                OK\r
+                                """.getBytes(StandardCharsets.UTF_8)
+                            )
+                        )
+                    )
+                ).content()
             );
         } catch (final IOException e) {
             throw new AssertionError(e);
@@ -271,37 +267,6 @@ public final class LastReportIT extends TestCase {
                 }
                 return main.getBytes(StandardCharsets.UTF_8);
             };
-            final var output = new StringBuilder();
-            final Out out = text -> output.append(text.content());
-            new LastReport(
-                new ByteFile.Of(
-                    new Text.Of("problem"),
-                    new Bytes.Of(
-                        "// problem: WithLinks\n".getBytes(StandardCharsets.UTF_8)
-                    )
-                ),
-                new ContestResource(
-                    driver,
-                    new Location(
-                        new Text.Of("/ejudge"),
-                        new Text.Of("localhost"),
-                        new Num.Of(90)
-                    ),
-                    new Session(
-                        new Bytes.Of(
-                            """
-                            HTTP/1.1 302 FOUND\r
-                            Set-Cookie: EJSID=756b423a0a6fe6a7;\r
-                            Location: http://localhost:90/ejudge?SID=1684bb4a0f94302c&action=2&lt=1\r
-                            Content-Length: 2\r
-                            \r
-                            OK\r
-                            """.getBytes(StandardCharsets.UTF_8)
-                        )
-                    )
-                ),
-                out
-            ).run();
             assertEquals(
                 """
                 Run ID: 12
@@ -313,7 +278,35 @@ public final class LastReportIT extends TestCase {
                 Failed test: N/A
                 View source: View
                 View report: N/A""",
-                output.toString()
+                new LastReport(
+                    new ByteFile.Of(
+                        new Text.Of("problem"),
+                        new Bytes.Of(
+                            "// problem: WithLinks\n".getBytes(StandardCharsets.UTF_8)
+                        )
+                    ),
+                    new PresetEngine(),
+                    new ContestResource(
+                        driver,
+                        new Location(
+                            new Text.Of("/ejudge"),
+                            new Text.Of("localhost"),
+                            new Num.Of(90)
+                        ),
+                        new Session(
+                            new Bytes.Of(
+                                """
+                                HTTP/1.1 302 FOUND\r
+                                Set-Cookie: EJSID=756b423a0a6fe6a7;\r
+                                Location: http://localhost:90/ejudge?SID=1684bb4a0f94302c&action=2&lt=1\r
+                                Content-Length: 2\r
+                                \r
+                                OK\r
+                                """.getBytes(StandardCharsets.UTF_8)
+                            )
+                        )
+                    )
+                ).content()
             );
         } catch (final IOException e) {
             throw new AssertionError(e);
@@ -347,6 +340,7 @@ public final class LastReportIT extends TestCase {
                         "// problem: WithLinks\n".getBytes(StandardCharsets.UTF_8)
                     )
                 ),
+                new PresetEngine(),
                 new ContestResource(
                     (loc, req) -> {
                         final var request = new String(req.bytes(), StandardCharsets.UTF_8);
@@ -376,9 +370,8 @@ public final class LastReportIT extends TestCase {
                             """.getBytes(StandardCharsets.UTF_8)
                         )
                     )
-                ),
-                Text::content
-            ).run();
+                )
+            ).content();
             assertEquals(1, calls.get());
         } catch (final IOException e) {
             throw new AssertionError(e);
@@ -412,6 +405,7 @@ public final class LastReportIT extends TestCase {
                         "// problem: WithLinks\n".getBytes(StandardCharsets.UTF_8)
                     )
                 ),
+                new PresetEngine(),
                 new ContestResource(
                     (loc, req) -> {
                         final var request = new String(req.bytes(), StandardCharsets.UTF_8);
@@ -441,9 +435,8 @@ public final class LastReportIT extends TestCase {
                             """.getBytes(StandardCharsets.UTF_8)
                         )
                     )
-                ),
-                Text::content
-            ).run();
+                )
+            ).content();
             assertEquals(1, calls.get());
         } catch (final IOException e) {
             throw new AssertionError(e);
@@ -477,6 +470,7 @@ public final class LastReportIT extends TestCase {
                         "// problem: WithLinks\n".getBytes(StandardCharsets.UTF_8)
                     )
                 ),
+                new PresetEngine(),
                 new ContestResource(
                     (loc, req) -> {
                         final var request = new String(req.bytes(), StandardCharsets.UTF_8);
@@ -506,9 +500,8 @@ public final class LastReportIT extends TestCase {
                             """.getBytes(StandardCharsets.UTF_8)
                         )
                     )
-                ),
-                Text::content
-            ).run();
+                )
+            ).content();
             assertEquals(1, calls.get());
         } catch (final IOException e) {
             throw new AssertionError(e);
@@ -541,6 +534,7 @@ public final class LastReportIT extends TestCase {
                         "// problem: WithLinks\n".getBytes(StandardCharsets.UTF_8)
                     )
                 ),
+                new PresetEngine(),
                 new ContestResource(
                     (loc, req) -> {
                         final var request = new String(req.bytes(), StandardCharsets.UTF_8);
@@ -568,9 +562,8 @@ public final class LastReportIT extends TestCase {
                             """.getBytes(StandardCharsets.UTF_8)
                         )
                     )
-                ),
-                Text::content
-            ).run();
+                )
+            ).content();
         } catch (final InvariantViolation e) {
             return;
         } catch (final IOException e) {
@@ -588,6 +581,7 @@ public final class LastReportIT extends TestCase {
                         "// problem: WithLinks\n".getBytes(StandardCharsets.UTF_8)
                     )
                 ),
+                new PresetEngine(),
                 new ContestResource(
                     (loc, req) -> {
                         throw new InvariantViolation("there is no resources.");
@@ -609,9 +603,8 @@ public final class LastReportIT extends TestCase {
                             """.getBytes(StandardCharsets.UTF_8)
                         )
                     )
-                ),
-                Text::content
-            ).run();
+                )
+            ).content();
         } catch (final InvariantViolation e) {
             return;
         }
@@ -635,21 +628,25 @@ public final class LastReportIT extends TestCase {
                     "src/test/resources/pages/report.html"
                 ).toPath()
             );
-            new ProblemDescription(
+            new LastReport(
+                new ByteFile.Of(
+                    new Text.Of("problem"),
+                    new Bytes.Of(
+                        "// lang: 14\n".getBytes(StandardCharsets.UTF_8)
+                    )
+                ),
+                new PresetEngine(),
                 new ContestResource(
-                    new WithLogsDriver(
-                        (loc, req) -> {
-                            final var request = new String(req.bytes(), StandardCharsets.UTF_8);
-                            if (request.contains("action=37")) {
-                                return report.getBytes(StandardCharsets.UTF_8);
-                            }
-                            if (request.contains("action=139")) {
-                                return problem.getBytes(StandardCharsets.UTF_8);
-                            }
-                            return main.getBytes(StandardCharsets.UTF_8);
-                        },
-                        new FakeLogger()
-                    ),
+                    (loc, req) -> {
+                        final var request = new String(req.bytes(), StandardCharsets.UTF_8);
+                        if (request.contains("action=37")) {
+                            return report.getBytes(StandardCharsets.UTF_8);
+                        }
+                        if (request.contains("action=139")) {
+                            return problem.getBytes(StandardCharsets.UTF_8);
+                        }
+                        return main.getBytes(StandardCharsets.UTF_8);
+                    },
                     new Location(
                         new Text.Of("/ejudge"),
                         new Text.Of("localhost"),
@@ -667,15 +664,8 @@ public final class LastReportIT extends TestCase {
                             """.getBytes(StandardCharsets.UTF_8)
                         )
                     )
-                ),
-                new ByteFile.Of(
-                    new Text.Of("problem"),
-                    new Bytes.Of(
-                        "// lang: 14\n".getBytes(StandardCharsets.UTF_8)
-                    )
-                ),
-                Text::content
-            ).run();
+                )
+            ).content();
         } catch (final InvariantViolation e) {
             return;
         } catch (final IOException e) {

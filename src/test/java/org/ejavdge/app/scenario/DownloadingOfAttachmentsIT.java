@@ -1,4 +1,4 @@
-package org.ejavdge.app;
+package org.ejavdge.app.scenario;
 
 import junit.framework.TestCase;
 import org.ejavdge.auth.Session;
@@ -12,10 +12,10 @@ import org.ejavdge.web.context.Location;
 
 import java.nio.charset.StandardCharsets;
 
-public final class AttachmentsDownloadIT extends TestCase {
+public final class DownloadingOfAttachmentsIT extends TestCase {
     public void testFileWithoutProblemMarker() {
         try {
-            new AttachmentsDownload(
+            new DownloadingOfAttachments(
                 new ContestResource(
                     (loc, req) -> req.bytes(),
                     new Location(
@@ -46,7 +46,7 @@ public final class AttachmentsDownloadIT extends TestCase {
                     )
                 ),
                 new Text.Of("./")
-            ).run();
+            ).perform();
         } catch (final InvariantViolation e) {
             return;
         }
@@ -55,7 +55,7 @@ public final class AttachmentsDownloadIT extends TestCase {
 
     public void testWithInvalidSession() {
         try {
-            new AttachmentsDownload(
+            new DownloadingOfAttachments(
                 new ContestResource(
                     (loc, req) -> req.bytes(),
                     new Location(
@@ -85,7 +85,7 @@ public final class AttachmentsDownloadIT extends TestCase {
                     )
                 ),
                 new Text.Of("./")
-            ).run();
+            ).perform();
         } catch (final InvariantViolation e) {
             return;
         }

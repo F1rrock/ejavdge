@@ -15,10 +15,10 @@ import org.ejavdge.web.context.Location;
 import org.ejavdge.workspace.out.Out;
 import org.ejavdge.workspace.out.WritingOf;
 
-public final class LocalProbe implements App {
+public final class LocalProbeApp implements App {
     private final Effect src;
 
-    public LocalProbe(final JavaProgram p) {
+    public LocalProbeApp(final JavaProgram p) {
         this(
             p,
             new ContestResource(
@@ -46,11 +46,11 @@ public final class LocalProbe implements App {
         );
     }
 
-    public LocalProbe(final JavaProgram p, final ContestResource r, final Out o) {
-        this(new VerdictOfProbe(p, r), o);
+    public LocalProbeApp(final JavaProgram p, final ContestResource r, final Out o) {
+        this(new VerdictOfProbe(p, new PresetEngine(), r), o);
     }
 
-    public LocalProbe(final VerdictOfProbe v, final Out o) {
+    public LocalProbeApp(final VerdictOfProbe v, final Out o) {
         this(
             new WritingOf(
                 new Feedback(
@@ -63,7 +63,7 @@ public final class LocalProbe implements App {
         );
     }
 
-    public LocalProbe(final Effect e) {
+    public LocalProbeApp(final Effect e) {
         this.src = e;
     }
 

@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class AlreadySolvedIT extends TestCase {
+public final class SolvedProblemsAppIT extends TestCase {
     private String main;
     private String problem;
     private Location location;
@@ -69,7 +69,7 @@ public final class AlreadySolvedIT extends TestCase {
                 return this.main.getBytes(StandardCharsets.UTF_8);
             };
             final var out = new CapturingOut();
-            new AlreadySolved(
+            new SolvedProblemsApp(
                 this.validResource(driver),
                 out
             ).run();
@@ -100,7 +100,7 @@ public final class AlreadySolvedIT extends TestCase {
     public void testMainPageCalls() {
         try {
             final var calls = new AtomicInteger(0);
-            new AlreadySolved(
+            new SolvedProblemsApp(
                 this.validResource(
                     (loc, req) -> {
                         if (new String(req.bytes(), StandardCharsets.UTF_8).contains("prob_id=")) {
@@ -121,7 +121,7 @@ public final class AlreadySolvedIT extends TestCase {
     public void testAnyPageCalls() {
         try {
             final var calls = new AtomicInteger(0);
-            new AlreadySolved(
+            new SolvedProblemsApp(
                 this.validResource(
                     (loc, req) -> {
                         calls.incrementAndGet();
@@ -141,7 +141,7 @@ public final class AlreadySolvedIT extends TestCase {
 
     public void testInvalidSession() {
         try {
-            new AlreadySolved(
+            new SolvedProblemsApp(
                 new ContestResource(
                     (loc, req) -> {
                         if (new String(req.bytes(), StandardCharsets.UTF_8).contains("prob_id=")) {
@@ -172,7 +172,7 @@ public final class AlreadySolvedIT extends TestCase {
 
     public void testBrokenDriver() {
         try {
-            new AlreadySolved(
+            new SolvedProblemsApp(
                 this.validResource(
                     (loc, req) -> {
                         throw new InvariantViolation("there is no resources.");
@@ -188,7 +188,7 @@ public final class AlreadySolvedIT extends TestCase {
 
     public void testWrongPage() {
         final var out = new CapturingOut();
-        new AlreadySolved(
+        new SolvedProblemsApp(
             this.validResource(
                 (loc, req) -> {
                     if (new String(req.bytes(), StandardCharsets.UTF_8).contains("prob_id=")) {

@@ -1,22 +1,26 @@
 package org.ejavdge.app;
 
+import org.ejavdge.app.scenario.SubmittingWithConfirmation;
+import org.ejavdge.domain.report.LastReport;
 import org.ejavdge.effect.Effect;
-import org.ejavdge.effect.Sequence;
 import org.ejavdge.error.InvariantViolation;
+import org.ejavdge.scalar.text.Notice;
+import org.ejavdge.workspace.out.Out;
+import org.ejavdge.workspace.out.WritingOf;
 
-public final class ReportedSubmit implements App {
+public final class ReportedSubmitApp implements App {
     private final Effect src;
 
-    public ReportedSubmit(final SubmitWithNotification s, final LastReportApp r) {
+    public ReportedSubmitApp(final SubmittingWithConfirmation s, final LastReport r, final Out o) {
         this(
-            new Sequence(
-                new RunningOf(s),
-                new RunningOf(r)
+            new WritingOf(
+                new Notice(s, r),
+                o
             )
         );
     }
 
-    public ReportedSubmit(final Effect e) {
+    public ReportedSubmitApp(final Effect e) {
         this.src = e;
     }
 

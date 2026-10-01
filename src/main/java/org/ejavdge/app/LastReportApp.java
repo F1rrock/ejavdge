@@ -19,10 +19,10 @@ import org.ejavdge.web.context.RunId;
 import org.ejavdge.workspace.out.Out;
 import org.ejavdge.workspace.out.WritingOf;
 
-public final class LastReport implements App {
+public final class LastReportApp implements App {
     private final Effect src;
 
-    public LastReport(final ByteFile f, final ContestResource r, final Out o) {
+    public LastReportApp(final ByteFile f, final ContestResource r, final Out o) {
         this(
             new WritingOf(
                 new BindOfText(
@@ -73,7 +73,7 @@ public final class LastReport implements App {
         );
     }
 
-    public LastReport(final Effect e) {
+    public LastReportApp(final Effect e) {
         this.src = e;
     }
 

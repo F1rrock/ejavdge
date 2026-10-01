@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class LastReportIT extends TestCase {
+public final class LastReportAppIT extends TestCase {
     public void testLastReportContent() {
         try {
             final var main = Files.readString(
@@ -56,7 +56,7 @@ public final class LastReportIT extends TestCase {
             };
             final var output = new StringBuilder();
             final Out out = text -> output.append(text.content());
-            new LastReport(
+            new LastReportApp(
                 new ByteFile.Of(
                     new Text.Of("problem"),
                     new Bytes.Of(
@@ -96,136 +96,136 @@ public final class LastReportIT extends TestCase {
                 This is NOT RECOMMENDED for correct judging.
                 Please, modify the core_pattern file.
                 For example, consider disabling abrtd.
-                
-                
+
+
                 Result: OK
                 Result: OK
                 Result: OK
-                
+
                        \s
                 L
                 Command-line parameters
-                
+
                        \s
                 I
                 Test input
-                
+
                        \s
                 O
                 Program output
-                
+
                        \s
                 A
                 Correct output
-                
+
                        \s
                 E
                 Program output to stderr
-                
+
                        \s
                 C
                 Checker output
-                
+
                        \s
                 F
                 Additional test information
-                
+
                        \s
                 ====== Test #1 =======
-                
-                
+
+
                 --- Input: size 14 ---
-                
+
                 6
                 1 2 3 4 5 6
-                
-                
+
+
                 --- Output: size 11 ---
-                
+
                 1 3 5 6 4 2
-                
+
                 --- Correct: size 12 ---
-                
+
                 1 3 5 6 4 2
-                
-                
+
+
                 --- Stderr: size 0 ---
-                
-                
-                
+
+
+
                 --- Checker output: size 3 ---
-                
+
                 OK
-                
-                
+
+
                 --- Resource usage ---
-                
+
                 program: { utime=699, stime=523, ptime=1222, rtime=297, maxvsz=2440470528, maxrss=87969792, nvcsw=48, nivcsw=49 }
                 checker: { utime=0, stime=1, ptime=1, rtime=2, maxvsz=430080, maxrss=2228224, nvcsw=1, nivcsw=0 }
-                
-                
+
+
                 ====== Test #2 =======
-                
-                
+
+
                 --- Input: size 18 ---
-                
+
                 5
                 1.5 0 -2 7.25 3
-                
-                
+
+
                 --- Output: size 15 ---
-                
+
                 1.5 -2 3 7.25 0
-                
+
                 --- Correct: size 16 ---
-                
+
                 1.5 -2 3 7.25 0
-                
-                
+
+
                 --- Stderr: size 0 ---
-                
-                
-                
+
+
+
                 --- Checker output: size 3 ---
-                
+
                 OK
-                
-                
+
+
                 --- Resource usage ---
-                
+
                 program: { utime=689, stime=491, ptime=1179, rtime=298, maxvsz=2371514368, maxrss=87764992, nvcsw=45, nivcsw=44 }
                 checker: { utime=0, stime=1, ptime=1, rtime=1, maxvsz=430080, maxrss=2228224, nvcsw=1, nivcsw=0 }
-                
-                
+
+
                 ====== Test #3 =======
-                
-                
+
+
                 --- Input: size 8 ---
-                
+
                 2
                 10 20
-                
-                
+
+
                 --- Output: size 5 ---
-                
+
                 10 20
-                
+
                 --- Correct: size 6 ---
-                
+
                 10 20
-                
-                
+
+
                 --- Stderr: size 0 ---
-                
-                
-                
+
+
+
                 --- Checker output: size 3 ---
-                
+
                 OK
-                
-                
+
+
                 --- Resource usage ---
-                
+
                 program: { utime=720, stime=497, ptime=1217, rtime=291, maxvsz=2441179136, maxrss=87973888, nvcsw=46, nivcsw=37 }
                 checker: { utime=0, stime=1, ptime=1, rtime=2, maxvsz=430080, maxrss=2097152, nvcsw=1, nivcsw=0 }""",
                 output.toString()
@@ -273,7 +273,7 @@ public final class LastReportIT extends TestCase {
             };
             final var output = new StringBuilder();
             final Out out = text -> output.append(text.content());
-            new LastReport(
+            new LastReportApp(
                 new ByteFile.Of(
                     new Text.Of("problem"),
                     new Bytes.Of(
@@ -340,7 +340,7 @@ public final class LastReportIT extends TestCase {
                 ).toPath()
             );
             final var calls = new AtomicInteger(0);
-            new LastReport(
+            new LastReportApp(
                 new ByteFile.Of(
                     new Text.Of("problem"),
                     new Bytes.Of(
@@ -405,7 +405,7 @@ public final class LastReportIT extends TestCase {
                 ).toPath()
             );
             final var calls = new AtomicInteger(0);
-            new LastReport(
+            new LastReportApp(
                 new ByteFile.Of(
                     new Text.Of("problem"),
                     new Bytes.Of(
@@ -470,7 +470,7 @@ public final class LastReportIT extends TestCase {
                 ).toPath()
             );
             final var calls = new AtomicInteger(0);
-            new LastReport(
+            new LastReportApp(
                 new ByteFile.Of(
                     new Text.Of("problem"),
                     new Bytes.Of(
@@ -534,7 +534,7 @@ public final class LastReportIT extends TestCase {
                     "src/test/resources/pages/report.html"
                 ).toPath()
             );
-            new LastReport(
+            new LastReportApp(
                 new ByteFile.Of(
                     new Text.Of("problem"),
                     new Bytes.Of(
@@ -581,7 +581,7 @@ public final class LastReportIT extends TestCase {
 
     public void testBrokenDriver() {
         try {
-            new LastReport(
+            new LastReportApp(
                 new ByteFile.Of(
                     new Text.Of("problem"),
                     new Bytes.Of(

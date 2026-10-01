@@ -1,5 +1,6 @@
 package org.ejavdge.app;
 
+import org.ejavdge.app.scenario.SubmittingOfSolution;
 import org.ejavdge.contest.ContestResource;
 import org.ejavdge.contest.StatusInJson;
 import org.ejavdge.domain.report.WithPolling;
@@ -18,12 +19,12 @@ import java.time.Duration;
 public final class SubmitWithNotification implements App {
     private final Effect src;
 
-    public SubmitWithNotification(final SilentSubmit s, final ContestResource r, final Out o) {
+    public SubmitWithNotification(final SubmittingOfSolution s, final ContestResource r, final Out o) {
         this(
             new WritingOf(
                 new Notice(
                     new Sequence(
-                        new RunningOf(s),
+                        s,
                         new WithTimeout(
                             new WithPolling(
                                 new WritingOf(

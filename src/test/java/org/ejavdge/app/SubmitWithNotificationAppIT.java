@@ -1,6 +1,7 @@
 package org.ejavdge.app;
 
 import junit.framework.TestCase;
+import org.ejavdge.app.scenario.SubmittingOfSolution;
 import org.ejavdge.auth.Session;
 import org.ejavdge.contest.ContestForm;
 import org.ejavdge.contest.ContestResource;
@@ -45,7 +46,7 @@ public final class SubmitWithNotificationIT extends TestCase {
         final var output = new StringBuilder();
         final var driver = this.driver(new AtomicInteger(0));
         new SubmitWithNotification(
-            new SilentSubmit(
+            new SubmittingOfSolution(
                 this.file(),
                 this.form(driver),
                 this.resource(driver)
@@ -64,7 +65,7 @@ public final class SubmitWithNotificationIT extends TestCase {
         final var output = new StringBuilder();
         final var driver = this.pollingDriver(statuses);
         new SubmitWithNotification(
-            new SilentSubmit(
+            new SubmittingOfSolution(
                 this.file(),
                 this.form(driver),
                 this.resource(driver)
@@ -100,7 +101,7 @@ public final class SubmitWithNotificationIT extends TestCase {
         try {
             final var driver = this.brokenStatusDriver(posted);
             new SubmitWithNotification(
-                new SilentSubmit(
+                new SubmittingOfSolution(
                     this.file(),
                     this.form(driver),
                     this.resource(driver)

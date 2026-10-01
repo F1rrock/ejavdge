@@ -1,102 +1,69 @@
-//package org.ejavdge.app;
-//
-//import junit.framework.TestCase;
-//import org.ejavdge.app.scenario.SubmittingWithProbe;
-//import org.ejavdge.domain.report.LastReport;
-//import org.ejavdge.domain.run.VerdictOfProbe;
-//import org.ejavdge.error.InvariantViolation;
-//import org.ejavdge.scalar.text.Text;
-//import org.ejavdge.workspace.out.Out;
-//
-//import java.util.concurrent.atomic.AtomicBoolean;
-//import java.util.concurrent.atomic.AtomicInteger;
-//
-//public final class ProbedSubmitTest extends TestCase {
-//    public void testSubmitCalls() {
-//        final var calls = new AtomicInteger(0);
-//        new ProbedSubmit(
-//            new SubmittingWithProbe(calls::incrementAndGet),
-//            new LastReport(new Text.Of("report")),
-//            this.out(builder)
-//        ).run();
-//        assertEquals(
-//            "Probe,All local tests passed.Submit,",
-//            builder.toString()
-//        );
-//    }
-//
-//    public void testPassedProbeRunsSubmit() {
-//        final var submitted = new AtomicBoolean(false);
-//        new ProbedSubmit(
-//            new VerdictOfProbe(() -> true),
-//            new ReportedSubmitApp(() -> submitted.set(true)),
-//            this.out(new StringBuilder())
-//        ).run();
-//        assertTrue(submitted.get());
-//    }
-//
-//    public void testFailedProbeSkipsSubmit() {
-//        final var submitted = new AtomicBoolean(false);
-//        new ProbedSubmit(
-//            new VerdictOfProbe(() -> false),
-//            new ReportedSubmitApp(() -> submitted.set(true)),
-//            this.out(new StringBuilder())
-//        ).run();
-//        assertFalse(submitted.get());
-//    }
-//
-//    public void testMessageOfFailedProbe() {
-//        final var output = new StringBuilder();
-//        new ProbedSubmit(
-//            new VerdictOfProbe(() -> false),
-//            new ReportedSubmitApp(() -> {}),
-//            this.out(output)
-//        ).run();
-//        assertTrue(output.toString().contains("Some local tests failed."));
-//    }
-//
-//    public void testBrokenVerdictSkipsSubmit() {
-//        final var submitted = new AtomicBoolean(false);
-//        new ProbedSubmit(
-//            new VerdictOfProbe(() -> {
-//                throw new InvariantViolation("Can not probe.");
-//            }),
-//            new ReportedSubmitApp(() -> submitted.set(true)),
-//            this.out(new StringBuilder())
-//        ).run();
-//        assertFalse(submitted.get());
-//    }
-//
-//    public void testBrokenVerdictWritesError() {
-//        final var output = new StringBuilder();
-//        new ProbedSubmit(
-//            new VerdictOfProbe(() -> {
-//                throw new InvariantViolation("Can not probe.");
-//            }),
-//            new ReportedSubmitApp(() -> {}),
-//            this.out(output)
-//        ).run();
-//        assertTrue(output.toString().contains("Can not probe."));
-//    }
-//
-//    public void testBrokenSubmitWritesSuccessThenError() {
-//        final var output = new StringBuilder();
-//        new ProbedSubmit(
-//            new VerdictOfProbe(() -> true),
-//            new ReportedSubmitApp(() -> {
-//                throw new InvariantViolation("Report failed");
-//            }),
-//            this.out(output)
-//        ).run();
-//        assertTrue(output.toString().contains("All local tests passed."));
-//        assertTrue(output.toString().contains("Report failed"));
-//    }
-//
-//    public void testFromEffect() {
-//        final var calls = new AtomicInteger(0);
-//        new ProbedSubmit(
-//            calls::incrementAndGet
-//        ).run();
-//        assertEquals(1, calls.get());
-//    }
-//}
+package org.ejavdge.app;
+
+import junit.framework.TestCase;
+import org.ejavdge.app.scenario.SubmittingWithConfirmation;
+import org.ejavdge.app.scenario.SubmittingWithProbe;
+import org.ejavdge.domain.report.LastReport;
+import org.ejavdge.error.InvariantViolation;
+import org.ejavdge.scalar.text.Text;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public final class ProbedSubmitAppTest extends TestCase {
+    public void testRunsEffectsInOrder() throws InvariantViolation {
+        final var calls = new StringBuilder();
+        new ProbedSubmitApp(
+            new SubmittingWithProbe(
+                () -> calls.append("Submit")
+            ),
+            new LastReport(
+                new Text.Of("Report")
+            ),
+            text -> calls.append(text.content())
+        ).run();
+        assertEquals("SubmitReport", calls.toString());
+    }
+
+    public void testPropagatesSubmitFailure() {
+        final var report = new AtomicBoolean(false);
+        try {
+            new ProbedSubmitApp(
+                new SubmittingWithProbe(
+                    () -> {
+                        throw new InvariantViolation("Submission failed");
+                    }
+                ),
+                new LastReport(
+                    () -> {
+                        report.set(true);
+                        return "report";
+                    }
+                ),
+                Text::content
+            ).run();
+            fail("InvariantViolation");
+        } catch (final InvariantViolation e) {
+            assertFalse(report.get());
+        }
+    }
+
+    public void testPropagatesReportFailure() {
+        final var submit = new AtomicBoolean(false);
+        try {
+            new ProbedSubmitApp(
+                new SubmittingWithProbe(
+                    () -> submit.set(true)
+                ),
+                new LastReport(
+                    () -> {
+                        throw new InvariantViolation("Report failed");
+                    }
+                ),
+                Text::content
+            ).run();
+            fail("InvariantViolation");
+        } catch (final InvariantViolation err) {
+            assertTrue(submit.get());
+        }
+    }
+}

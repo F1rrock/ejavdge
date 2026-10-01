@@ -1,44 +1,21 @@
 package org.ejavdge.app;
 
-import org.ejavdge.app.scenario.SubmittingOfSolution;
-import org.ejavdge.contest.ContestResource;
-import org.ejavdge.contest.StatusInJson;
-import org.ejavdge.domain.report.WithPolling;
-import org.ejavdge.domain.report.ReportReadiness;
+import org.ejavdge.app.scenario.SubmittingWithConfirmation;
 import org.ejavdge.effect.Effect;
-import org.ejavdge.effect.Sequence;
-import org.ejavdge.effect.WithTimeout;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.text.Notice;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.workspace.out.Out;
 import org.ejavdge.workspace.out.WritingOf;
 
-import java.time.Duration;
-
-public final class SubmitWithNotification implements App {
+public final class SubmitWithNotificationApp implements App {
     private final Effect src;
 
-    public SubmitWithNotification(final SubmittingOfSolution s, final ContestResource r, final Out o) {
+    public SubmitWithNotificationApp(final SubmittingWithConfirmation s, final Out o) {
         this(
             new WritingOf(
                 new Notice(
-                    new Sequence(
-                        s,
-                        new WithTimeout(
-                            new WithPolling(
-                                new WritingOf(
-                                    new Text.Of("Tested by Ejudge!"),
-                                    o
-                                ),
-                                new ReportReadiness(
-                                    new StatusInJson(r)
-                                ),
-                                Duration.ofSeconds(1)
-                            ),
-                            Duration.ofSeconds(5)
-                        )
-                    ),
+                    s,
                     new Text.Of("Report is available!")
                 ),
                 o
@@ -46,7 +23,7 @@ public final class SubmitWithNotification implements App {
         );
     }
 
-    public SubmitWithNotification(final Effect e) {
+    public SubmitWithNotificationApp(final Effect e) {
         this.src = e;
     }
 

@@ -1,6 +1,8 @@
 package org.ejavdge.app.scenario;
 
+import org.ejavdge.app.setup.PresetDriver;
 import org.ejavdge.app.setup.PresetEngine;
+import org.ejavdge.auth.Session;
 import org.ejavdge.contest.ContestForm;
 import org.ejavdge.contest.ContestResource;
 import org.ejavdge.contest.MainPage;
@@ -14,15 +16,37 @@ import org.ejavdge.effect.SendingOf;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.file.ByteFile;
 import org.ejavdge.scalar.num.Num;
-import org.ejavdge.web.context.ContextOfSolution;
-import org.ejavdge.web.context.LangId;
-import org.ejavdge.web.context.ProbId;
+import org.ejavdge.web.context.*;
 
 import java.util.function.Function;
 
 
 public final class SubmittingOfSolution implements Effect {
     private final Effect origin;
+
+    public SubmittingOfSolution(final ByteFile f, final Location l, final Credentials c) {
+        this(
+            f, l,
+            new Session(
+                new PresetDriver(),
+                l, c
+            )
+        );
+    }
+
+    public SubmittingOfSolution(final ByteFile f, final Location l, final Session s) {
+        this(
+            f,
+            new ContestForm(
+                new PresetDriver(),
+                l, s
+            ),
+            new ContestResource(
+                new PresetDriver(),
+                l, s
+            )
+        );
+    }
 
     public SubmittingOfSolution(final ByteFile f, final ContestForm cf, final ContestResource cr) {
         this(

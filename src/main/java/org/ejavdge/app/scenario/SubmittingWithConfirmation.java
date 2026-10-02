@@ -1,5 +1,7 @@
 package org.ejavdge.app.scenario;
 
+import org.ejavdge.app.setup.PresetDriver;
+import org.ejavdge.auth.Session;
 import org.ejavdge.contest.ContestForm;
 import org.ejavdge.contest.ContestResource;
 import org.ejavdge.contest.StatusInJson;
@@ -10,14 +12,33 @@ import org.ejavdge.effect.Sequence;
 import org.ejavdge.effect.WithTimeout;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.file.ByteFile;
+import org.ejavdge.web.context.Credentials;
+import org.ejavdge.web.context.Location;
 
 import java.time.Duration;
 
 public final class SubmittingWithConfirmation implements Effect {
     private final Effect src;
 
-    public SubmittingWithConfirmation(final ByteFile f, final ContestForm cf, final ContestResource cr) {
-        this(new SubmittingOfSolution(f, cf, cr), cr, Duration.ofSeconds(1));
+    public SubmittingWithConfirmation(final ByteFile f, final Location l, final Credentials c) {
+        this(
+            f, l,
+            new Session(
+                new PresetDriver(),
+                l, c
+            )
+        );
+    }
+
+    public SubmittingWithConfirmation(final ByteFile f, final Location l, final Session s) {
+        this(
+            new SubmittingOfSolution(f, l, s),
+            new ContestResource(
+                new PresetDriver(),
+                l, s
+            ),
+            Duration.ofSeconds(1)
+        );
     }
 
     public SubmittingWithConfirmation(final SubmittingOfSolution s, final ContestResource r, final Duration p) {

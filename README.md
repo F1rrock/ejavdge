@@ -68,8 +68,6 @@ For example, the following entry point lists contest problems, reads the
 statement for `Main.java`, downloads problem attachments and runs that solution against the problem's samples:
 
 ```java
-import java.io.File;
-
 import org.ejavdge.app.AttachmentsDownloadApp;
 import org.ejavdge.app.AvailableProblemsApp;
 import org.ejavdge.app.LocalProbeApp;

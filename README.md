@@ -10,18 +10,18 @@ tests, submitting source files, and retrieving judging reports.
 - The `java` executable on `PATH` for local solution execution.
 
 ## Features
-| Action                   | Purpose                                                                                                 |
-|--------------------------|---------------------------------------------------------------------------------------------------------|
-| `AvailableProblems`      | Show available problem names for the current contest.                                                   |
-| `AlreadySolved`          | Show already solved problem names for the current contest.                                              |
-| `ProblemDescription`     | Show description of current problem.                                                                    |
-| `AttachmentsDownload`    | Download attachments of current problem.                                                                |
-| `LocalProbe`             | Perform local testing of solution.                                                                      |
-| `LastReport`             | Read the latest run's report, falling back to run information when the report is unavailable.           |
-| `SilentSubmit`           | Submit current file as solution.                                                                        |
-| `SubmitWithNotification` | Submit current file as solution and send a notification when report is available.                       |
-| `ReportedSubmit`         | Submit current file as solution and display the resulting report.                                       |
-| `ProbedSubmit`           | Probe current file against local examples, then submit it as solution and display the resulting report. |
+| Action                      | Purpose                                                                                                 |
+|-----------------------------|---------------------------------------------------------------------------------------------------------|
+| `AvailableProblemsApp`      | Show available problem names for the current contest.                                                   |
+| `SolvedProblemsApp`         | Show already solved problem names for the current contest.                                              |
+| `ProblemDescriptionApp`     | Show description of current problem.                                                                    |
+| `AttachmentsDownloadApp`    | Download attachments of current problem.                                                                |
+| `LocalProbeApp`             | Perform local testing of solution.                                                                      |
+| `LastReportApp`             | Read the latest run's report, falling back to run information when the report is unavailable.           |
+| `SilentSubmitApp`           | Submit current file as solution.                                                                        |
+| `SubmitWithNotificationApp` | Submit current file as solution and send a notification when report is available.                       |
+| `ReportedSubmitApp`         | Submit current file as solution and display the resulting report.                                       |
+| `ProbedSubmitApp`           | Probe current file against local examples, then submit it as solution and display the resulting report. |
 
 ## Configuration
 The default application setup reads `.env` from the process's working directory.
@@ -65,23 +65,32 @@ There is no command-line `main` entry point in this repository. Call application
 actions from your own Java entry point or IDE run configuration, with the
 project and its Maven dependencies on the classpath.
 For example, the following entry point lists contest problems, reads the
-statement for `Main.java`, and runs that solution against the problem's samples:
+statement for `Main.java`, downloads problem attachments and runs that solution against the problem's samples:
+
 ```java
 import java.io.File;
-import org.ejavdge.app.AvailableProblems;
-import org.ejavdge.app.LocalProbe;
-import org.ejavdge.app.ProblemDescription;
+
+import org.ejavdge.app.AttachmentsDownloadApp;
+import org.ejavdge.app.AvailableProblemsApp;
+import org.ejavdge.app.LocalProbeApp;
+import org.ejavdge.app.ProblemDescriptionApp;
 import org.ejavdge.file.JavaProgram;
 import org.ejavdge.file.JdkFile;
 import org.ejavdge.scalar.text.Text;
 
+import java.io.File;
+
+// problem: A1
+
 public final class EjavdgeExample {
     public static void main(String[] args) {
-        var solution = new JdkFile(new File("Main.java"));
-        new AvailableProblems().run();
-        new ProblemDescription(solution).run();
-        new LocalProbe(
-            new JavaProgram(solution, new Text.Of("."))
+        final var solution = new JdkFile(new File("Main.java"));
+        final var wd = new Text.Of(".");
+        new AvailableProblemsApp().run();
+        new ProblemDescriptionApp(solution).run();
+        new AttachmentsDownloadApp(solution, wd).run();
+        new LocalProbeApp(
+            new JavaProgram(solution, wd)
         ).run();
     }
 }
@@ -97,7 +106,7 @@ passes the active editor file to a scenario runner.
 ## Project Structure
 ```text
 src/main/java/org/ejavdge/
-  app/          Application actions and default configuration
+  app/          Application actions, user scenarios and default configuration
   auth/         Login responses and contest sessions
   contest/      Contest pages, resources, and submission forms
   domain/       Problems, solutions, runs, reports, and session tokens

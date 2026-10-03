@@ -9,6 +9,7 @@ import org.ejavdge.effect.Effect;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.file.ByteFile;
 import org.ejavdge.scalar.text.Notice;
+import org.ejavdge.scalar.text.Text;
 import org.ejavdge.web.context.Credentials;
 import org.ejavdge.web.context.Location;
 import org.ejavdge.workspace.out.Out;
@@ -45,17 +46,13 @@ public final class ReportedSubmitApp implements App {
 
     public ReportedSubmitApp(final ByteFile f, final Location l, final Session s) {
         this(
-            new SubmittingWithConfirmation(f, l, s),
-            new LastReport(
-                f,
-                new PresetEngine(),
-                new ContestResource(
-                    new PresetDriver(),
-                    l, s
-                )
-            ),
+            new Report(f, l, s),
             new PresetOut()
         );
+    }
+
+    public ReportedSubmitApp(final Report r, final Out o) {
+        this(new WritingOf(r, o));
     }
 
     public ReportedSubmitApp(final SubmittingWithConfirmation s, final LastReport r, final Out o) {
@@ -74,5 +71,44 @@ public final class ReportedSubmitApp implements App {
     @Override
     public void run() throws InvariantViolation {
         this.src.perform();
+    }
+
+    public static final class Report implements Text {
+        private final Text origin;
+
+        public Report(final ByteFile f, final Location l, final Credentials c) {
+            this(
+                f, l,
+                new Session(
+                    new PresetDriver(),
+                    l, c
+                )
+            );
+        }
+
+        public Report(final ByteFile f, final Location l, final Session s) {
+            this(
+                new Notice(
+                    new SubmittingWithConfirmation(f, l, s),
+                    new LastReport(
+                        f,
+                        new PresetEngine(),
+                        new ContestResource(
+                            new PresetDriver(),
+                            l, s
+                        )
+                    )
+                )
+            );
+        }
+
+        public Report(final Text t) {
+            this.origin = t;
+        }
+
+        @Override
+        public String content() throws InvariantViolation {
+            return this.origin.content();
+        }
     }
 }

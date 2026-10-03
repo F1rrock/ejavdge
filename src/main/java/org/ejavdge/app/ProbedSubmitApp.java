@@ -9,7 +9,6 @@ import org.ejavdge.domain.report.LastReport;
 import org.ejavdge.domain.run.VerdictOfProbe;
 import org.ejavdge.effect.Effect;
 import org.ejavdge.error.InvariantViolation;
-import org.ejavdge.file.ByteFile;
 import org.ejavdge.file.JavaProgram;
 import org.ejavdge.scalar.text.Notice;
 import org.ejavdge.scalar.text.Text;
@@ -21,9 +20,9 @@ import org.ejavdge.workspace.out.WritingOf;
 public final class ProbedSubmitApp implements App {
     private final Effect src;
 
-    public ProbedSubmitApp(final ByteFile f, final Text d) {
+    public ProbedSubmitApp(final JavaProgram p) {
         this(
-            new JavaProgram(f, d),
+            p,
             new Location(
                 new BaseUrl(),
                 new ClientPath(),
@@ -49,18 +48,13 @@ public final class ProbedSubmitApp implements App {
 
     public ProbedSubmitApp(final JavaProgram p, final Location l, final Session s) {
         this(
-            new SubmittingWithProbe(
-                new VerdictOfProbe(
-                    p,
-                    new PresetEngine(),
-                    new ContestResource(
-                        new PresetDriver(),
-                        l, s
-                    )
-                ),
-                new SubmittingWithConfirmation(p, l, s)
-            )
+            new Report(p, l, s),
+            new PresetOut()
         );
+    }
+
+    public ProbedSubmitApp(final Report r, final Out o) {
+        this(new WritingOf(r, o));
     }
 
     public ProbedSubmitApp(final SubmittingWithProbe s, final LastReport r, final Out o) {
@@ -79,5 +73,54 @@ public final class ProbedSubmitApp implements App {
     @Override
     public void run() throws InvariantViolation {
         this.src.perform();
+    }
+
+    public static final class Report implements Text {
+        private final Text origin;
+
+        public Report(final JavaProgram p, final Location l, final Credentials c) {
+            this(
+                p, l,
+                new Session(
+                    new PresetDriver(),
+                    l, c
+                )
+            );
+        }
+
+        public Report(final JavaProgram p, final Location l, final Session s) {
+            this(
+                new Notice(
+                    new SubmittingWithProbe(
+                        new VerdictOfProbe(
+                            p,
+                            new PresetEngine(),
+                            new ContestResource(
+                                new PresetDriver(),
+                                l, s
+                            )
+                        ),
+                        new SubmittingWithConfirmation(p, l, s)
+                    ),
+                    new LastReport(
+                        p,
+                        new PresetEngine(),
+                        new ContestResource(
+                            new PresetDriver(),
+                            l, s
+                        )
+                    )
+                )
+            );
+        }
+
+        public Report(final Text t) {
+            this.origin = t;
+        }
+
+        @Override
+        public String content() throws InvariantViolation {
+            return this.origin.content();
+        }
     }
 }

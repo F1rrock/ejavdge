@@ -1,7 +1,6 @@
 package org.ejavdge.app;
 
 import junit.framework.TestCase;
-import org.ejavdge.app.scenario.SubmittingWithConfirmation;
 import org.ejavdge.app.scenario.SubmittingWithProbe;
 import org.ejavdge.domain.report.LastReport;
 import org.ejavdge.error.InvariantViolation;

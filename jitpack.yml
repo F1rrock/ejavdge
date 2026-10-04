@@ -1,4 +1,4 @@
 jdk:
   - openjdk17
 install:
-  - mvn install -DskipTests -Dpmd.skip=true -Djacoco.skip=true
+  - ./mvnw install -DskipTests -Dpmd.skip=true -Djacoco.skip=true

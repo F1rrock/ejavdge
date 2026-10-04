@@ -3,9 +3,11 @@ EJavdge is a Java client library for working with ejudge contests. It provides
 application actions for browsing problems, running Java solutions against sample
 tests, submitting source files, and retrieving judging reports.
 
+[![Release](https://jitpack.io/v/F1rrock/ejavdge.svg)](https://jitpack.io/#F1rrock/ejavdge)
+
 ## Requirements
 - JDK 16 or newer.
-- Apache Maven, available as `mvn`.
+- Maven 3.6.3 or newer, or use the included Maven Wrapper (`./mvnw`).
 - A compatible ejudge contest and account for actions that access the server.
 - The `java` executable on `PATH` for local solution execution.
 
@@ -77,8 +79,6 @@ import org.ejavdge.file.JdkFile;
 import org.ejavdge.scalar.text.Text;
 
 import java.io.File;
-
-// problem: A1
 
 public final class EjavdgeExample {
     public static void main(String[] args) {

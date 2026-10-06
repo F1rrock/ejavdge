@@ -3,6 +3,7 @@ package org.ejavdge.domain.solution;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.file.ByteFile;
 import org.ejavdge.file.ContentOf;
+import org.ejavdge.items.Items;
 import org.ejavdge.scalar.num.Num;
 import org.ejavdge.scalar.num.NumAbout;
 import org.ejavdge.scalar.num.NumOfText;
@@ -25,6 +26,17 @@ public final class LangIndexOf implements Num {
                                 ),
                                 new Text.Of(
                                     "(?m)(?<=^//\\s{0,20}language:\\s{0,20})\\d+"
+                                ),
+                                new Concat(
+                                    new Text.Of(" "),
+                                    new Items.Of<>(
+                                        new Text.Of(
+                                            "There is no language marker"
+                                        ),
+                                        new Text.Of(
+                                            "(comment like `// language: <INDEX_IN_SELECTOR>` is required)."
+                                        )
+                                    )
                                 )
                             )
                         )

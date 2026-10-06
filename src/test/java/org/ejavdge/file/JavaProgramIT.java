@@ -46,7 +46,9 @@ public final class JavaProgramIT extends TestCase {
 
     public void testSum() throws IOException {
         assertEquals(
-            "3\n",
+            """
+            3
+            """,
             this.program(
                 """
                 import java.util.Scanner;
@@ -58,13 +60,22 @@ public final class JavaProgramIT extends TestCase {
                     }
                 }
                 """
-            ).outcomeOf(new Text.Of("1\n2\n"))
+            ).outcomeOf(new Text.Of(
+                """
+                1
+                2
+                """
+            ))
         );
     }
 
     public void testSeveralLines() throws IOException {
         assertEquals(
-            "1\n2\n3\n",
+            """
+            1
+            2
+            3
+            """,
             this.program(
                 """
                 public class Main {

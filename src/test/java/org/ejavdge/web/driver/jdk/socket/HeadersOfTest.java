@@ -8,13 +8,15 @@ import java.nio.charset.StandardCharsets;
 public final class HeadersOfTest extends TestCase {
     public void testStatusLine() {
         assertEquals(
-            "HTTP/1.1 200 OK\r\n",
+            """
+            HTTP/1.1 200 OK\r
+            """,
             new String(
                 new HeadersOf(
                     response(
                         """
                         HTTP/1.1 200 OK\r
-                        \r\
+                        \r
                         """
                     )
                 ).content(),
@@ -38,7 +40,7 @@ public final class HeadersOfTest extends TestCase {
                         Content-Length: 5\r
                         Content-Type: text/plain\r
                         \r
-                        Hello\
+                        Hello
                         """
                     )
                 ).content(),
@@ -60,7 +62,7 @@ public final class HeadersOfTest extends TestCase {
                         HTTP/1.1 200 OK\r
                         Content-Length: 5\r
                         \r
-                        Hello\
+                        Hello
                         """
                     )
                 ).content(),
@@ -76,12 +78,16 @@ public final class HeadersOfTest extends TestCase {
                     response(
                         """
                         HTTP/1.1 204 No Content\r
-                        \r\
+                        \r
                         """
                     )
                 ).content(),
                 StandardCharsets.UTF_8
-            ).endsWith("\r\n")
+            ).endsWith(
+                """
+                \r
+                """
+            )
         );
     }
 
@@ -92,12 +98,16 @@ public final class HeadersOfTest extends TestCase {
                 HTTP/1.1 200 OK\r
                 \r
                 \r
-                Hello\
+                Hello
                 """
             )
         );
         final var result = new String(headers.content(), StandardCharsets.UTF_8);
-        assertEquals("HTTP/1.1 200 OK\r\n", result);
+        assertEquals(
+            """
+            HTTP/1.1 200 OK\r
+            """, result
+        );
     }
 
     public void testHeadersWithExtraSpaces() {
@@ -107,7 +117,7 @@ public final class HeadersOfTest extends TestCase {
                 HTTP/1.1 200 OK\r
                 Content-Length:   5   \r
                 \r
-                Hello\
+                Hello
                 """
             )
         );

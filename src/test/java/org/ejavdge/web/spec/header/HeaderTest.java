@@ -8,7 +8,9 @@ import java.nio.charset.StandardCharsets;
 public final class HeaderTest extends TestCase {
     public void testHeader() {
         assertEquals(
-            "Content-Type: text/html\r\n",
+            """
+            Content-Type: text/html\r
+            """,
             new String(
                 new Header(
                     new Text.Of("Content-Type"),

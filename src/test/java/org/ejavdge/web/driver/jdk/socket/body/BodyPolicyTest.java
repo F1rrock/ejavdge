@@ -10,7 +10,9 @@ import static org.junit.Assert.assertArrayEquals;
 
 public final class BodyPolicyTest extends TestCase {
     public void testContentLength() {
-        final byte[] headers = "Content-Length: 5\r\n".getBytes(StandardCharsets.UTF_8);
+        final byte[] headers = """
+            Content-Length: 5\r
+            """.getBytes(StandardCharsets.UTF_8);
         final IntStream data = IntStream.of(
     'H', 'e', 'l', 'l', 'o', 'W', 'o', 'r', 'l', 'd'
         );
@@ -20,7 +22,9 @@ public final class BodyPolicyTest extends TestCase {
     }
 
     public void testChunked() {
-        final byte[] headers = "Transfer-Encoding: chunked\r\n".getBytes(StandardCharsets.UTF_8);
+        final byte[] headers = """
+            Transfer-Encoding: chunked\r
+            """.getBytes(StandardCharsets.UTF_8);
         final IntStream data = IntStream.of(
             '5', '\r', '\n',
             'H', 'e', 'l', 'l', 'o', '\r', '\n',
@@ -32,7 +36,9 @@ public final class BodyPolicyTest extends TestCase {
     }
 
     public void testUnsupported() {
-        final byte[] headers = "Server: nginx\r\n".getBytes(StandardCharsets.UTF_8);
+        final byte[] headers = """
+            Server: nginx\r
+            """.getBytes(StandardCharsets.UTF_8);
         final IntStream data = IntStream.of(
     'H', 'e', 'l', 'l', 'o', 'W', 'o', 'r', 'l', 'd'
         );
@@ -47,8 +53,8 @@ public final class BodyPolicyTest extends TestCase {
 
     public void testPriority() {
         final byte[] headers = """
-            Content-Length: 3
-            Transfer-Encoding: chunked
+            Content-Length: 3\r
+            Transfer-Encoding: chunked\r
             """.getBytes(StandardCharsets.UTF_8);
         final IntStream data = IntStream.of(
     'A', 'B', 'C', 'D', 'E'
@@ -59,7 +65,9 @@ public final class BodyPolicyTest extends TestCase {
     }
 
     public void testEmptyData() {
-        final byte[] headers = "Content-Length: 0\r\n".getBytes(StandardCharsets.UTF_8);
+        final byte[] headers = """
+            Content-Length: 0\r
+            """.getBytes(StandardCharsets.UTF_8);
         final IntStream data = IntStream.of('H', 'e', 'l', 'l', 'o');
         final BodyPolicy policy = new BodyPolicy(headers);
         final int[] result = policy.apply(data).toArray();

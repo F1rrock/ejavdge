@@ -10,8 +10,11 @@ public final class StatusTest extends TestCase {
     public void testStatus200() {
         final var status = new Status(
             new Bytes.Of(
-                "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\nHello"
-                    .getBytes(StandardCharsets.UTF_8)
+                """
+                HTTP/1.1 200 OK\r
+                Content-Length: 5\r
+                \r
+                Hello""".getBytes(StandardCharsets.UTF_8)
             )
         );
         assertEquals(200, status.value());
@@ -20,8 +23,11 @@ public final class StatusTest extends TestCase {
     public void testStatus302() {
         final var status = new Status(
             new Bytes.Of(
-                "HTTP/1.1 302 Found\r\nLocation: /new\r\n\r\n"
-                    .getBytes(StandardCharsets.UTF_8)
+                """
+                HTTP/1.1 302 Found\r"
+                Location: /new\r
+                \r
+                """.getBytes(StandardCharsets.UTF_8)
             )
         );
         assertEquals(302, status.value());
@@ -30,8 +36,11 @@ public final class StatusTest extends TestCase {
     public void testStatus404() {
         final var status = new Status(
             new Bytes.Of(
-                "HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\n\r\n"
-                    .getBytes(StandardCharsets.UTF_8)
+                """
+                HTTP/1.1 404 Not Found\r
+                Content-Length: 0\r
+                \r
+                """.getBytes(StandardCharsets.UTF_8)
             )
         );
         assertEquals(404, status.value());
@@ -40,8 +49,10 @@ public final class StatusTest extends TestCase {
     public void testStatusMissing() {
         final var status = new Status(
             new Bytes.Of(
-                "Content-Length: 5\r\n\r\nHello"
-                    .getBytes(StandardCharsets.UTF_8)
+                """
+                Content-Length: 5\r
+                \r
+                Hello""".getBytes(StandardCharsets.UTF_8)
             )
         );
         try {
@@ -67,8 +78,12 @@ public final class StatusTest extends TestCase {
     public void testNonPositiveStatus() {
         final var status = new Status(
             new Bytes.Of(
-                "HTTP/1.1 -10 WHAT\r\nContent-Length: 0\r\n\r\n"
-                    .getBytes(StandardCharsets.UTF_8)
+                """
+                HTTP/1.1 -10 WHAT\r
+                Content-Length: 0\r
+                \r
+                """
+                .getBytes(StandardCharsets.UTF_8)
             )
         );
         try {
@@ -82,8 +97,11 @@ public final class StatusTest extends TestCase {
     public void testNotThreeDigitStatus() {
         final var status = new Status(
             new Bytes.Of(
-                "HTTP/1.1 10 WHAT\r\nContent-Length: 0\r\n\r\n"
-                    .getBytes(StandardCharsets.UTF_8)
+                """
+                HTTP/1.1 10 WHAT\r
+                Content-Length: 0\r
+                \r
+                """.getBytes(StandardCharsets.UTF_8)
             )
         );
         try {

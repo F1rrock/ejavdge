@@ -51,20 +51,29 @@ public final class WithBodyTest extends TestCase {
                     )
                 ).bytes(),
                 StandardCharsets.UTF_8
-            ).contains("\r\nBody")
+            ).contains("""
+                \r
+                Body"""
+            )
         );
     }
 
     public void testStructure() {
         assertEquals(
-            "Spec\r\nContent-Length: 4\r\n\r\nBody",
+            """
+            Spec\r
+            Content-Length: 4\r
+            \r
+            Body""",
             new String(
                 new WithBody(
                     new Bytes.Of(
                         "Body".getBytes(StandardCharsets.UTF_8)
                     ),
                     new HttpSpec.Of(
-                        "Spec\r\n".getBytes(StandardCharsets.UTF_8)
+                        """
+                        Spec\r
+                        """.getBytes(StandardCharsets.UTF_8)
                     )
                 ).bytes(),
                 StandardCharsets.UTF_8
@@ -90,12 +99,18 @@ public final class WithBodyTest extends TestCase {
 
     public void testEmptyBody() {
         assertEquals(
-            "Spec\r\nContent-Length: 0\r\n\r\n",
+            """
+            Spec\r
+            Content-Length: 0\r
+            \r
+            """,
             new String(
                 new WithBody(
                     new Bytes.Of(new byte[0]),
                     new HttpSpec.Of(
-                        "Spec\r\n".getBytes(StandardCharsets.UTF_8)
+                        """
+                        Spec\r
+                        """.getBytes(StandardCharsets.UTF_8)
                     )
                 ).bytes(),
                 StandardCharsets.UTF_8

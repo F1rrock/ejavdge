@@ -30,7 +30,10 @@ public final class InetIT extends TestCase {
                     int bytesRead;
                     while ((bytesRead = in.read(buffer)) != -1) {
                         arr.write(buffer, 0, bytesRead);
-                        if (arr.toString(StandardCharsets.UTF_8).contains("\r\n\r\n")) {
+                        if (arr.toString(StandardCharsets.UTF_8).contains("""
+                            \r
+                            \r
+                            """)) {
                             break;
                         }
                     }
@@ -60,7 +63,11 @@ public final class InetIT extends TestCase {
             );
             try (final Socket socket = inet.socket()) {
                 final OutputStream out = socket.getOutputStream();
-                out.write("GET / HTTP/1.1\r\nHost: localhost\r\n\r\n".getBytes(StandardCharsets.UTF_8));
+                out.write("""
+                GET / HTTP/1.1\r
+                Host: localhost\r
+                \r
+                """.getBytes(StandardCharsets.UTF_8));
                 out.flush();
                 final var r = responseOf(socket);
                 if (error.get() != null) {
@@ -81,7 +88,10 @@ public final class InetIT extends TestCase {
         int bytesRead;
         while ((bytesRead = in.read(buffer)) != -1) {
             response.write(buffer, 0, bytesRead);
-            if (response.toString(StandardCharsets.UTF_8).contains("\r\n\r\n")) {
+            if (response.toString(StandardCharsets.UTF_8).contains("""
+                \r
+                \r
+                """)) {
                 break;
             }
         }

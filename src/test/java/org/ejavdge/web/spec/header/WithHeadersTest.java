@@ -21,20 +21,24 @@ public final class WithHeadersTest extends TestCase {
                     new Items.Of<>(
                         new Header(
                             new Bytes.Of(
-                                "Content-Type: application/x-www-form-urlencoded\r\n"
+                                """
+                                Content-Type: application/x-www-form-urlencoded\r
+                                """
                                     .getBytes(StandardCharsets.UTF_8)
                             )
                         ),
                         new Header(
                             new Bytes.Of(
-                                "Content-Length: 10\r\n"
-                                    .getBytes(StandardCharsets.UTF_8)
+                                """
+                                Content-Length: 10\r
+                                """.getBytes(StandardCharsets.UTF_8)
                             )
                         )
                     ),
                     new HttpSpec.Of(
-                        "beginning of the request...\r\n"
-                            .getBytes(StandardCharsets.UTF_8)
+                        """
+                        beginning of the request...\r
+                        """.getBytes(StandardCharsets.UTF_8)
                     )
                 ).bytes(),
                 StandardCharsets.UTF_8
@@ -47,7 +51,9 @@ public final class WithHeadersTest extends TestCase {
             new WithHeaders(
                 new Header(
                     new Bytes.Of(
-                        "name: val\r\n".getBytes(StandardCharsets.UTF_8)
+                        """
+                        name: val\r
+                        """.getBytes(StandardCharsets.UTF_8)
                     )
                 ),
                 new HttpSpec.Of(

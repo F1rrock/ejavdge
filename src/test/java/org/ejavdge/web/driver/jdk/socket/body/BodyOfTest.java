@@ -18,7 +18,7 @@ public final class BodyOfTest extends TestCase {
                         HTTP/1.1 200 OK\r
                         Content-Length: 5\r
                         \r
-                        Hello\
+                        Hello
                         """
                     ),
                     bs -> bs.limit(5)
@@ -38,7 +38,7 @@ public final class BodyOfTest extends TestCase {
                         HTTP/1.1 200 OK\r
                         Content-Length: 5\r
                         \r
-                        Hello\
+                        Hello
                         """
                     ),
                     bs -> bs.limit(3)
@@ -56,7 +56,7 @@ public final class BodyOfTest extends TestCase {
                     response(
                         """
                         HTTP/1.1 204 No Content\r
-                        \r\
+                        \r
                         """
                     ),
                     bs -> bs.limit(0)
@@ -68,7 +68,9 @@ public final class BodyOfTest extends TestCase {
 
     public void testMultilineBody() {
         assertEquals(
-            "Hello\nWorld",
+            """
+            Hello
+            World""",
             new String(
                 new BodyOf(
                     response(
@@ -77,7 +79,7 @@ public final class BodyOfTest extends TestCase {
                         Content-Length: 11\r
                         \r
                         Hello
-                        World\
+                        World
                         """
                     ),
                     bs -> bs.limit(11)
@@ -93,7 +95,7 @@ public final class BodyOfTest extends TestCase {
                 """
                 HTTP/1.1 204 No Content\r
                 Content-Length: 0\r
-                \r\
+                \r
                 """
             ),
             bs -> bs.limit(0)
@@ -108,7 +110,11 @@ public final class BodyOfTest extends TestCase {
         final var body = new BodyOf(
             response(
                 String.format(
-                    "HTTP/1.1 200 OK\r%nContent-Length: %d\r%n\r%n%s",
+                    """
+                    HTTP/1.1 200 OK\r
+                    Content-Length: %d\r
+                    \r
+                    %s""",
                     contentLength,
                     bodyText
                 )

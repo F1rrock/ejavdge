@@ -94,7 +94,12 @@ public final class HttpResponseTest extends TestCase {
 
     public void testEmptyBody() {
         final var response = new HttpResponse(
-            new ByteStream.Of("HTTP/1.1 200 OK\r\n\r\n".chars())
+            new ByteStream.Of(
+                """
+                HTTP/1.1 200 OK\r
+                \r
+                """.chars()
+            )
         );
         assertEquals("", utf8(response.body()));
     }
@@ -115,7 +120,7 @@ public final class HttpResponseTest extends TestCase {
                 Header-B: value2\r
                 Header-C: value3\r
                 \r
-                Body\
+                Body
                 """.chars()
             )
         );

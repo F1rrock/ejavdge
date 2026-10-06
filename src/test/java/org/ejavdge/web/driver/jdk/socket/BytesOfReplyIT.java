@@ -21,8 +21,10 @@ public final class BytesOfReplyIT extends TestCase {
                     this.request(client.getInputStream());
                     final OutputStream out = client.getOutputStream();
                     out.write(
-                        "HTTP/1.1 200 OK\r\n\r\nHello"
-                            .getBytes(StandardCharsets.UTF_8)
+                        """
+                        HTTP/1.1 200 OK\r
+                        \r
+                        Hello""".getBytes(StandardCharsets.UTF_8)
                     );
                     out.flush();
                 } catch (final IOException err) {
@@ -38,8 +40,10 @@ public final class BytesOfReplyIT extends TestCase {
                     ),
                     new Request(
                         new HttpSpec.Of(
-                            "GET / HTTP/1.1\r\nHost: localhost\r\n"
-                                .getBytes(StandardCharsets.UTF_8)
+                            """
+                            GET / HTTP/1.1\r
+                            Host: localhost\r
+                            """.getBytes(StandardCharsets.UTF_8)
                         )
                     )
                 )
@@ -62,7 +66,10 @@ public final class BytesOfReplyIT extends TestCase {
         int current;
         while ((current = in.read()) != -1) {
             bytes.append((char) current);
-            if (bytes.toString().contains("\r\n\r\n")) {
+            if (bytes.toString().contains("""
+                \r
+                \r
+                """)) {
                 break;
             }
         }

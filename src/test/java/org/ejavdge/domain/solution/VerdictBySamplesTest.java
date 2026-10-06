@@ -10,8 +10,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public final class VerdictBySamplesTest extends TestCase {
     private final Fixture sum = new Fixture.Of(
-        new Text.Of("1\n2\n"),
-        new Text.Of("3\n")
+        new Text.Of(
+        """
+        1
+        2
+        """),
+        new Text.Of(
+            """
+            3
+            """
+        )
     );
     private final Fixture echo = new Fixture.Of(
         new Text.Of("hello"),
@@ -48,7 +56,9 @@ public final class VerdictBySamplesTest extends TestCase {
     public void testWithTrailingWhitespaces() {
         assertTrue(
             new VerdictBySamples(
-                input -> input.content() + "\n",
+                input -> """
+                %s
+                """.formatted(input.content()),
                 new Items.Of<>(
                     new Fixture.Of(
                         new Text.Of("1"),
@@ -76,7 +86,10 @@ public final class VerdictBySamplesTest extends TestCase {
     public void testBothSidesTrimmed() {
         assertTrue(
             new VerdictBySamples(
-                input -> "\n" + input.content() + "\n",
+                input -> """
+
+                %s
+                """.formatted(input.content()),
                 new Items.Of<>(
                     new Fixture.Of(
                         new Text.Of("  1  "),

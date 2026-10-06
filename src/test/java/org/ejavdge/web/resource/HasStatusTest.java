@@ -15,8 +15,11 @@ public final class HasStatusTest extends TestCase {
             new HasStatus(
                 new Num.Of(200),
                 new Bytes.Of(
-                    "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\nHello"
-                        .getBytes(StandardCharsets.UTF_8)
+                    """
+                    HTTP/1.1 200 OK\r
+                    Content-Length: 5\r
+                    \r
+                    Hello""".getBytes(StandardCharsets.UTF_8)
                 )
             ).content();
         } catch (final InvariantViolation e) {
@@ -29,8 +32,11 @@ public final class HasStatusTest extends TestCase {
             new HasStatus(
                 new Num.Of(302),
                 new Bytes.Of(
-                    "HTTP/1.1 302 Found\r\nLocation: /new\r\n\r\n"
-                        .getBytes(StandardCharsets.UTF_8)
+                    """
+                    HTTP/1.1 302 Found\r
+                    Location: /new\r
+                    \r
+                    """.getBytes(StandardCharsets.UTF_8)
                 )
             ).content();
         } catch (final InvariantViolation e) {
@@ -43,8 +49,11 @@ public final class HasStatusTest extends TestCase {
             new HasStatus(
                 new Num.Of(200),
                 new Bytes.Of(
-                    "HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\n\r\n"
-                        .getBytes(StandardCharsets.UTF_8)
+                    """
+                    HTTP/1.1 404 Not Found\r
+                    Content-Length: 0\r
+                    \r
+                    """.getBytes(StandardCharsets.UTF_8)
                 )
             ).content();
         } catch (final InvariantViolation e) {
@@ -58,8 +67,11 @@ public final class HasStatusTest extends TestCase {
             new HasStatus(
                 new Num.Of(200),
                 new Bytes.Of(
-                    "HTTP/1.1 302 Found\r\nLocation: /new\r\n\r\n"
-                        .getBytes(StandardCharsets.UTF_8)
+                    """
+                    HTTP/1.1 302 Found\r
+                    Location: /new\r
+                    \r
+                    """.getBytes(StandardCharsets.UTF_8)
                 )
             ).content();
         } catch (final InvariantViolation e) {
@@ -73,8 +85,10 @@ public final class HasStatusTest extends TestCase {
             new HasStatus(
                 new Num.Of(200),
                 new Bytes.Of(
-                    "Content-Length: 5\r\n\r\nHello"
-                        .getBytes(StandardCharsets.UTF_8)
+                    """
+                    Content-Length: 5\r
+                    \r
+                    Hello""".getBytes(StandardCharsets.UTF_8)
                 )
             ).content();
         } catch (final InvariantViolation e) {
@@ -90,8 +104,11 @@ public final class HasStatusTest extends TestCase {
                 new Num.Of(200),
                 () -> {
                     calls.incrementAndGet();
-                    return "HTTP/1.1 200 OK\r\nLocation: /new\r\n\r\n"
-                        .getBytes(StandardCharsets.UTF_8);
+                    return """
+                        HTTP/1.1 200 OK\r
+                        Location: /new\r
+                        \r
+                        """.getBytes(StandardCharsets.UTF_8);
                 }
             ).content();
             assertEquals(1, calls.get());
@@ -107,8 +124,11 @@ public final class HasStatusTest extends TestCase {
                 new Num.Of(200),
                 () -> {
                     calls.incrementAndGet();
-                    return "HTTP/1.1 200 OK\r\nLocation: /new\r\n\r\n"
-                        .getBytes(StandardCharsets.UTF_8);
+                    return """
+                        HTTP/1.1 200 OK\r
+                        Location: /new\r
+                        \r
+                        """.getBytes(StandardCharsets.UTF_8);
                 }
             );
             bs.content();
@@ -125,8 +145,11 @@ public final class HasStatusTest extends TestCase {
             new HasStatus(
                 new Num.Of(302),
                 new Text.Of(message),
-                () -> "HTTP/1.1 200 OK\r\nLocation: /new\r\n\r\n"
-                    .getBytes(StandardCharsets.UTF_8)
+                () -> """
+                    HTTP/1.1 200 OK\r
+                    Location: /new\r
+                    \r
+                    """.getBytes(StandardCharsets.UTF_8)
             ).content();
             fail("InvariantViolation");
         } catch (final InvariantViolation e) {
@@ -139,8 +162,11 @@ public final class HasStatusTest extends TestCase {
             new HasStatus(
                 new Num.Of(302),
                 new Text.Of(""),
-                () -> "HTTP/1.1 200 OK\r\nLocation: /new\r\n\r\n"
-                    .getBytes(StandardCharsets.UTF_8)
+                () -> """
+                    HTTP/1.1 200 OK\r
+                    Location: /new\r
+                    \r
+                    """.getBytes(StandardCharsets.UTF_8)
             ).content();
             fail("InvariantViolation");
         } catch (final InvariantViolation e) {
@@ -152,8 +178,11 @@ public final class HasStatusTest extends TestCase {
         try {
             new HasStatus(
                 new Num.Of(302),
-                () -> "HTTP/1.1 200 OK\r\nLocation: /new\r\n\r\n"
-                    .getBytes(StandardCharsets.UTF_8)
+                () -> """
+                    HTTP/1.1 200 OK\r
+                    Location: /new\r
+                    \r
+                    """.getBytes(StandardCharsets.UTF_8)
             ).content();
             fail("InvariantViolation");
         } catch (final InvariantViolation e) {

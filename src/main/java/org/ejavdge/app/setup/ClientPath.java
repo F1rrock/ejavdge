@@ -34,6 +34,9 @@ public final class ClientPath implements Text {
     }
 
     /**
+     * Reads {@code CLIENT_PATH} from {@code .env}, using the given
+     * preset and fallback if the variable is missing.
+     *
      * @param d the preset to use when {@code CLIENT_PATH} is missing
      * @param f the fallback to use when both are missing
      */
@@ -49,6 +52,9 @@ public final class ClientPath implements Text {
     }
 
     /**
+     * Uses the given text directly as the client path, requiring it to
+     * be non-empty.
+     *
      * @param t the value to use as is
      */
     public ClientPath(final Text t) {

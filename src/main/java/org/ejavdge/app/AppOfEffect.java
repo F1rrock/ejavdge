@@ -21,6 +21,8 @@ public final class AppOfEffect implements App {
     private final Effect src;
 
     /**
+     * Creates a new application that delegates to the given effect.
+     *
      * @param e the effect to run when this app is run
      */
     public AppOfEffect(final Effect e) {

@@ -21,7 +21,7 @@ import org.ejavdge.workspace.env.VarOfDotenv;
  * <p>The value must be a positive integer. Zero and negative numbers
  * are rejected as invariant violations. The upper bound of the TCP
  * port range (65535) is not enforced here; an out-of-range value
- * fails later, when a socket is opened.
+ * fails later, when a socket opened.
  */
 public final class Port implements Num {
     private final Num origin;
@@ -38,6 +38,9 @@ public final class Port implements Num {
     }
 
     /**
+     * Reads {@code PORT} from {@code .env}, using the given preset and
+     * fallback if the variable is missing.
+     *
      * @param d the preset to use when {@code PORT} is missing
      * @param f the fallback to use when both are missing
      */
@@ -53,6 +56,9 @@ public final class Port implements Num {
     }
 
     /**
+     * Parses a port from the given text, which must represent a
+     * non-empty positive integer.
+     *
      * @param t the value to parse as a positive integer
      */
     public Port(final Text t) {
@@ -64,6 +70,9 @@ public final class Port implements Num {
     }
 
     /**
+     * Uses the given numeric value directly, requiring it to be
+     * positive.
+     *
      * @param n the value to use as is, must be positive
      */
     public Port(final Num n) {

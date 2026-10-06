@@ -28,6 +28,10 @@ public final class DownloadingOfAttachments implements Effect {
     private final Effect src;
 
     /**
+     * Creates a download scenario that fetches the problem page
+     * identified by the given solution file and writes its
+     * attachments into the target directory.
+     *
      * @param r the contest to fetch the problem page from
      * @param f the solution file whose marker identifies the problem
      * @param d the local directory to save attachments into
@@ -55,6 +59,8 @@ public final class DownloadingOfAttachments implements Effect {
     }
 
     /**
+     * Creates a download scenario that delegates to the given effect.
+     *
      * @param e the effect to delegate to
      */
     public DownloadingOfAttachments(final Effect e) {

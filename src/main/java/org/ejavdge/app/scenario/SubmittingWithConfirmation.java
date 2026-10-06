@@ -36,6 +36,10 @@ public final class SubmittingWithConfirmation implements Effect {
     private final Effect src;
 
     /**
+     * Creates a submission scenario that submits the given solution
+     * file and waits for its report, using the supplied location and
+     * credentials and authenticating with a fresh session.
+     *
      * @param f the solution file to submit
      * @param l the contest server to submit to
      * @param c the credentials to authenticate with
@@ -51,6 +55,10 @@ public final class SubmittingWithConfirmation implements Effect {
     }
 
     /**
+     * Creates a submission scenario that submits the given solution
+     * file and waits for its report, using the supplied location and
+     * an already authenticated session.
+     *
      * @param f the solution file to submit
      * @param l the contest server to submit to
      * @param s the already authenticated session to reuse
@@ -67,6 +75,14 @@ public final class SubmittingWithConfirmation implements Effect {
     }
 
     /**
+     * Creates a submission scenario that sends the given submission
+     * and then polls the given contest resource for the run's status
+     * until the report is ready.
+     * <p>
+     * The polling is bounded by a five-second timeout; if the report
+     * does not become ready within that time, the scenario fails with
+     * an {@link InvariantViolation}.
+     *
      * @param s the submission to send before waiting for the report
      * @param r the contest resource to poll for the run's status
      * @param p the interval between two consecutive polls
@@ -89,6 +105,9 @@ public final class SubmittingWithConfirmation implements Effect {
     }
 
     /**
+     * Creates a submission scenario that delegates to the given
+     * effect.
+     *
      * @param e the effect to delegate to
      */
     public SubmittingWithConfirmation(final Effect e) {

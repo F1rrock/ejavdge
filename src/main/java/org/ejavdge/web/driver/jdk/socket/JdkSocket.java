@@ -41,8 +41,49 @@ import org.ejavdge.web.spec.Terminator;
  * decoded body bytes. This allows downstream code to work with the response as
  * a single {@link Bytes} value while still being able to distinguish the
  * headers from the body via the terminator.
+ * <p>
+ * The driver also carries a short descriptive label, used by
+ * {@link BytesAbout} to enrich error messages produced while reading the
+ * response. The label can be customized via the second constructor, which is
+ * useful when several drivers coexist in the same application and their
+ * failures need to be told apart in logs.
  */
 public final class JdkSocket implements WebDriver {
+
+    /**
+     * A short descriptive label attached to errors produced by this driver.
+     */
+    private final String about;
+
+    /**
+     * Creates a new socket-based web driver with the default descriptive
+     * label {@code "response of jdk socket web driver"}.
+     * <p>
+     * This is equivalent to calling
+     * {@link #JdkSocket(String) JdkSocket("response of jdk socket web driver")}.
+     */
+    public JdkSocket() {
+        this("response of jdk socket web driver");
+    }
+
+    /**
+     * Creates a new socket-based web driver with the given descriptive
+     * label.
+     * <p>
+     * The label is used by {@link BytesAbout} when wrapping the response,
+     * so that any failure encountered while reading or decoding the
+     * response is reported with a message that identifies this driver. The
+     * driver itself remains stateless: each call to
+     * {@link #resourceOf(Location, Request)} opens a fresh socket
+     * connection, sends the request, and reads the response, so a single
+     * instance can be reused freely across threads and requests.
+     *
+     * @param s the descriptive label to attach to errors produced by this
+     *          driver
+     */
+    public JdkSocket(final String s) {
+        this.about = s;
+    }
 
     /**
      * Performs the given HTTP request to the specified location and returns the
@@ -56,8 +97,9 @@ public final class JdkSocket implements WebDriver {
      * <p>
      * The header block is memoized and labelled as {@code "headers"} for
      * diagnostic purposes, and the decoded body is labelled as {@code "body"}.
-     * The body decoding policy is selected at runtime based on the header
-     * contents.
+     * The body decoding policy selected at runtime based on the header
+     * contents. The whole response is additionally labelled with this
+     * driver's descriptive label (see {@link #JdkSocket(String)}).
      *
      * @param loc the location of the target resource in the contest system
      * @param req the request to send, including method, headers, and body
@@ -75,16 +117,19 @@ public final class JdkSocket implements WebDriver {
             "headers",
             new Memo(new HeadersOf(response))
         );
-        return new Concat(
-            headers,
-            new Terminator(),
-            new BytesAbout(
-                "body",
-                new BindOfBytes(
-                    headers,
-                    bs -> new BodyOf(
-                        response,
-                        new BodyPolicy(bs)
+        return new BytesAbout(
+            this.about,
+            new Concat(
+                headers,
+                new Terminator(),
+                new BytesAbout(
+                    "body",
+                    new BindOfBytes(
+                        headers,
+                        bs -> new BodyOf(
+                            response,
+                            new BodyPolicy(bs)
+                        )
                     )
                 )
             )

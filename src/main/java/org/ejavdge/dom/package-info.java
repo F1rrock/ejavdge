@@ -8,7 +8,6 @@
  * {@link org.ejavdge.dom.engine.XmlEngine} (for parsing and XPath evaluation),
  * a source document as text, and a {@link org.ejavdge.dom.path.DocPath} (the
  * XPath expression).
- * </p>
  * <p>
  * The engines and paths used by selections are defined in the subpackages:
  * <ul>
@@ -17,11 +16,9 @@
  *   <li>{@link org.ejavdge.dom.path} – composable XPath expressions for
  *       document navigation.</li>
  * </ul>
- * </p>
  * <p>
  * Together, these classes allow flexible and composable extraction of text
  * from HTML or XML documents, which can then be used wherever a
  * {@code Text} is expected.
- * </p>
  */
 package org.ejavdge.dom;

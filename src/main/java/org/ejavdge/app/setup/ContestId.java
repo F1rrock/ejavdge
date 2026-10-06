@@ -36,6 +36,9 @@ public final class ContestId implements Num {
     }
 
     /**
+     * Reads {@code CONTEST_ID} from {@code .env}, using the given
+     * preset and fallback if the variable is missing.
+     *
      * @param d the preset to use when {@code CONTEST_ID} is missing
      * @param f the fallback to use when both are missing
      */
@@ -51,6 +54,9 @@ public final class ContestId implements Num {
     }
 
     /**
+     * Parses a contest id from the given text, which must represent a
+     * non-empty positive integer.
+     *
      * @param t the value to parse as a positive integer
      */
     public ContestId(final Text t) {
@@ -62,6 +68,9 @@ public final class ContestId implements Num {
     }
 
     /**
+     * Uses the given numeric value directly, requiring it to be
+     * positive.
+     *
      * @param n the value to use as is, must be positive
      */
     public ContestId(final Num n) {

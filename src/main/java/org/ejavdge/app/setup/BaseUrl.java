@@ -16,8 +16,8 @@ import org.ejavdge.workspace.env.VarOfDotenv;
  * also missing.
  *
  * <p>The value is the host only — no scheme, no port, no path. The
- * scheme is implied by {@link Port}, and the path by {@link
- * ClientPath}.
+ * scheme is implied by {@link Port}, and the path by
+ * {@link ClientPath}.
  */
 public final class BaseUrl implements Text {
     private final Text origin;
@@ -34,6 +34,9 @@ public final class BaseUrl implements Text {
     }
 
     /**
+     * Reads {@code BASE_URL} from {@code .env}, using the given
+     * preset and fallback if the variable is missing.
+     *
      * @param d the preset to use when {@code BASE_URL} is missing
      * @param f the fallback to use when both are missing
      */
@@ -49,6 +52,9 @@ public final class BaseUrl implements Text {
     }
 
     /**
+     * Uses the given text directly as the base URL, requiring it to be
+     * non-empty.
+     *
      * @param t the value to use as is
      */
     public BaseUrl(final Text t) {

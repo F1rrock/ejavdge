@@ -28,8 +28,8 @@ public final class AvailableProblemsApp implements App {
     private final Effect src;
 
     /**
-     * Uses the connection settings from {@code .env} and standard
-     * output.
+     * Creates an application that lists available problems, using the
+     * connection settings from {@code .env} and standard output.
      */
     public AvailableProblemsApp() {
         this(
@@ -48,6 +48,9 @@ public final class AvailableProblemsApp implements App {
     }
 
     /**
+     * Creates an application that lists available problems, using the
+     * given location, credentials, and output channel.
+     *
      * @param l the contest server to fetch the main page from
      * @param c the credentials to authenticate with
      * @param o the output channel for the problem list and any error
@@ -60,8 +63,7 @@ public final class AvailableProblemsApp implements App {
                 l,
                 new Session(
                     new PresetDriver(),
-                    l,
-                    c
+                    l, c
                 )
             ),
             o
@@ -69,6 +71,9 @@ public final class AvailableProblemsApp implements App {
     }
 
     /**
+     * Creates an application that lists available problems, using the
+     * given contest resource and output channel.
+     *
      * @param c the contest resource to fetch the main page from
      * @param o the output channel for the problem list and any error
      *     report
@@ -86,6 +91,8 @@ public final class AvailableProblemsApp implements App {
     }
 
     /**
+     * Creates an application that delegates to the given effect.
+     *
      * @param e the effect to delegate to
      */
     public AvailableProblemsApp(final Effect e) {

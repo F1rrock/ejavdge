@@ -25,13 +25,17 @@ public final class PresetDriver implements WebDriver {
     private final WebDriver origin;
 
     /**
-     * Uses the logger named after this class.
+     * Creates a preset driver that logs request and response entries
+     * through the logger named after this class.
      */
     public PresetDriver() {
         this(LoggerFactory.getLogger(PresetDriver.class));
     }
 
     /**
+     * Creates a preset driver that logs request and response entries
+     * through the given logger.
+     *
      * @param l the logger to send request and response entries to
      */
     public PresetDriver(final Logger l) {

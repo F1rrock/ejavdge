@@ -33,6 +33,10 @@ public final class SubmittingOfSolution implements Effect {
     private final Effect origin;
 
     /**
+     * Creates a submission scenario for the given solution file, using
+     * the supplied location and credentials and authenticating with a
+     * fresh session.
+     *
      * @param f the solution file to submit
      * @param l the contest server to submit to
      * @param c the credentials to authenticate with
@@ -48,6 +52,9 @@ public final class SubmittingOfSolution implements Effect {
     }
 
     /**
+     * Creates a submission scenario for the given solution file, using
+     * the supplied location and an already authenticated session.
+     *
      * @param f the solution file to submit
      * @param l the contest server to submit to
      * @param s the already authenticated session to reuse
@@ -67,6 +74,10 @@ public final class SubmittingOfSolution implements Effect {
     }
 
     /**
+     * Creates a submission scenario for the given solution file, using
+     * the supplied contest form to send the submission and the supplied
+     * contest resource to fetch the problem page.
+     *
      * @param f the solution file to submit
      * @param cf the contest form to send the submission through
      * @param cr the contest resource to fetch the problem page from
@@ -103,6 +114,8 @@ public final class SubmittingOfSolution implements Effect {
     }
 
     /**
+     * Creates a submission scenario that delegates to the given effect.
+     *
      * @param e the effect to delegate to
      */
     public SubmittingOfSolution(final Effect e) {
@@ -135,6 +148,13 @@ public final class SubmittingOfSolution implements Effect {
         private final Num src;
         private final Function<Integer, Effect> func;
 
+        /**
+         * Creates a new binding from the given number and effect
+         * factory.
+         *
+         * @param n the number whose value is resolved lazily
+         * @param f the factory that produces the effect to run
+         */
         public BindNumToEffect(final Num n, final Function<Integer, Effect> f) {
             this.src = n;
             this.func = f;

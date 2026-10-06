@@ -20,16 +20,20 @@ import org.ejavdge.workspace.out.WritingOf;
  * <p>The problem is identified by the name marker in the given
  * solution file. The page is fetched from the contest server, the
  * attachment links are extracted, and each file is written under the
- * target directory. On success, the message {@code "Attachments
- * successfully downloaded!"} to the output channel.
+ * target directory. On success, the message
+ * {@code "Attachments successfully downloaded!"} written to the
+ * output channel.
  *
- * <p>The failure of the underlying scenario to the same
+ * <p>A failure of the underlying scenario reported to the same
  * output channel rather than propagated to the caller.
  */
 public final class AttachmentsDownloadApp implements App {
     private final Effect src;
 
     /**
+     * Creates a download application using the given solution file and
+     * target directory, with default connection settings.
+     *
      * @param f the solution file whose marker identifies the problem
      * @param d the local directory to save attachments into
      */
@@ -45,6 +49,9 @@ public final class AttachmentsDownloadApp implements App {
     }
 
     /**
+     * Creates a download application using the given solution file,
+     * target directory, and contest location.
+     *
      * @param f the solution file whose marker identifies the problem
      * @param d the local directory to save attachments into
      * @param l the contest server to fetch the problem page from
@@ -72,6 +79,9 @@ public final class AttachmentsDownloadApp implements App {
     }
 
     /**
+     * Creates a download application using the given scenario and
+     * output channel.
+     *
      * @param d the scenario that performs the actual download
      * @param o the output channel for the success message and any
      *     error report
@@ -89,6 +99,9 @@ public final class AttachmentsDownloadApp implements App {
     }
 
     /**
+     * Creates a download application that delegates to the given
+     * effect.
+     *
      * @param e the effect to delegate to
      */
     public AttachmentsDownloadApp(final Effect e) {

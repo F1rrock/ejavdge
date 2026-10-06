@@ -24,6 +24,14 @@ public final class SubmittingWithProbe implements Effect {
     private final Effect origin;
 
     /**
+     * Creates a submission scenario that first affirms the given
+     * probe verdict and, if it holds, submits the solution and waits
+     * for the report.
+     * <p>
+     * If the probe fails, an {@link InvariantViolation} with the
+     * message {@code "Some local tests failed."} is thrown before
+     * anything is sent to the contest server.
+     *
      * @param v the probe verdict to affirm before submitting
      * @param s the submission to run once the probe has passed
      */
@@ -40,6 +48,9 @@ public final class SubmittingWithProbe implements Effect {
     }
 
     /**
+     * Creates a submission scenario that delegates to the given
+     * effect.
+     *
      * @param e the effect to delegate to
      */
     public SubmittingWithProbe(final Effect e) {

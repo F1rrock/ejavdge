@@ -37,6 +37,9 @@ public final class Password implements Text {
     }
 
     /**
+     * Reads {@code PASSWORD} from {@code .env}, using the given preset
+     * and fallback if the variable is missing.
+     *
      * @param d the preset to use when {@code PASSWORD} is missing
      * @param f the fallback to use when both are missing
      */
@@ -52,6 +55,9 @@ public final class Password implements Text {
     }
 
     /**
+     * Uses the given text directly as the password, without reading
+     * {@code .env} and without requiring the value to be non-empty.
+     *
      * @param t the value to use as is
      */
     public Password(final Text t) {

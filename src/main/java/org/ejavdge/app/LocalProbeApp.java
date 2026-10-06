@@ -36,6 +36,11 @@ public final class LocalProbeApp implements App {
     private final Effect src;
 
     /**
+     * Creates an application that probes the given solution against the
+     * samples of the problem identified by the solution file's marker,
+     * using the default connection settings from {@code .env} and
+     * standard output.
+     *
      * @param p the solution to run against the problem's samples
      */
     public LocalProbeApp(final JavaProgram p) {
@@ -67,6 +72,10 @@ public final class LocalProbeApp implements App {
     }
 
     /**
+     * Creates an application that probes the given solution against the
+     * samples of the problem identified by the solution file's marker,
+     * using the supplied contest resource and output channel.
+     *
      * @param p the solution to run against the problem's samples
      * @param r the contest resource to fetch the problem page from
      * @param o the output channel for the verdict and any error
@@ -77,6 +86,14 @@ public final class LocalProbeApp implements App {
     }
 
     /**
+     * Creates an application that renders the given probe verdict as a
+     * success or failure message on the given output channel.
+     * <p>
+     * A successful verdict produces a green
+     * {@code "Success: all local tests passed"} message; a failed
+     * verdict produces a red {@code "Fail: some local tests failed"}
+     * message.
+     *
      * @param v the verdict to render as a success or failure message
      * @param o the output channel for the verdict and any error
      *     report
@@ -95,6 +112,8 @@ public final class LocalProbeApp implements App {
     }
 
     /**
+     * Creates an application that delegates to the given effect.
+     *
      * @param e the effect to delegate to
      */
     public LocalProbeApp(final Effect e) {

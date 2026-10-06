@@ -15,19 +15,67 @@ import org.ejavdge.web.media.Media;
 public final class NoContext implements Context {
 
     /**
+     * The inner context that performs the actual imprint operation.
+     * <p>
+     * For an empty context, this is a no-op implementation that simply
+     * returns the media's content unchanged.
+     */
+    private final Context origin;
+
+    /**
+     * Creates a new empty context.
+     * <p>
+     * The context is stateless: it carries no entries of its own and
+     * leaves the media it is imprinted onto unchanged.
+     */
+    public NoContext() {
+        this(new Empty());
+    }
+
+    /**
+     * Creates a context that delegates to the given inner context.
+     * <p>
+     * This constructor is intended for internal composition only; the
+     * resulting instance is not an empty context and will forward its
+     * imprint operation to the supplied context.
+     *
+     * @param c the context to delegate to
+     */
+    private NoContext(final Context c) {
+        this.origin = c;
+    }
+
+    /**
      * Imprints this empty context onto the given media.
      * <p>
-     * Since this context carries no data, the media is returned unchanged via
-     * {@link Media#content()}.
+     * Since this context carries no data, the media is returned unchanged
+     * via {@link Media#content()}.
      *
      * @param <T> the type of the result produced by the imprint operation
      * @param m   the media to imprint this context onto
      * @return the media's content, unchanged
-     * @throws InvariantViolation if an invariant is violated while retrieving
-     *         the media's content
+     * @throws InvariantViolation if an invariant is violated while
+     *         retrieving the media's content
      */
     @Override
     public <T> T imprint(final Media<T> m) throws InvariantViolation {
-        return m.content();
+        return this.origin.imprint(m);
+    }
+
+    /**
+     * A no-op context that returns the media's content unchanged.
+     */
+    private static final class Empty implements Context {
+
+        /**
+         * Creates a new no-op context.
+         */
+        private Empty() {
+        }
+
+        @Override
+        public <T> T imprint(final Media<T> m) throws InvariantViolation {
+            return m.content();
+        }
     }
 }

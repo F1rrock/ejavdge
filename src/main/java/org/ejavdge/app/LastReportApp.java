@@ -29,6 +29,10 @@ public final class LastReportApp implements App {
     private final Effect src;
 
     /**
+     * Creates an application that prints the last report of the problem
+     * identified by the given solution file, using the default connection
+     * settings from {@code .env} and standard output.
+     *
      * @param f the solution file whose marker identifies the problem
      */
     public LastReportApp(final ByteFile f) {
@@ -43,6 +47,10 @@ public final class LastReportApp implements App {
     }
 
     /**
+     * Creates an application that prints the last report of the problem
+     * identified by the given solution file, using the supplied contest
+     * location and the credentials from {@code .env}.
+     *
      * @param f the solution file whose marker identifies the problem
      * @param l the contest server to fetch the report from
      */
@@ -67,6 +75,10 @@ public final class LastReportApp implements App {
     }
 
     /**
+     * Creates an application that prints the last report of the problem
+     * identified by the given solution file, using the supplied contest
+     * resource and output channel.
+     *
      * @param f the solution file whose marker identifies the problem
      * @param r the contest resource to fetch the report from
      * @param o the output channel for the report
@@ -79,6 +91,9 @@ public final class LastReportApp implements App {
     }
 
     /**
+     * Creates an application that prints the given report to the given
+     * output channel.
+     *
      * @param r the report to print
      * @param o the output channel for the report
      */
@@ -87,6 +102,8 @@ public final class LastReportApp implements App {
     }
 
     /**
+     * Creates an application that delegates to the given effect.
+     *
      * @param e the effect to delegate to
      */
     public LastReportApp(final Effect e) {

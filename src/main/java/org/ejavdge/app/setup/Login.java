@@ -34,6 +34,9 @@ public final class Login implements Text {
     }
 
     /**
+     * Reads {@code LOGIN} from {@code .env}, using the given preset
+     * and fallback if the variable is missing.
+     *
      * @param d the preset to use when {@code LOGIN} is missing
      * @param f the fallback to use when both are missing
      */
@@ -49,6 +52,9 @@ public final class Login implements Text {
     }
 
     /**
+     * Uses the given text directly as the login, without reading
+     * {@code .env} and without requiring the value to be non-empty.
+     *
      * @param t the value to use as is
      */
     public Login(final Text t) {

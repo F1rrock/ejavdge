@@ -11,13 +11,22 @@ import org.ejavdge.scalar.text.NonEmpty;
 import org.ejavdge.scalar.text.Stencil;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.scalar.text.TextAbout;
+/**
+ * File part.
+ */
 
 public final class FilePart implements Part {
     private final Bytes src;
+    /**
+     * Creates a new {@code FilePart}.
+     */
 
     public FilePart(final ByteFile f) {
         this(new NameOf(f), new ContentOf(f));
     }
+    /**
+     * Creates a new {@code FilePart}.
+     */
 
     public FilePart(final Text n, final Bytes bs) {
         this(
@@ -41,10 +50,17 @@ public final class FilePart implements Part {
             )
         );
     }
+    /**
+     * Creates a new {@code FilePart}.
+     */
 
     public FilePart(final Bytes bs) {
         this.src = bs;
     }
+    /**
+     * Returns the underlying content.
+     * @return the byte[]
+     */
 
     @Override
     public byte[] content() throws InvariantViolation {

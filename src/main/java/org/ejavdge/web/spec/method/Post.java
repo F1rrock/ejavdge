@@ -11,13 +11,22 @@ import org.ejavdge.scalar.text.Text;
 import org.ejavdge.web.context.Location;
 import org.ejavdge.web.media.Gist;
 import org.ejavdge.web.spec.HttpSpec;
+/**
+ * Post.
+ */
 
 public final class Post implements HttpSpec {
     private final Bytes src;
+    /**
+     * Creates a new {@code Post}.
+     */
 
     public Post(final Text u, final Text h, final Num p) {
         this(new Location(u, h, p));
     }
+    /**
+     * Creates a new {@code Post}.
+     */
 
     public Post(final Location loc) {
         this.src = new Utf8(
@@ -35,6 +44,10 @@ public final class Post implements HttpSpec {
             )
         );
     }
+    /**
+     * Returns the HTTP message as bytes.
+     * @return the byte[]
+     */
 
     @Override
     public byte[] bytes() throws InvariantViolation {

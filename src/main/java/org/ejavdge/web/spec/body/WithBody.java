@@ -8,9 +8,17 @@ import org.ejavdge.web.spec.HttpSpec;
 import org.ejavdge.web.spec.Terminator;
 import org.ejavdge.web.spec.header.Header;
 import org.ejavdge.web.spec.header.WithHeaders;
+/**
+ * With body.
+ */
 
 public final class WithBody implements HttpSpec {
     private final Bytes src;
+    /**
+     * Creates a new {@code WithBody}.
+     * @param b the 'b' argument
+     * @param s the 's' argument
+     */
 
     public WithBody(final Bytes b, final HttpSpec s) {
         final var body = new Memo(b);
@@ -30,6 +38,11 @@ public final class WithBody implements HttpSpec {
             body
         );
     }
+    /**
+     * Returns the HTTP message as bytes.
+     * @return the byte
+     * @throws InvariantViolation if an invariant is violated
+     */
 
     @Override
     public byte[] bytes() throws InvariantViolation {

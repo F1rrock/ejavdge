@@ -11,9 +11,26 @@ import org.ejavdge.web.context.Location;
 import org.ejavdge.workspace.out.Out;
 import org.ejavdge.workspace.out.WritingOf;
 
+/**
+ * Lists the problems available in the current contest and prints
+ * them.
+ *
+ * <p>The main page of the contest is fetched from the server, and
+ * the problem names are extracted from its top navigation list (see
+ * {@link ProbCatalog}). The result is written to the output channel,
+ * one name per line.
+ *
+ * <p>If the underlying fetch or extraction fails, the error message
+ * is written to the same output channel rather than propagated to
+ * the caller.
+ */
 public final class AvailableProblemsApp implements App {
     private final Effect src;
 
+    /**
+     * Uses the connection settings from {@code .env} and standard
+     * output.
+     */
     public AvailableProblemsApp() {
         this(
             new Location(
@@ -30,6 +47,12 @@ public final class AvailableProblemsApp implements App {
         );
     }
 
+    /**
+     * @param l the contest server to fetch the main page from
+     * @param c the credentials to authenticate with
+     * @param o the output channel for the problem list and any error
+     *     report
+     */
     public AvailableProblemsApp(final Location l, final Credentials c, final Out o) {
         this(
             new ContestResource(
@@ -45,6 +68,11 @@ public final class AvailableProblemsApp implements App {
         );
     }
 
+    /**
+     * @param c the contest resource to fetch the main page from
+     * @param o the output channel for the problem list and any error
+     *     report
+     */
     public AvailableProblemsApp(final ContestResource c, final Out o) {
         this(
             new WritingOf(
@@ -57,6 +85,9 @@ public final class AvailableProblemsApp implements App {
         );
     }
 
+    /**
+     * @param e the effect to delegate to
+     */
     public AvailableProblemsApp(final Effect e) {
         this.src = e;
     }

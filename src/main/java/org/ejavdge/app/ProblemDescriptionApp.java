@@ -19,9 +19,27 @@ import org.ejavdge.web.context.ProbId;
 import org.ejavdge.workspace.out.Out;
 import org.ejavdge.workspace.out.WritingOf;
 
+/**
+ * Application entry point that displays the description of a problem.
+ * <p>
+ * This class implements the {@link App} interface and delegates all work to an
+ * {@link Effect} passed to its constructor. The chain of constructors allows
+ * building the application from ready-made components or creating them by
+ * default from a given problem file.
+ */
 public final class ProblemDescriptionApp implements App {
+
+    /**
+     * The effect that is executed when the application runs.
+     */
     private final Effect src;
 
+    /**
+     * Creates an application for the given problem file using default
+     * settings for location, credentials, and output.
+     *
+     * @param f the byte file from which the problem name is derived
+     */
     public ProblemDescriptionApp(final ByteFile f) {
         this(
             new ContestResource(
@@ -50,6 +68,14 @@ public final class ProblemDescriptionApp implements App {
         );
     }
 
+    /**
+     * Creates an application that constructs a detailed problem description
+     * using the given contest resource, problem file, and output.
+     *
+     * @param r the contest resource providing access to the contest system
+     * @param f the byte file from which the problem name is derived
+     * @param o the output to which the description will be written
+     */
     public ProblemDescriptionApp(final ContestResource r, final ByteFile f, final Out o) {
         this(
             new WritingOf(
@@ -95,10 +121,18 @@ public final class ProblemDescriptionApp implements App {
         );
     }
 
+    /**
+     * Creates an application with the given effect.
+     *
+     * @param e the effect to be executed when the application runs
+     */
     public ProblemDescriptionApp(final Effect e) {
         this.src = e;
     }
 
+    /**
+     * Runs this application by executing its associated effect.
+     */
     @Override
     public void run() {
         this.src.perform();

@@ -4,9 +4,15 @@ import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.bytes.Bytes;
 import org.ejavdge.scalar.bytes.Utf8;
 import org.ejavdge.scalar.text.*;
+/**
+ * Text part.
+ */
 
 public final class TextPart implements Part {
     private final Bytes src;
+    /**
+     * Creates a new {@code TextPart}.
+     */
 
     public TextPart(final Text n, final Text v) {
         this(
@@ -29,10 +35,17 @@ public final class TextPart implements Part {
             )
         );
     }
+    /**
+     * Creates a new {@code TextPart}.
+     */
 
     public TextPart(final Bytes s) {
         this.src = s;
     }
+    /**
+     * Returns the underlying content.
+     * @return the byte[]
+     */
 
     @Override
     public byte[] content() throws InvariantViolation {

@@ -15,13 +15,27 @@ import org.ejavdge.web.spec.Terminator;
 import org.ejavdge.web.spec.body.WithBody;
 import org.ejavdge.web.spec.header.Header;
 import org.ejavdge.web.spec.header.WithHeaders;
+/**
+ * Multipart.
+ */
 
 public final class Multipart implements HttpSpec {
     private final Bytes src;
+    /**
+     * Creates a new {@code Multipart}.
+     * @param ps the ps
+     * @param hs the hs
+     */
 
     public Multipart(final Items<Part> ps, final HttpSpec hs) {
         this(ps, new Boundary(), hs);
     }
+    /**
+     * Creates a new {@code Multipart}.
+     * @param ps the ps
+     * @param br the br
+     * @param hs the hs
+     */
 
     public Multipart(final Items<Part> ps, final Boundary br, final HttpSpec hs) {
         this(
@@ -58,10 +72,19 @@ public final class Multipart implements HttpSpec {
             )
         );
     }
+    /**
+     * Creates a new {@code Multipart}.
+     * @param bs the bs
+     */
 
     public Multipart(final Bytes bs) {
         this.src = bs;
     }
+    /**
+     * Returns the HTTP message as bytes.
+     * @return the byte
+     * @throws InvariantViolation if an invariant is violated
+     */
 
     @Override
     public byte[] bytes() throws InvariantViolation {

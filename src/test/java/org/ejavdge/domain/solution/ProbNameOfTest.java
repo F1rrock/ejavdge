@@ -111,4 +111,36 @@ public final class ProbNameOfTest extends TestCase {
         }
         fail("InvariantViolation");
     }
+
+    public void testNameWithHyphen() {
+        assertEquals(
+            "C-test-Checker-A",
+            new ProbNameOf(
+                new ByteFile.Of(
+                    new Text.Of("ProbA.java"),
+                    new Bytes.Of(
+                        """
+                        //  problem: C-test-Checker-A
+                        """.getBytes(StandardCharsets.UTF_8)
+                    )
+                )
+            ).content()
+        );
+    }
+
+    public void testNameWithUnderscore() {
+        assertEquals(
+            "common_file",
+            new ProbNameOf(
+                new ByteFile.Of(
+                    new Text.Of("ProbA.java"),
+                    new Bytes.Of(
+                        """
+                        //  problem: common_file
+                        """.getBytes(StandardCharsets.UTF_8)
+                    )
+                )
+            ).content()
+        );
+    }
 }

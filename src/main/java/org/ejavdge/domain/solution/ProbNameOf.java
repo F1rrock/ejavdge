@@ -55,21 +55,23 @@ public final class ProbNameOf implements Text {
             new TextAbout(
                 "problem's marker",
                 new NonEmpty(
-                    new Match(
-                        new Utf8Text(
-                            new ContentOf(f)
-                        ),
-                        new Text.Of(
-                            "(?m)(?<=^//\\s{0,20}problem:\\s{0,20})[A-Za-z][A-Za-z0-9]*"
-                        ),
-                        new Concat(
-                            new Text.Of(" "),
-                            new Items.Of<>(
-                                new Text.Of(
-                                    "There is no problem marker"
-                                ),
-                                new Text.Of(
-                                    "(comment like `// problem: <SHORT_NAME>` is required)."
+                    new Trimmed(
+                        new Match(
+                            new Utf8Text(
+                                new ContentOf(f)
+                            ),
+                            new Text.Of(
+                                "(?m)(?<=^//[ \\t]{0,20}problem:[ \\t]{0,20})[^\\r\\n]+"
+                            ),
+                            new Concat(
+                                new Text.Of(" "),
+                                new Items.Of<>(
+                                    new Text.Of(
+                                        "There is no problem marker"
+                                    ),
+                                    new Text.Of(
+                                        "(comment like `// problem: <SHORT_NAME>` is required)."
+                                    )
                                 )
                             )
                         )

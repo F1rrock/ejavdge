@@ -112,7 +112,7 @@ public final class Inet {
             );
         } catch (final IOException e) {
             throw new InvariantViolation(
-                "There is no socket.\n",
+                "There is no connection to the server.\n",
                 e
             );
         }

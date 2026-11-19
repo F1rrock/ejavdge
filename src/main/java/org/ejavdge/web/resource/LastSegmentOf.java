@@ -24,7 +24,7 @@ import org.ejavdge.scalar.text.TextAbout;
  * <p>
  * This class is used, among other places, by
  * {@link org.ejavdge.file.DownloadingOf} to derive the file name of a remote
- * attachment from its URL.
+ * downloadable file from its URL.
  */
 public final class LastSegmentOf implements Text {
 

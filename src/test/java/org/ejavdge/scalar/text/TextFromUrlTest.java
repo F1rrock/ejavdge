@@ -75,11 +75,11 @@ public final class TextFromUrlTest extends TestCase {
         try {
             new TextFromUrl(
                 new Text.Of("%G1"),
-                new Text.Of("Bad url in attachment.")
+                new Text.Of("Bad URL in file link.")
             ).content();
         } catch (final InvariantViolation e) {
             assertTrue(
-                e.getMessage().contains("Bad url in attachment.")
+                e.getMessage().contains("Bad URL in file link.")
             );
             return;
         }

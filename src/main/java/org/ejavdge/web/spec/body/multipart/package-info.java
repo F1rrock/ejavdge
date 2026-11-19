@@ -20,7 +20,7 @@
  *       represents a plain text form field, with a
  *       {@code Content-Disposition} header and a UTF-8 encoded value;</li>
  *   <li>{@link org.ejavdge.web.spec.body.multipart.FilePart} – a part that
- *       represents a file attachment, with a {@code Content-Disposition}
+ *       represents an uploaded file, with a {@code Content-Disposition}
  *       header carrying the file name, a {@code Content-Type} header of
  *       {@code application/octet-stream}, and the raw file bytes as the
  *       body;</li>

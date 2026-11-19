@@ -19,13 +19,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * An effect that downloads a collection of files (attachments) from the
- * contest system and saves them to a local directory.
+ * An effect that downloads files by URL and saves them to a local directory.
  * <p>
  * This class implements {@link Effect} and represents the action of downloading
- * one or more attachments referenced by URLs and writing them to disk under a
+ * one or more files referenced by URLs and writing them to disk under a
  * specified directory. The target directory is created if it does not already
- * exist, and each attachment is written with the file name derived from the last
+ * exist, and each file is written with the file name derived from the last
  * segment of its URL.
  * <p>
  * For each URL provided:
@@ -47,7 +46,7 @@ import java.nio.file.Path;
 public final class DownloadingOf implements Effect {
 
     /**
-     * The local path of the directory into which the attachments are written.
+     * The local path of the directory into which the files are written.
      */
     private final Text path;
 
@@ -57,35 +56,35 @@ public final class DownloadingOf implements Effect {
     private final Items<ByteFile> files;
 
     /**
-     * Creates a download effect for the given attachment URLs.
+     * Creates a download effect for the given file URLs.
      * <p>
      * Each URL is converted into a {@link ByteFile} whose name is derived from
      * the last segment of the URL path and whose content is fetched lazily via
      * an HTTP GET request using the provided driver. The files are written to
      * the given target path when the effect is performed.
      *
-     * @param us the URLs of the attachments to download
-     * @param d  the web driver used to fetch the attachment contents
-     * @param p  the local directory into which the attachments will be written
+     * @param us the URLs of the files to download
+     * @param d  the web driver used to fetch the file contents
+     * @param p  the local directory into which the files will be written
      */
     public DownloadingOf(final Items<Text> us, final WebDriver d, final Text p) {
         this.path = p;
         this.files = new Map<>(
             u -> new ByteFile.Of(
                 new TextAbout(
-                    "name of attachment",
+                    "downloaded file name",
                     new NonEmpty(
                         new TextFromUrl(
                             new LastSegmentOf(
                                 new PathOf(u)
                             ),
-                            new Text.Of("There is no correct name for the attachment.")
+                            new Text.Of("There is no valid name for the downloaded file.")
                         ),
-                        new Text.Of("The name of the attachment is empty.")
+                        new Text.Of("The name of the downloaded file is empty.")
                     )
                 ),
                 new BytesAbout(
-                    "contents of attachment",
+                    "downloaded file contents",
                     new PayloadOf(
                         new ResourceOf(
                             d,
@@ -103,7 +102,7 @@ public final class DownloadingOf implements Effect {
     }
 
     /**
-     * Performs this effect by downloading all attachments and writing them to
+     * Performs this effect by downloading all files and writing them to
      * the target directory.
      * <p>
      * The target directory is created if necessary. For each file, its content
@@ -112,7 +111,7 @@ public final class DownloadingOf implements Effect {
      * thrown with the underlying cause.
      *
      * @throws InvariantViolation if the directory cannot be created, a file
-     *         cannot be written, or any attachment's name or content cannot be
+     *         cannot be written, or any file's name or content cannot be
      *         determined
      */
     @Override
@@ -128,7 +127,7 @@ public final class DownloadingOf implements Effect {
             }
         } catch (final IOException e) {
             throw new InvariantViolation(
-                "There is no downloading of attachments", e
+                "Files could not be downloaded", e
             );
         }
     }

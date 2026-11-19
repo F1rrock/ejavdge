@@ -13,7 +13,7 @@ import org.ejavdge.scalar.text.Text;
  * <p>Delegates to {@link JsoupWithSaxon}: Jsoup parses the HTML into
  * a DOM, Saxon evaluates XPath expressions against it. This is the
  * engine wired into domain objects like {@code ProbBrief} and {@code
- * ProbAttachments} when the caller does not pass one explicitly.
+ * LocalTestFiles} when the caller does not pass one explicitly.
  *
  * <p>Tests that need to control the parsed document, or apps that
  * need a different parser, bypass this class and pass their own

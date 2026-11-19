@@ -1,7 +1,6 @@
 package org.ejavdge.app;
 
 import junit.framework.TestCase;
-import org.ejavdge.app.scenario.DownloadingOfAttachments;
 import org.ejavdge.domain.report.LastReport;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.text.Text;

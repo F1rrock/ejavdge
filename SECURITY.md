@@ -38,7 +38,7 @@ behalf of the user. The following are considered in scope:
 
 - credential leakage through logs, exceptions, or `.env` handling;
 - unsafe HTTP request construction (header injection, URL confusion);
-- path traversal in attachment downloads or report fetching.
+- path traversal in Local Test file downloads or report fetching.
 
 Issues in eJudge itself, or in third-party dependencies, are out of
 scope for this repository — please report those upstream.

@@ -12,10 +12,10 @@ import org.ejavdge.web.context.Location;
 
 import java.nio.charset.StandardCharsets;
 
-public final class DownloadingOfAttachmentsIT extends TestCase {
+public final class DownloadingOfLocalTestFilesIT extends TestCase {
     public void testFileWithoutProblemMarker() {
         try {
-            new DownloadingOfAttachments(
+            new DownloadingOfLocalTestFiles(
                 new ContestResource(
                     (loc, req) -> req.bytes(),
                     new Location(
@@ -55,7 +55,7 @@ public final class DownloadingOfAttachmentsIT extends TestCase {
 
     public void testWithInvalidSession() {
         try {
-            new DownloadingOfAttachments(
+            new DownloadingOfLocalTestFiles(
                 new ContestResource(
                     (loc, req) -> req.bytes(),
                     new Location(

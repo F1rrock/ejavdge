@@ -19,7 +19,7 @@ public final class ProbExamplesTest extends TestCase {
             На стандартный поток вывода напечатайте сумму этих чисел.
             
             google
-            attachment
+            sample data file
             
             Числа задаются по одному в строке. Пробельные символы перед числом и после
             него отсутствуют. Пустые строки в вводе отсутствуют.
@@ -36,7 +36,7 @@ public final class ProbExamplesTest extends TestCase {
             На стандартный поток вывода напечатайте сумму этих чисел.
             
             google
-            attachment
+            sample data file
             
             Числа задаются по одному в строке. Пробельные символы перед числом и после
             него отсутствуют. Пустые строки в вводе отсутствуют.
@@ -61,7 +61,7 @@ public final class ProbExamplesTest extends TestCase {
             На стандартный поток вывода напечатайте сумму этих чисел.
     
             google
-            attachment
+            sample data file
     
             Числа задаются по одному в строке. Пробельные символы перед числом и после
             него отсутствуют. Пустые строки в вводе отсутствуют.
@@ -176,7 +176,7 @@ public final class ProbExamplesTest extends TestCase {
                         На стандартный поток вывода напечатайте сумму этих чисел.
                         
                         google
-                        attachment
+                        sample data file
                         
                         Числа задаются по одному в строке. Пробельные символы перед числом и после
                         него отсутствуют. Пустые строки в вводе отсутствуют.
@@ -210,7 +210,7 @@ public final class ProbExamplesTest extends TestCase {
                         На стандартный поток вывода напечатайте сумму этих чисел.
                         
                         google
-                        attachment
+                        sample data file
                         
                         Числа задаются по одному в строке. Пробельные символы перед числом и после
                         него отсутствуют. Пустые строки в вводе отсутствуют.

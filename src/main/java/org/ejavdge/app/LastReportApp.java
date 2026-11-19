@@ -20,10 +20,7 @@ import org.ejavdge.workspace.out.WritingOf;
  * {@link LastReport}); it is written to the output channel as is,
  * without formatting or summarising.
  *
- * <p>Unlike {@code AttachmentsDownloadApp} and {@code
- * AvailableProblemsApp}, this app does not wrap failures in a
- * success message. It writes the fetched report directly to the
- * output channel and lets any failure propagate to the caller.
+ * <p>Any failure propagates to the caller.
  */
 public final class LastReportApp implements App {
     private final Effect src;

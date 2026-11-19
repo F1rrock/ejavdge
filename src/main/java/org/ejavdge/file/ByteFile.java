@@ -9,7 +9,7 @@ import org.ejavdge.scalar.text.Text;
  * <p>
  * A {@code ByteFile} represents a file with a name and binary content. It is
  * used throughout the application to model files such as solution sources or
- * problem attachments, where both the file name (for identification or
+ * downloaded files, where both the file name (for identification or
  * submission) and the raw bytes (for reading or uploading) are needed.
  * <p>
  * Implementations expose the file name as a {@link String} and the file

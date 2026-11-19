@@ -7,7 +7,7 @@ import org.ejavdge.scalar.bytes.Bytes;
  * A contract for a single part inside a {@code multipart/form-data} body.
  * <p>
  * Each part contributes a fragment of the overall multipart payload — for
- * example a text field, a file attachment, or any other named entry. A
+ * example a text field, an uploaded file, or any other named entry. A
  * part is responsible only for producing its own bytes, including any
  * per-part headers such as {@code Content-Disposition} or
  * {@code Content-Type}. The enclosing boundaries and the top-level

@@ -12,7 +12,7 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class ProbAttachmentsIT extends TestCase {
+public final class LocalTestFilesIT extends TestCase {
     private String problem;
 
     @Override
@@ -87,7 +87,7 @@ public final class ProbAttachmentsIT extends TestCase {
         }
     }
 
-    public void testFullListOfAttachments() {
+    public void testOnlyMarkedFileLinks() {
         assertEquals(
             List.of("https://localhost:8000/sample.txt"),
             this.links()
@@ -96,7 +96,7 @@ public final class ProbAttachmentsIT extends TestCase {
 
     public void testWrongPage() {
         assertTrue(
-            new ProbAttachments(
+            new LocalTestFiles(
                 new JsoupWithSaxon(),
                 new ProblemPage(
                     new Text.Of(
@@ -115,7 +115,7 @@ public final class ProbAttachmentsIT extends TestCase {
 
     public void testBrokenPage() {
         try {
-            new ProbAttachments(
+            new LocalTestFiles(
                 new JsoupWithSaxon(),
                 new ProblemPage(
                     () -> {
@@ -131,7 +131,7 @@ public final class ProbAttachmentsIT extends TestCase {
 
     public void testBrokenEngine() {
         try {
-            new ProbAttachments(
+            new LocalTestFiles(
                 (xml, path) -> {
                     throw new InvariantViolation("There is no engine.");
                 },
@@ -147,7 +147,7 @@ public final class ProbAttachmentsIT extends TestCase {
 
     public void testProblemPageCalls() {
         final var calls = new AtomicInteger(0);
-        new ProbAttachments(
+        new LocalTestFiles(
             new JsoupWithSaxon(),
             new ProblemPage(
                 () -> {
@@ -161,7 +161,7 @@ public final class ProbAttachmentsIT extends TestCase {
 
     public void testProblemPageCallsWithEvalOfLinks() {
         final var calls = new AtomicInteger(0);
-        new ProbAttachments(
+        new LocalTestFiles(
             new JsoupWithSaxon(),
             new ProblemPage(
                 () -> {
@@ -176,9 +176,9 @@ public final class ProbAttachmentsIT extends TestCase {
         assertEquals(1, calls.get());
     }
 
-    public void testEmptyAttachmentsFromValidProblemPage() {
+    public void testNoMarkedFileLinks() {
         assertTrue(
-            new ProbAttachments(
+            new LocalTestFiles(
                 new JsoupWithSaxon(),
                 new ProblemPage(
                     new Text.Of(
@@ -186,7 +186,7 @@ public final class ProbAttachmentsIT extends TestCase {
                         <html>
                             <body>
                                 <h1>Problem</h1>
-                                <p>No local tests here.</p>
+                                <p>No marked file links here.</p>
                             </body>
                         </html>
                         """
@@ -203,12 +203,12 @@ public final class ProbAttachmentsIT extends TestCase {
         );
         assertEquals(
             ts.contents(),
-            new ProbAttachments(ts).contents()
+            new LocalTestFiles(ts).contents()
         );
     }
 
     private List<String> links() {
-        return new ProbAttachments(
+        return new LocalTestFiles(
             new JsoupWithSaxon(),
             new ProblemPage(
                 new Text.Of(this.problem)

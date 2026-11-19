@@ -1,36 +1,36 @@
 package org.ejavdge.app;
 
 import junit.framework.TestCase;
-import org.ejavdge.app.scenario.DownloadingOfAttachments;
+import org.ejavdge.app.scenario.DownloadingOfLocalTestFiles;
 import org.ejavdge.error.InvariantViolation;
 import org.ejavdge.scalar.text.Text;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class AttachmentsDownloadAppTest extends TestCase {
+public final class LocalTestFilesDownloadAppTest extends TestCase {
     public void testNotice() {
         final var buffer = new StringBuilder();
-        new AttachmentsDownloadApp(
-            new DownloadingOfAttachments(() -> {}),
+        new LocalTestFilesDownloadApp(
+            new DownloadingOfLocalTestFiles(() -> {}),
             text -> buffer.append(text.content())
         ).run();
-        assertFalse(buffer.toString().isEmpty());
+        assertEquals("Local Test files successfully downloaded!", buffer.toString());
     }
 
     public void testTotalDownloads() {
         final var calls = new AtomicInteger(0);
-        new AttachmentsDownloadApp(
-            new DownloadingOfAttachments(calls::incrementAndGet),
+        new LocalTestFilesDownloadApp(
+            new DownloadingOfLocalTestFiles(calls::incrementAndGet),
             Text::content
         ).run();
         assertEquals(1, calls.get());
     }
 
-    public void testBrokenAttachments() {
+    public void testFailedDownload() {
         try {
-            new AttachmentsDownloadApp(
-                new DownloadingOfAttachments(() -> {
-                    throw new InvariantViolation("There is no attachments.");
+            new LocalTestFilesDownloadApp(
+                new DownloadingOfLocalTestFiles(() -> {
+                    throw new InvariantViolation("Local Test files could not be downloaded.");
                 }),
                 Text::content
             ).run();

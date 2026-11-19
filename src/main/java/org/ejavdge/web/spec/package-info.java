@@ -39,9 +39,8 @@
  *       {@code GET} and {@code POST}, producing the request line and the
  *       {@code Host} header;</li>
  *   <li>{@link org.ejavdge.web.spec.header} – header construction
- *       ({@code Header}) and header attachment
- *       ({@code WithHeaders});</li>
- *   <li>{@link org.ejavdge.web.spec.body} – body attachment
+ *       ({@code Header}) and decoration ({@code WithHeaders});</li>
+ *   <li>{@link org.ejavdge.web.spec.body} – body composition
  *       ({@code WithBody}), which adds the {@code Content-Length} header
  *       and the body itself;</li>
  *   <li>{@link org.ejavdge.web.spec.body.multipart} – the building blocks

@@ -1,5 +1,5 @@
 /**
- * Problem catalog, statements, and attachments.
+ * Problem catalog, statements, and Local Test files.
  * <p>
  * This package contains domain classes that represent problems in the ejudge
  * contest system, covering their metadata, content, and associated resources.
@@ -36,10 +36,10 @@
  *             in the problem description.</li>
  *       </ul>
  *   </li>
- *   <li><b>Attachments and language selection:</b>
+ *   <li><b>Local Test files and language selection:</b>
  *       <ul>
- *         <li>{@link org.ejavdge.domain.problem.ProbAttachments} – file references
- *             (attachments) associated with a problem;</li>
+ *         <li>{@link org.ejavdge.domain.problem.LocalTestFiles} – links to files
+ *             marked for local runs;</li>
  *         <li>{@link org.ejavdge.domain.problem.LangByIndex} – a problem's
  *             language identifier selected by index;</li>
  *         <li>{@link org.ejavdge.domain.problem.PresetLang} – the preset language

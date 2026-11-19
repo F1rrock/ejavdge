@@ -3,7 +3,7 @@
  * <p>
  * This package provides abstractions for working with named binary files and
  * executable programs. It is used throughout the application to represent
- * solution sources, problem attachments, and other files that can be read,
+ * solution sources, downloaded files, and other files that can be read,
  * written, downloaded, or executed.
  * </p>
  * <p>
@@ -33,7 +33,7 @@
  *       that can be executed in single-file source mode using the
  *       {@code java} command, with its output captured;</li>
  *   <li>{@link org.ejavdge.file.DownloadingOf} – an effect that downloads a
- *       collection of remote attachments and saves them to a local
+ *       collection of remote files and saves them to a local
  *       directory.</li>
  * </ul>
  * <p>

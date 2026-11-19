@@ -17,7 +17,7 @@ tests, submitting source files, and retrieving judging reports.
 | `AvailableProblemsApp`      | Show available problem names for the current contest.                                                   |
 | `SolvedProblemsApp`         | Show already solved problem names for the current contest.                                              |
 | `ProblemDescriptionApp`     | Show description of current problem.                                                                    |
-| `AttachmentsDownloadApp`    | Download attachments of current problem.                                                                |
+| `LocalTestFilesDownloadApp` | Download the current problem's Local Test files.                                                        |
 | `LocalProbeApp`             | Perform local testing of solution.                                                                      |
 | `LastReportApp`             | Read the latest run's report, falling back to run information when the report is unavailable.           |
 | `SilentSubmitApp`           | Submit current file as solution.                                                                        |
@@ -67,10 +67,14 @@ There is no command-line `main` entry point in this repository. Call application
 actions from your own Java entry point or IDE run configuration, with the
 project and its Maven dependencies on the classpath.
 For example, the following entry point lists contest problems, reads the
-statement for `Main.java`, downloads problem attachments and runs that solution against the problem's samples:
+statement for `Main.java`, downloads its Local Test files, and runs the solution
+against the problem's samples. Local Test files are linked in the statement
+with `name="localtest"` under the university convention. A link can point to
+ejudge or another server. The solution reads the downloaded files from its
+working directory:
 
 ```java
-import org.ejavdge.app.AttachmentsDownloadApp;
+import org.ejavdge.app.LocalTestFilesDownloadApp;
 import org.ejavdge.app.AvailableProblemsApp;
 import org.ejavdge.app.LocalProbeApp;
 import org.ejavdge.app.ProblemDescriptionApp;
@@ -86,7 +90,7 @@ public final class EjavdgeExample {
         final var wd = new Text.Of(".");
         new AvailableProblemsApp().run();
         new ProblemDescriptionApp(solution).run();
-        new AttachmentsDownloadApp(solution, wd).run();
+        new LocalTestFilesDownloadApp(solution, wd).run();
         new LocalProbeApp(
             new JavaProgram(solution, wd)
         ).run();

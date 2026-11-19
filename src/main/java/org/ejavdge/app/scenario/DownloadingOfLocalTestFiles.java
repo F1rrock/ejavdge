@@ -5,7 +5,7 @@ import org.ejavdge.app.setup.PresetEngine;
 import org.ejavdge.contest.ContestResource;
 import org.ejavdge.contest.MainPage;
 import org.ejavdge.contest.ProblemPage;
-import org.ejavdge.domain.problem.ProbAttachments;
+import org.ejavdge.domain.problem.LocalTestFiles;
 import org.ejavdge.domain.problem.ProbByName;
 import org.ejavdge.domain.solution.ProbNameOf;
 import org.ejavdge.effect.Effect;
@@ -16,30 +16,29 @@ import org.ejavdge.scalar.text.Text;
 import org.ejavdge.web.context.ProbId;
 
 /**
- * Downloads the attachments of a problem into a local directory.
+ * Downloads a problem's Local Test files into a local directory.
  *
  * <p>The problem is identified by the name marker in the given
  * solution file (see {@link ProbNameOf}). The problem page is
- * fetched through the contest resource, attachment links are
- * extracted from it, and each file is saved under the given
- * directory.
+ * fetched through the contest resource, Local Test file links are extracted,
+ * and each file is saved in the target directory.
  */
-public final class DownloadingOfAttachments implements Effect {
+public final class DownloadingOfLocalTestFiles implements Effect {
     private final Effect src;
 
     /**
      * Creates a download scenario that fetches the problem page
-     * identified by the given solution file and writes its
-     * attachments into the target directory.
+     * identified by the given solution file and saves its Local Test
+     * files in the target directory.
      *
      * @param r the contest to fetch the problem page from
      * @param f the solution file whose marker identifies the problem
-     * @param d the local directory to save attachments into
+     * @param d the local directory where files are saved
      */
-    public DownloadingOfAttachments(final ContestResource r, final ByteFile f, final Text d) {
+    public DownloadingOfLocalTestFiles(final ContestResource r, final ByteFile f, final Text d) {
         this(
             new DownloadingOf(
-                new ProbAttachments(
+                new LocalTestFiles(
                     new PresetEngine(),
                     new ProblemPage(
                         r,
@@ -63,17 +62,17 @@ public final class DownloadingOfAttachments implements Effect {
      *
      * @param e the effect to delegate to
      */
-    public DownloadingOfAttachments(final Effect e) {
+    public DownloadingOfLocalTestFiles(final Effect e) {
         this.src = e;
     }
 
     /**
-     * Fetches the problem page, extracts attachment links, and saves
-     * each attachment under the target directory.
+     * Fetches the problem page, extracts Local Test file links, and
+     * saves the files in the target directory.
      *
      * @throws InvariantViolation if the problem marker is missing in
      *     the solution file, the problem page cannot be fetched, or
-     *     any attachment cannot be downloaded
+     *     any Local Test file cannot be downloaded
      */
     @Override
     public void perform() throws InvariantViolation {

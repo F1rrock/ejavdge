@@ -33,7 +33,7 @@ import java.net.URI;
  * <p>
  * This class is used, among other places, by
  * {@link org.ejavdge.file.DownloadingOf} and {@link LastSegmentOf} to derive
- * file names and locations from attachment URLs.
+ * file names and locations from file URLs.
  */
 public final class PathOf implements Text {
 

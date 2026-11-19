@@ -1,6 +1,6 @@
 package org.ejavdge.app;
 
-import org.ejavdge.app.scenario.DownloadingOfAttachments;
+import org.ejavdge.app.scenario.DownloadingOfLocalTestFiles;
 import org.ejavdge.app.setup.*;
 import org.ejavdge.auth.Session;
 import org.ejavdge.contest.ContestResource;
@@ -14,20 +14,17 @@ import org.ejavdge.workspace.out.Out;
 import org.ejavdge.workspace.out.WritingOf;
 
 /**
- * Downloads the attachments of a problem into a local directory and
+ * Downloads a problem's Local Test files into a local directory and
  * prints a success message.
  *
  * <p>The problem is identified by the name marker in the given
  * solution file. The page is fetched from the contest server, the
- * attachment links are extracted, and each file is written under the
+ * Local Test file links are extracted, and each file is written under the
  * target directory. On success, the message
- * {@code "Attachments successfully downloaded!"} written to the
+ * {@code "Local Test files successfully downloaded!"} is written to the
  * output channel.
- *
- * <p>A failure of the underlying scenario reported to the same
- * output channel rather than propagated to the caller.
  */
-public final class AttachmentsDownloadApp implements App {
+public final class LocalTestFilesDownloadApp implements App {
     private final Effect src;
 
     /**
@@ -35,9 +32,9 @@ public final class AttachmentsDownloadApp implements App {
      * target directory, with default connection settings.
      *
      * @param f the solution file whose marker identifies the problem
-     * @param d the local directory to save attachments into
+     * @param d the local directory where files are saved
      */
-    public AttachmentsDownloadApp(final ByteFile f, final Text d) {
+    public LocalTestFilesDownloadApp(final ByteFile f, final Text d) {
         this(
             f, d,
             new Location(
@@ -53,12 +50,12 @@ public final class AttachmentsDownloadApp implements App {
      * target directory, and contest location.
      *
      * @param f the solution file whose marker identifies the problem
-     * @param d the local directory to save attachments into
+     * @param d the local directory where files are saved
      * @param l the contest server to fetch the problem page from
      */
-    public AttachmentsDownloadApp(final ByteFile f, final Text d, final Location l) {
+    public LocalTestFilesDownloadApp(final ByteFile f, final Text d, final Location l) {
         this(
-            new DownloadingOfAttachments(
+            new DownloadingOfLocalTestFiles(
                 new ContestResource(
                     new PresetDriver(),
                     l,
@@ -83,15 +80,14 @@ public final class AttachmentsDownloadApp implements App {
      * output channel.
      *
      * @param d the scenario that performs the actual download
-     * @param o the output channel for the success message and any
-     *     error report
+     * @param o the output channel for the success message
      */
-    public AttachmentsDownloadApp(final DownloadingOfAttachments d, final Out o) {
+    public LocalTestFilesDownloadApp(final DownloadingOfLocalTestFiles d, final Out o) {
         this(
             new WritingOf(
                 new Notice(
                     d,
-                    new Text.Of("Attachments successfully downloaded!")
+                    new Text.Of("Local Test files successfully downloaded!")
                 ),
                 o
             )
@@ -104,7 +100,7 @@ public final class AttachmentsDownloadApp implements App {
      *
      * @param e the effect to delegate to
      */
-    public AttachmentsDownloadApp(final Effect e) {
+    public LocalTestFilesDownloadApp(final Effect e) {
         this.src = e;
     }
 

@@ -12,35 +12,31 @@ import org.ejavdge.web.context.ProbId;
 import org.ejavdge.web.driver.WebDriver;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+
+import static org.junit.Assert.assertArrayEquals;
 
 public final class AttachmentTest extends TestCase {
     public void testBinaryAttachmentPayload() {
         final byte[] payload = {0, (byte) 0xff, '\r', '\n', 42};
-        assertTrue(
-            Arrays.equals(
-                payload,
-                this.attachment(
-                    (loc, req) -> {
-                        assertTrue(
-                            new String(req.bytes(), StandardCharsets.UTF_8).startsWith(
-                                "GET /ejudge?action=193&file=HeaderOfA.java&prob_id=3&SID=abc HTTP/1.1\r\n"
-                            )
-                        );
-                        return new Concat(
-                            new Bytes.Of(
-                                """
-                                HTTP/1.1 200 OK\r
-                                Content-Disposition: attachment; filename="HeaderOfA.java"\r
-                                \r
-                                """.getBytes(StandardCharsets.UTF_8)
-                            ),
-                            new Bytes.Of(payload)
-                        ).content();
-                    }
-                ).content()
-            )
-        );
+        assertArrayEquals(payload, this.attachment(
+            (loc, req) -> {
+                assertTrue(
+                    new String(req.bytes(), StandardCharsets.UTF_8).startsWith(
+                        "GET /ejudge?action=194&file=HeaderOfA.java&prob_id=3&SID=abc HTTP/1.1\r\n"
+                    )
+                );
+                return new Concat(
+                    new Bytes.Of(
+                        """
+                            HTTP/1.1 200 OK\r
+                            Content-Disposition: attachment; filename="HeaderOfA.java"\r
+                            \r
+                            """.getBytes(StandardCharsets.UTF_8)
+                    ),
+                    new Bytes.Of(payload)
+                ).content();
+            }
+        ).content());
     }
 
     public void testMissingAttachmentWithSuccessfulStatus() {

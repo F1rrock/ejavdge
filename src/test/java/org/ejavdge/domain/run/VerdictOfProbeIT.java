@@ -12,14 +12,23 @@ import org.ejavdge.scalar.num.Num;
 import org.ejavdge.scalar.text.Text;
 import org.ejavdge.web.context.Location;
 import org.ejavdge.web.driver.WebDriver;
+import org.ejavdge.web.spec.Request;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class VerdictOfProbeIT extends TestCase {
+    private static final String MAIN_PAGE = "amp%3Baction=2";
+    private static final String PROBLEM_PAGE = "action=139";
+    private static final String HEADER = "HeaderOfWithLinks.java";
+    private static final String FOOTER = "FooterOfWithLinks.java";
+
     private static final String CORRECT = """
         // problem: WithLinks
         import java.util.Scanner;
@@ -40,150 +49,72 @@ public final class VerdictOfProbeIT extends TestCase {
         }
         """;
 
-    public void testPassesOnCorrectSolution() {
-        try {
-            final var main = this.mainPage();
-            final var problem = this.problemPage();
-            assertTrue(
-                new VerdictOfProbe(
-                    new JavaProgram(
-                        this.file(CORRECT),
-                        new Text.Of(".")
-                    ),
-                    new PresetEngine(),
-                    this.resource(
-                        (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
-                            .contains("prob_id=3")
-                            ? problem
-                            : main
-                    )
-                ).ok()
-            );
-        } catch (final IOException | InvariantViolation e) {
-            throw new AssertionError(e);
-        }
+    public void testCorrectSolutionWithoutTemplate() throws IOException {
+        assertTrue(this.probe(CORRECT, this.resource(this.driver())).ok());
     }
 
-    public void testFailsOnWrongSolution() {
-        try {
-            final var main = this.mainPage();
-            final var problem = this.problemPage();
-            assertFalse(
-                new VerdictOfProbe(
-                    new JavaProgram(
-                        this.file(WRONG),
-                        new Text.Of(".")
-                    ),
-                    new PresetEngine(),
-                    this.resource(
-                        (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
-                            .contains("prob_id=3")
-                            ? problem
-                            : main
-                    )
-                ).ok()
-            );
-        } catch (final IOException | InvariantViolation e) {
-            throw new AssertionError(e);
-        }
+    public void testWrongSolution() throws IOException {
+        assertFalse(this.probe(WRONG, this.resource(this.driver())).ok());
     }
 
-    public void testProblemPageCalls() {
-        try {
-            final var main = this.mainPage();
-            final var problem = this.problemPage();
-            final var calls = new AtomicInteger(0);
-            new VerdictOfProbe(
-                new JavaProgram(
-                    this.file(CORRECT),
-                    new Text.Of(".")
-                ),
-                new PresetEngine(),
-                this.resource(
-                    (loc, req) -> {
-                        if (new String(req.bytes(), StandardCharsets.UTF_8)
-                            .contains("prob_id=3")) {
-                            calls.incrementAndGet();
-                            return problem;
-                        }
-                        return main;
+    public void testSingleRequestPerPageAndTemplateFile() throws IOException {
+        final var driver = this.driver(
+            this.attachment(
+                HEADER,
+                """
+                import java.util.Scanner;
+                public class Main {
+                    public static void main(String[] args) {
+                        Scanner input = new Scanner(System.in);
+                """
+            ),
+            this.attachment(
+                FOOTER,
+                """
+                        System.out.println(result);
                     }
-                )
-            ).ok();
-            assertEquals(1, calls.get());
-        } catch (final IOException | InvariantViolation e) {
-            throw new AssertionError(e);
-        }
+                }
+                """
+            )
+        );
+        assertTrue(
+            this.probe(
+                """
+                // problem: WithLinks
+                int result = input.nextInt() + input.nextInt();
+                """,
+                this.resource(driver)
+            ).ok()
+        );
+        assertEquals("main page", 1, driver.calls(MAIN_PAGE));
+        assertEquals("problem page", 1, driver.calls(PROBLEM_PAGE));
+        assertEquals(HEADER, 1, driver.calls(HEADER));
+        assertEquals(FOOTER, 1, driver.calls(FOOTER));
     }
 
-    public void testMainPageCalls() {
+    public void testUnknownProblem() throws IOException {
+        final var driver = this.driver();
         try {
-            final var main = this.mainPage();
-            final var problem = this.problemPage();
-            final var calls = new AtomicInteger(0);
-            new VerdictOfProbe(
-                new JavaProgram(
-                    this.file(CORRECT),
-                    new Text.Of(".")
-                ),
-                new PresetEngine(),
-                this.resource(
-                    (loc, req) -> {
-                        if (new String(req.bytes(), StandardCharsets.UTF_8)
-                            .contains("prob_id=3")) {
-                            return problem;
-                        }
-                        calls.incrementAndGet();
-                        return main;
-                    }
-                )
-            ).ok();
-            assertEquals(1, calls.get());
-        } catch (final IOException | InvariantViolation e) {
-            throw new AssertionError(e);
-        }
-    }
-
-    public void testUnknownProblem() {
-        try {
-            final var main = this.mainPage();
-            final var problem = this.problemPage();
-            new VerdictOfProbe(
-                new JavaProgram(
-                    this.file("// problem: NonexistentProblem\n"),
-                    new Text.Of(".")
-                ),
-                new PresetEngine(),
-                this.resource(
-                    (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
-                        .contains("prob_id=3")
-                        ? problem
-                        : main
-                )
-            ).ok();
+            this.probe("// problem: NonexistentProblem\n", this.resource(driver)).ok();
         } catch (final InvariantViolation e) {
+            assertEquals("main page", 1, driver.calls(MAIN_PAGE));
+            assertEquals("problem page", 0, driver.calls(PROBLEM_PAGE));
+            assertEquals(HEADER, 0, driver.calls(HEADER));
+            assertEquals(FOOTER, 0, driver.calls(FOOTER));
             return;
-        } catch (final IOException e) {
-            throw new AssertionError(e);
         }
         fail("InvariantViolation");
     }
 
     public void testInvalidSession() {
         try {
-            final var main = this.mainPage();
-            final var problem = this.problemPage();
-            new VerdictOfProbe(
-                new JavaProgram(
-                    this.file(CORRECT),
-                    new Text.Of(".")
-                ),
-                new PresetEngine(),
+            this.probe(
+                CORRECT,
                 new ContestResource(
-                    (loc, req) -> new String(req.bytes(), StandardCharsets.UTF_8)
-                        .contains("prob_id=3")
-                        ? problem
-                        : main,
+                    (loc, req) -> {
+                        req.bytes();
+                        throw new AssertionError("A request was assembled with an invalid session");
+                    },
                     this.location(),
                     new Session(
                         new Bytes.Of(
@@ -200,20 +131,14 @@ public final class VerdictOfProbeIT extends TestCase {
             ).ok();
         } catch (final InvariantViolation e) {
             return;
-        } catch (final IOException e) {
-            throw new AssertionError(e);
         }
         fail("InvariantViolation");
     }
 
     public void testBrokenDriver() {
         try {
-            new VerdictOfProbe(
-                new JavaProgram(
-                    this.file(CORRECT),
-                    new Text.Of(".")
-                ),
-                new PresetEngine(),
+            this.probe(
+                CORRECT,
                 this.resource(
                     (loc, req) -> {
                         throw new InvariantViolation("there is no resources.");
@@ -245,20 +170,45 @@ public final class VerdictOfProbeIT extends TestCase {
         fail("InvariantViolation");
     }
 
-    private byte[] mainPage() throws IOException {
-        return Files.readString(
-            new File(
-                "src/test/resources/pages/main.html"
-            ).toPath()
-        ).getBytes(StandardCharsets.UTF_8);
+    private VerdictOfProbe probe(final String source, final ContestResource resource) {
+        return new VerdictOfProbe(
+            new JavaProgram(this.file(source), new Text.Of(".")),
+            new PresetEngine(),
+            resource
+        );
     }
 
-    private byte[] problemPage() throws IOException {
-        return Files.readString(
-            new File(
-                "src/test/resources/pages/problem.html"
-            ).toPath()
-        ).getBytes(StandardCharsets.UTF_8);
+    private ProbeDriver driver() throws IOException {
+        final byte[] missing = """
+            HTTP/1.1 200 OK\r
+            Content-Type: text/html; charset=UTF-8\r
+            \r
+            <html><body>Attachment not found</body></html>
+            """.getBytes(StandardCharsets.UTF_8);
+        return this.driver(missing, missing);
+    }
+
+    private ProbeDriver driver(final byte[] header, final byte[] footer) throws IOException {
+        return new ProbeDriver(
+            Map.of(
+                MAIN_PAGE, this.page("main"),
+                PROBLEM_PAGE, this.page("problem"),
+                HEADER, header,
+                FOOTER, footer
+            )
+        );
+    }
+
+    private byte[] page(final String name) throws IOException {
+        return Files.readAllBytes(Path.of("src", "test", "resources", "pages", name + ".html"));
+    }
+
+    private byte[] attachment(final String name, final String source) {
+        return """
+            HTTP/1.1 200 OK\r
+            Content-Disposition: attachment; filename="%s"\r
+            \r
+            %s""".formatted(name, source).getBytes(StandardCharsets.UTF_8);
     }
 
     private ByteFile file(final String source) {
@@ -293,5 +243,47 @@ public final class VerdictOfProbeIT extends TestCase {
             new Text.Of("localhost"),
             new Num.Of(90)
         );
+    }
+
+    private static final class ProbeDriver implements WebDriver {
+        private final Map<String, byte[]> replies;
+        private final Map<String, Integer> counts = new HashMap<>();
+
+        ProbeDriver(final Map<String, byte[]> responses) {
+            this.replies = responses;
+        }
+
+        @Override
+        public byte[] resourceOf(final Location loc, final Request req) {
+            final String uri = new String(req.bytes(), StandardCharsets.UTF_8).split(" ", 3)[1];
+            final var query = List.of(URI.create(uri).getRawQuery().split("&"));
+            final String route = this.route(query);
+            this.counts.merge(route, 1, Integer::sum);
+            return this.replies.get(route);
+        }
+
+        private String route(final List<String> query) {
+            if (query.contains(MAIN_PAGE)) {
+                return MAIN_PAGE;
+            }
+            if (query.contains("prob_id=3")) {
+                if (query.contains(PROBLEM_PAGE)) {
+                    return PROBLEM_PAGE;
+                }
+                if (query.contains("action=193")) {
+                    if (query.contains("file=" + HEADER)) {
+                        return HEADER;
+                    }
+                    if (query.contains("file=" + FOOTER)) {
+                        return FOOTER;
+                    }
+                }
+            }
+            throw new AssertionError("Unexpected probe request: " + query);
+        }
+
+        int calls(final String route) {
+            return this.counts.getOrDefault(route, 0);
+        }
     }
 }

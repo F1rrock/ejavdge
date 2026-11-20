@@ -44,6 +44,23 @@ public final class JavaProgram implements ByteFile, Program {
     private final Text path;
 
     /**
+     * Creates a program with replacement source bytes while retaining the
+     * original program's file name and working directory.
+     *
+     * @param p the program providing the file name and working directory
+     * @param bs the replacement Java source bytes
+     */
+    public JavaProgram(final JavaProgram p, final Bytes bs) {
+        this(
+            new ByteFile.Of(
+                new NameOf(p),
+                bs
+            ),
+            p.path
+        );
+    }
+
+    /**
      * Creates a Java program from the given source file and working directory.
      *
      * @param f the byte file containing the Java source code
@@ -147,6 +164,48 @@ public final class JavaProgram implements ByteFile, Program {
                 "There is no outcome because program cannot run",
                 e
             );
+        }
+    }
+
+    /**
+     * A {@link Program} that runs Java source in the original program's working
+     * directory, optionally using replacement source bytes.
+     */
+    public static final class WithSource implements Program {
+        /**
+         * The program that handles execution.
+         */
+        private final Program origin;
+
+        /**
+         * Creates an executable program with replacement Java source.
+         *
+         * @param p the program providing the file name and working directory
+         * @param bs the replacement Java source bytes
+         */
+        public WithSource(final JavaProgram p, final Bytes bs) {
+            this(new JavaProgram(p, bs));
+        }
+
+        /**
+         * Wraps an existing Java program for execution.
+         *
+         * @param p the Java program to run
+         */
+        public WithSource(final JavaProgram p) {
+            this.origin = p;
+        }
+
+        /**
+         * Runs the program with the given standard input.
+         *
+         * @param i the input passed to the program
+         * @return the combined standard output and standard error
+         * @throws InvariantViolation if the program cannot run successfully
+         */
+        @Override
+        public String outcomeOf(Text i) throws InvariantViolation {
+            return this.origin.outcomeOf(i);
         }
     }
 }

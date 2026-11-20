@@ -52,8 +52,7 @@ Problems are identified by a comment in the source file:
 // problem: A
 ```
 Use the problem's short name as shown in the contest. The marker must start at
-the beginning of a line; supported names begin with an ASCII letter and contain
-only letters and digits.
+the beginning of a line.
 For submissions, EJavdge first tries the problem page's preset language. When
 the page instead offers a language selector, provide a positive, one-based
 index into its language choices:
@@ -61,6 +60,18 @@ index into its language choices:
 // problem: A
 // language: 2
 ```
+
+## Local Testing with Problem Templates
+`LocalProbeApp` and the local check in `ProbedSubmitApp` use optional Java
+fragments stored as ejudge problem attachments. For `// problem: A`, the
+probe prepends `HeaderOfA.java` and appends `FooterOfA.java` when they are
+available. Either fragment can be absent. The fragments and the solution are
+joined as provided, so include any needed line breaks in the files.
+
+The probe uses the same assembled source for all samples and runs it in the
+solution's configured working directory. It leaves the original file unchanged;
+`ProbedSubmitApp` submits that original file. Local Test data files linked from
+the statement are downloaded separately with `LocalTestFilesDownloadApp`.
 
 ## Java Example
 There is no command-line `main` entry point in this repository. Call application
@@ -97,8 +108,9 @@ public final class EjavdgeExample {
     }
 }
 ```
-Run this after configuring `.env`. `Main.java` must contain a problem marker and an executable Java
-`main` method.
+Run this after configuring `.env`. `Main.java` must contain a problem marker.
+The source that runs must have a Java `main` method, which can come from the
+problem's template.
 
 
 ## IntelliJ IDEA

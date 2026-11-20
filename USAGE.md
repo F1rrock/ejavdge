@@ -50,6 +50,10 @@ Use the `local-test` subcommand from `e-scenarios.jar`. It receives the current 
 ```text
 -jar "e-scenarios.jar" local-test "$FilePath$"
 ```
+For a scenario built on `LocalProbeApp`, see [Local Testing with Problem
+Templates](README.md#local-testing-with-problem-templates) for how the probe
+uses the problem's Java header and footer.
+
 This is the IDEA analogue of ReJudge's RStudio **Local testing** addin: the user never types a path manually; the active file supplies it. A **Submit the solution** analogue uses the same button pattern with a different jar subcommand, if the scenario jar provides one.
 
 

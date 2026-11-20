@@ -270,7 +270,7 @@ public final class VerdictOfProbeIT extends TestCase {
                 if (query.contains(PROBLEM_PAGE)) {
                     return PROBLEM_PAGE;
                 }
-                if (query.contains("action=193")) {
+                if (query.contains("action=194")) {
                     if (query.contains("file=" + HEADER)) {
                         return HEADER;
                     }

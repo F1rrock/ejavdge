@@ -57,9 +57,9 @@ public final class ProbTemplateFilesTest extends TestCase {
         assertEquals(
             List.of(
                 "/ejudge?amp%3Baction=2&amp%3Blt=1&SID=abc",
-                "/ejudge?action=193&file=HeaderOfB.java&prob_id=3&SID=abc",
+                "/ejudge?action=194&file=HeaderOfB.java&prob_id=3&SID=abc",
                 "/ejudge?amp%3Baction=2&amp%3Blt=1&SID=abc",
-                "/ejudge?action=193&file=FooterOfB.java&prob_id=3&SID=abc"
+                "/ejudge?action=194&file=FooterOfB.java&prob_id=3&SID=abc"
             ),
             requests
         );

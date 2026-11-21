@@ -127,6 +127,38 @@ public final class ProbExamplesTest extends TestCase {
         );
     }
 
+    public void testExamplesBeforeNotes() {
+        final var examples = new ProbExamples(
+            new ProbBrief(
+                new Text.Of(
+                    """
+                    Examples
+                    Input
+                    1
+                    2
+                    Output
+                    3
+
+                    Input
+                    4
+                    5
+                    Output
+                    9
+
+                    Notes
+                    The second example illustrates the following rules:
+                    Input
+                    Two integers are given.
+                    Output
+                    Print their sum.
+                    """
+                )
+            )
+        ).contents();
+        assertEquals(List.of("1\n2", "4\n5"), examples.stream().map(Fixture::input).toList());
+        assertEquals(List.of("3", "9"), examples.stream().map(Fixture::expected).toList());
+    }
+
     public void testInputOfBriefWithoutExamples() {
         assertEquals(
             List.of(),

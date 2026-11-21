@@ -53,6 +53,29 @@ public final class VerdictOfProbeIT extends TestCase {
         assertTrue(this.probe(CORRECT, this.resource(this.driver())).ok());
     }
 
+    public void testCorrectSolutionWithNotesAfterExamples() throws IOException {
+        final byte[] problem = """
+            <html>
+                <body>
+                    <div id="probNavTaskArea-ins">
+                        <h3>Examples</h3>
+                        <h4>Input</h4>
+                        <pre>
+                        1
+                        2
+                        </pre>
+                        <h4>Output</h4>
+                        <pre>3</pre>
+                        <h3>Notes</h3>
+                        <p>The first sample shows how to add 1 and 2.</p>
+                        <div id="ej-submit-tabs"></div>
+                    </div>
+                </body>
+            </html>
+            """.getBytes(StandardCharsets.UTF_8);
+        assertTrue(this.probe(CORRECT, this.resource(this.driver(problem))).ok());
+    }
+
     public void testWrongSolution() throws IOException {
         assertFalse(this.probe(WRONG, this.resource(this.driver())).ok());
     }
@@ -179,20 +202,30 @@ public final class VerdictOfProbeIT extends TestCase {
     }
 
     private ProbeDriver driver() throws IOException {
+        return this.driver(this.page("problem"));
+    }
+
+    private ProbeDriver driver(final byte[] problem) throws IOException {
         final byte[] missing = """
             HTTP/1.1 200 OK\r
             Content-Type: text/html; charset=UTF-8\r
             \r
             <html><body>Attachment not found</body></html>
             """.getBytes(StandardCharsets.UTF_8);
-        return this.driver(missing, missing);
+        return this.driver(missing, missing, problem);
     }
 
     private ProbeDriver driver(final byte[] header, final byte[] footer) throws IOException {
+        return this.driver(header, footer, this.page("problem"));
+    }
+
+    private ProbeDriver driver(
+        final byte[] header, final byte[] footer, final byte[] problem
+    ) throws IOException {
         return new ProbeDriver(
             Map.of(
                 MAIN_PAGE, this.page("main"),
-                PROBLEM_PAGE, this.page("problem"),
+                PROBLEM_PAGE, problem,
                 HEADER, header,
                 FOOTER, footer
             )

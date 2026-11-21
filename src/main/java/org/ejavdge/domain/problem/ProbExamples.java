@@ -18,8 +18,8 @@ import java.util.List;
  * The examples are parsed from the textual brief of a problem. The parsing
  * process is as follows:
  * <ol>
- *   <li>Split the brief into lines and take only the portion after the line
- *       equal to "Examples".</li>
+ *   <li>Split the brief into lines and take the portion after "Examples" and
+ *       before "Notes", if that section is present.</li>
  *   <li>Split that portion into groups separated by lines equal to
  *       "Input", discarding the first (empty) group.</li>
  *   <li>For each group, further split it at the line equal to "Output" into
@@ -89,11 +89,14 @@ public final class ProbExamples implements Items<Fixture> {
                     new WithoutFirst<>(
                         new Split<>(
                             l -> l.equals(new ContentBased("Input")),
-                            new OnlyAfter<>(
-                                l -> l.equals(new ContentBased("Examples")),
-                                new Map<>(
-                                    ContentBased::new,
-                                    new Lines(b)
+                            new OnlyUntil<>(
+                                l -> l.equals(new ContentBased("Notes")),
+                                new OnlyAfter<>(
+                                    l -> l.equals(new ContentBased("Examples")),
+                                    new Map<>(
+                                        ContentBased::new,
+                                        new Lines(b)
+                                    )
                                 )
                             )
                         )
